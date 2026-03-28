@@ -1,195 +1,195 @@
-# Abhay Chaurasiya - Personal Portfolio Website
+# Abhay Chaurasiya — Developer Portfolio
 
-A modern, responsive, and animated personal portfolio website built with Next.js, Tailwind CSS, and Framer Motion. This portfolio showcases my skills, experience, and projects as a Full-Stack Developer.
+A DevOps-focused portfolio built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and **Framer Motion** — featuring a live CI/CD health dashboard, interactive DevOps terminal playground, GitHub contribution heatmap, and a ThoughtWorks-style Tech Radar.
 
-## ✨ Features
-
-### 🎨 Design & UI
-- **Modern & Responsive Design** - Optimized for all devices (mobile, tablet, desktop)
-- **Dark/Light Mode Toggle** - Smooth theme switching with system preference detection
-- **Smooth Animations** - Powered by Framer Motion and GSAP for engaging user experience
-- **Interactive Elements** - Hover effects, micro-interactions, and smooth transitions
-- **Professional Layout** - Clean, recruiter-friendly design with excellent UX
-
-### 🚀 Sections
-- **Hero Section** - Animated introduction with particle background and call-to-action buttons
-- **About Me** - Personal bio, contact information, and quick stats
-- **Skills & Technologies** - Categorized skills with animated progress bars
-- **Work Experience** - Timeline layout with detailed work history
-- **Projects Portfolio** - Featured projects with filtering and tech stack badges
-- **Contact Form** - Interactive contact form with social media links
-- **Footer** - Quick navigation and additional information
-
-### 🛠️ Technical Features
-- **Next.js 14** - Latest React framework with App Router
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Utility-first CSS framework
-- **Framer Motion** - Advanced animations and transitions
-- **GSAP** - High-performance animations
-- **Responsive Design** - Mobile-first approach
-- **SEO Optimized** - Meta tags, Open Graph, and structured data
-- **Performance Optimized** - Lazy loading, optimized images, and efficient animations
-
-## 🎯 Target Audience
-
-This portfolio is designed for:
-- **Recruiters & Hiring Managers** - Professional presentation of skills and experience
-- **Potential Clients** - Showcase of project capabilities and technical expertise
-- **Fellow Developers** - Technical demonstration and code quality
-- **Professional Network** - Professional online presence and branding
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn package manager
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/abhay1999/portfolio-website.git
-   cd portfolio-website
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. **Run the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 📁 Project Structure
-
-```
-src/
-├── app/
-│   ├── layout.tsx          # Root layout with theme provider
-│   ├── page.tsx            # Main page component
-│   └── globals.css         # Global styles and custom CSS
-├── components/
-│   ├── Header.tsx          # Navigation header with theme toggle
-│   ├── Hero.tsx            # Hero section with animations
-│   ├── About.tsx           # About section with contact info
-│   ├── Skills.tsx          # Skills with progress bars
-│   ├── Experience.tsx      # Work experience timeline
-│   ├── Projects.tsx        # Projects portfolio
-│   ├── Contact.tsx         # Contact form and social links
-│   ├── Footer.tsx          # Footer with navigation
-│   └── theme-provider.tsx  # Theme context provider
-└── types/                  # TypeScript type definitions
-```
-
-## 🎨 Customization
-
-### Personal Information
-Update the following files with your information:
-- `src/components/Hero.tsx` - Name, role, and description
-- `src/components/About.tsx` - Bio and contact details
-- `src/components/Experience.tsx` - Work history
-- `src/components/Projects.tsx` - Project details and links
-- `src/components/Contact.tsx` - Contact information
-
-### Styling
-- **Colors**: Modify the color scheme in `tailwind.config.ts`
-- **Fonts**: Update font imports in `src/app/globals.css`
-- **Animations**: Customize animation parameters in component files
-
-### Content
-- **Projects**: Add/remove projects in the Projects component
-- **Skills**: Update skill categories and proficiency levels
-- **Experience**: Modify work experience timeline
-- **Social Links**: Update social media and professional profile links
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy automatically on every push
-
-### Other Platforms
-- **Netlify**: Build command: `npm run build`, Publish directory: `out`
-- **AWS Amplify**: Connect your repository and deploy
-- **GitHub Pages**: Use `next export` and deploy static files
-
-## 📱 Responsive Design
-
-The portfolio is fully responsive with breakpoints:
-- **Mobile**: < 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: > 1024px
-
-## 🌙 Dark Mode
-
-- **System Preference**: Automatically detects user's system theme
-- **Manual Toggle**: Users can manually switch between light and dark modes
-- **Persistent**: Theme preference is saved in localStorage
-
-## ⚡ Performance
-
-- **Lazy Loading**: Components load as they come into view
-- **Optimized Images**: Next.js Image component for optimal loading
-- **Code Splitting**: Automatic code splitting by Next.js
-- **Minified CSS**: Tailwind CSS is purged and minified in production
-
-## 🔧 Development
-
-### Available Scripts
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run type-check   # Run TypeScript type checking
-```
-
-### Adding New Sections
-1. Create a new component in `src/components/`
-2. Add it to `src/app/page.tsx`
-3. Update navigation in `src/components/Header.tsx`
-4. Add corresponding styles and animations
-
-## 📊 Analytics & SEO
-
-- **Meta Tags**: Comprehensive meta tags for social sharing
-- **Open Graph**: Facebook and Twitter card support
-- **Structured Data**: JSON-LD structured data for search engines
-- **Performance Monitoring**: Ready for Google Analytics integration
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🙏 Acknowledgments
-
-- **Next.js Team** - For the amazing React framework
-- **Tailwind CSS** - For the utility-first CSS framework
-- **Framer Motion** - For smooth animations
-- **Lucide Icons** - For beautiful icons
-- **Inter Font** - For the modern typography
-
-## 📞 Contact
-
-- **Email**: abhaychaurasiya19@gmail.com
-- **Phone**: +91 8299211830
-- **GitHub**: [@abhay1999](https://github.com/abhay1999)
-- **LinkedIn**: [Abhay Chaurasiya](https://linkedin.com/in/abhay-chaurasiya)
+**Live:** [abhay-portfolio.vercel.app](https://abhay-portfolio.vercel.app) &nbsp;·&nbsp; **Resume:** [Download PDF](https://abhay-portfolio.vercel.app/resume.pdf)
 
 ---
 
-**Built with ❤️ using Next.js, Tailwind CSS, and Framer Motion**
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         Browser (Client)                                │
+│                                                                         │
+│  ┌───────────┐  ┌───────────┐  ┌──────────────┐  ┌─────────────────┐  │
+│  │   Hero    │  │  About    │  │    Skills    │  │   Experience    │  │
+│  │ + Resume  │  │ + Live PR │  │ 3D TiltCard  │  │    Timeline     │  │
+│  │ Download  │  │   Count   │  │  Dot Matrix  │  │                 │  │
+│  └───────────┘  └─────┬─────┘  └──────────────┘  └─────────────────┘  │
+│                        │                                                │
+│  ┌───────────┐  ┌──────▼──────┐  ┌─────────────┐  ┌────────────────┐  │
+│  │  Projects │  │ Open Source │  │ DevOps Live │  │DevOps Playground│  │
+│  │  5 cards  │  │  Live PRs   │  │ CI/CD Health│  │kubectl + devenv│  │
+│  │  TiltCard │  │  from API   │  │  + Heatmap  │  │  Tab switcher  │  │
+│  └───────────┘  └──────┬──────┘  └──────┬──────┘  └────────────────┘  │
+│                         │               │                               │
+│  ┌────────────────┐  ┌──▼─────────┐     │  ┌─────────────────────────┐ │
+│  │   Tech Radar   │  │  Contact   │     │  │     External APIs       │ │
+│  │ SVG · 30 blips │  │  EmailJS   │     │  │  ┌───────────────────┐  │ │
+│  │ 4 rings/quads  │  │            │     └──┼──│ GitHub REST API   │  │ │
+│  └────────────────┘  └────────────┘        │  │ /actions/runs     │  │ │
+│                                            │  │ /search/issues    │  │ │
+└────────────────────────────────────────────┼──│ contributions API │  │ │
+                                             │  └───────────────────┘  │ │
+                                             │  ┌───────────────────┐  │ │
+                                             └──│   EmailJS SDK     │  │ │
+                                                └───────────────────┘  │ │
+                                                └─────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                            Deployment                                   │
+│                                                                         │
+│   Next.js 14                ┌─────────────┐     ┌──────────────────┐   │
+│   output: 'export'  ──────► │   Vercel    │     │ Docker + Nginx   │   │
+│   Static HTML/JS/CSS        │  (primary)  │     │ (self-hosted)    │   │
+│                             └─────────────┘     └──────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Sections
+
+| # | Section | Highlights |
+|---|---------|-----------|
+| — | **Hero** | Animated circuit background, 3D terminal card, rotating roles, resume PDF download |
+| 01 | **About** | Live merged PR count via GitHub API, skill bars, DevOps identity card |
+| 02 | **Skills** | 3D TiltCard, DotMatrix visualization, radar orb, animated badge cloud |
+| 03 | **Experience** | Work timeline with impact metrics |
+| 04 | **Open Source** | Live CNCF PR feed — merged/open badges fetched from GitHub Search API |
+| 05 | **Projects** | 5 TiltCards (K8s, DevEnv, Portfolio, Netflix EKS, AvlokanIAS) with terminal strips |
+| 06 | **DevOps Live** | Real-time CI/CD status (GitHub Actions API) + 52-week contribution heatmap |
+| 07 | **DevOps Playground** | Interactive terminal — K8s tab (kubectl/helm/docker) + DevEnv CLI tab (spin up/list/teardown) |
+| 08 | **Tech Radar** | ThoughtWorks-style SVG radar — 30 blips, 4 rings, 4 quadrants, hover details |
+| 09 | **Contact** | EmailJS-powered contact form |
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router, static export) |
+| Language | TypeScript 5 (strict) |
+| Styling | Tailwind CSS 3 |
+| Animation | Framer Motion 11 |
+| Icons | Lucide React |
+| Contact | EmailJS |
+| PDF | Puppeteer-core + system Chrome |
+| Deployment | Vercel / Docker + Nginx |
+
+---
+
+## Project Structure
+
+```
+abhay_portfolio/
+├── public/
+│   ├── resume.pdf               # Generated by scripts/generate-resume-pdf.js
+│   ├── resume.html              # Resume source served at /resume.html
+│   └── profile-picture.svg
+├── scripts/
+│   └── generate-resume-pdf.js   # Puppeteer: resume.html → resume.pdf
+├── resume.html                  # Edit this to update your resume
+└── src/
+    ├── app/
+    │   ├── layout.tsx
+    │   ├── page.tsx             # Section order + imports
+    │   └── globals.css
+    └── components/
+        ├── Hero.tsx             # Hero + PDF download button
+        ├── About.tsx            # Live merged PR count via GitHub API
+        ├── Skills.tsx           # 3D TiltCard + DotMatrix + radar orb
+        ├── Experience.tsx       # Work experience timeline
+        ├── OpenSource.tsx       # Live GitHub PR feed with badges
+        ├── Projects.tsx         # 5 TiltCard project cards
+        ├── DevOpsLive.tsx       # CI/CD monitor + contribution heatmap
+        ├── DevOpsPlayground.tsx # Interactive kubectl + devenv terminal
+        ├── TechRadar.tsx        # Pure SVG Tech Radar (no D3)
+        └── Contact.tsx          # EmailJS contact form
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm
+
+### Install & Run
+
+```bash
+git clone https://github.com/abhay1999/abhay_portfolio.git
+cd abhay_portfolio
+npm install
+npm run dev
+# → http://localhost:3000
+```
+
+### Environment Variables
+
+Create `.env.local` (see `.env.local.example`):
+
+```env
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_xxxxxxx
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=template_xxxxxxx
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=xxxxxxxxxxxxxxxxxxxx
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # optional
+```
+
+### Scripts
+
+```bash
+npm run dev          # Development server
+npm run build        # Production build
+npm run type-check   # TypeScript check
+npm run resume:pdf   # Regenerate public/resume.pdf from resume.html
+```
+
+---
+
+## Updating the Resume
+
+1. Edit `resume.html`
+2. Regenerate PDF:
+   ```bash
+   npm run resume:pdf
+   ```
+3. Commit and push:
+   ```bash
+   git add resume.html public/resume.pdf public/resume.html
+   git commit -m "chore: update resume"
+   git push
+   ```
+
+---
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push to GitHub
+2. Import repo on [vercel.com](https://vercel.com)
+3. Add environment variables under **Project Settings → Environment Variables**
+4. Vercel auto-detects Next.js — no extra config needed
+
+### Docker
+
+```bash
+docker build -t abhay-portfolio .
+docker run -p 80:80 abhay-portfolio
+```
+
+---
+
+## License
+
+MIT — feel free to use as a template. A credit link is appreciated.
+
+---
+
+<div align="center">
+  <sub>Built by <a href="https://github.com/abhay1999">Abhay Chaurasiya</a> — DevOps · Go · CNCF Open Source</sub>
+</div>
