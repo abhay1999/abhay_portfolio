@@ -241,7 +241,7 @@ const Testimonials = () => {
                   className={`absolute top-4 right-5 font-serif text-[7rem] leading-none select-none pointer-events-none ${t.quoteClass}`}
                   style={{ transform: 'translateZ(-5px)' }}
                 >
-                  "
+                  &quot;
                 </div>
 
                 {/* Quote text */}
