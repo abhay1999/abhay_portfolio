@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abhay Chaurasiya – Resume</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      font-size: 9.2pt;
+      line-height: 1.35;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 18px 24px 14px 24px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      margin-bottom: 7px;
+    }
+
+    .header h1 {
+      font-size: 20pt;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #111;
+    }
+
+    .header .title {
+      font-size: 9.5pt;
+      color: #444;
+      letter-spacing: 0.5px;
+      margin-top: 1px;
+    }
+
+    .header .contacts {
+      margin-top: 4px;
+      font-size: 8.5pt;
+      color: #333;
+    }
+
+    .header .contacts a {
+      color: #1a56db;
+      text-decoration: none;
+    }
+
+    .header .contacts span {
+      margin: 0 5px;
+      color: #bbb;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 7px;
+    }
+
+    .section-title {
+      font-size: 8.8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #111;
+      border-bottom: 1.5px solid #1a56db;
+      padding-bottom: 2px;
+      margin-bottom: 5px;
+    }
+
+    /* ── EXPERIENCE ── */
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .exp-role {
+      font-weight: 700;
+      font-size: 9.5pt;
+      color: #111;
+    }
+
+    .exp-company {
+      font-size: 9pt;
+      color: #444;
+      font-style: italic;
+    }
+
+    .exp-date {
+      font-size: 8.5pt;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .exp-location {
+      font-size: 8.5pt;
+      color: #666;
+      text-align: right;
+    }
+
+    .exp-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+
+    ul {
+      padding-left: 14px;
+    }
+
+    ul li {
+      margin-bottom: 2px;
+      font-size: 9pt;
+    }
+
+    ul li::marker {
+      color: #1a56db;
+    }
+
+    .exp-block {
+      margin-bottom: 6px;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 3px 8px;
+    }
+
+    .skills-label {
+      font-weight: 700;
+      font-size: 8.8pt;
+      color: #333;
+    }
+
+    .skills-value {
+      font-size: 8.8pt;
+      color: #1a1a1a;
+    }
+
+    /* ── OPEN SOURCE ── */
+    .os-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 3px;
+    }
+
+    .os-left {
+      font-size: 9pt;
+    }
+
+    .os-repo {
+      font-weight: 700;
+      color: #111;
+    }
+
+    .os-badge {
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .badge-merged {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge-open {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+
+    /* ── PROJECTS ── */
+    .proj-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .proj-name {
+      font-weight: 700;
+      font-size: 9.5pt;
+      color: #111;
+    }
+
+    .proj-stack {
+      font-size: 8.3pt;
+      color: #666;
+      font-style: italic;
+    }
+
+    .proj-block {
+      margin-bottom: 5px;
+    }
+
+    /* ── EDUCATION ── */
+    .edu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .edu-degree {
+      font-weight: 700;
+      font-size: 9.5pt;
+      color: #111;
+    }
+
+    .edu-date {
+      font-size: 8.5pt;
+      color: #555;
+    }
+
+    .edu-inst {
+      font-size: 9pt;
+      color: #444;
+      font-style: italic;
+    }
+
+    .edu-gpa {
+      font-size: 8.8pt;
+      color: #333;
+      margin-top: 1px;
+    }
+
+    /* ── ACHIEVEMENTS ── */
+    .ach-item {
+      margin-bottom: 2px;
+      font-size: 9pt;
+    }
+
+    /* ── TWO COL LAYOUT ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 18px;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 6px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Abhay Chaurasiya</h1>
+    <div class="title">Full-Stack &amp; DevOps Engineer</div>
+    <div class="contacts">
+      <a href="mailto:abhaychaurasiya19@gmail.com">abhaychaurasiya19@gmail.com</a>
+      <span>|</span>
+      <a href="https://github.com/abhay1999">github.com/abhay1999</a>
+      <span>|</span>
+      <a href="https://linkedin.com/in/abhay-chaurasiya">linkedin.com/in/abhay-chaurasiya</a>
+      <span>|</span>
+      India
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-title">Technical Skills</div>
+    <div class="skills-grid">
+      <span class="skills-label">Languages</span>
+      <span class="skills-value">JavaScript (ES2022+), TypeScript, Python, Golang, SQL, Bash</span>
+
+      <span class="skills-label">Frontend</span>
+      <span class="skills-value">React.js, Next.js 14, Tailwind CSS, Framer Motion, Redux Toolkit</span>
+
+      <span class="skills-label">Backend</span>
+      <span class="skills-value">Node.js, Express.js, FastAPI, gRPC, REST, GraphQL, WebSockets</span>
+
+      <span class="skills-label">DevOps / Cloud</span>
+      <span class="skills-value">AWS (EC2, S3, RDS, CloudFront, Lambda), Docker, Kubernetes, Helm, Terraform, CI/CD
+        (GitHub Actions, Jenkins)</span>
+
+      <span class="skills-label">Databases</span>
+      <span class="skills-value">PostgreSQL, MongoDB, Redis, MySQL</span>
+    </div>
+  </div>
+
+  <!-- WORK EXPERIENCE -->
+  <div class="section">
+    <div class="section-title">Work Experience</div>
+
+    <div class="exp-block">
+      <div class="exp-header">
+        <span class="exp-role">Full-Stack Developer</span>
+        <span class="exp-date">Feb 2025 – July 2025</span>
+      </div>
+      <div class="exp-meta">
+        <span class="exp-company">AvlokanIAS</span>
+        <span class="exp-location">Remote, India</span>
+      </div>
+      <ul>
+        <li>Architected and shipped the entire platform from scratch — video streaming (HLS + CloudFront), JWT auth,
+          Razorpay payments, and admin dashboard — in under 4 months using React + Node.js + AWS.</li>
+        <li>Optimised CDN and media delivery pipeline, achieving sub-3s load times globally and sustaining 5,000+
+          concurrent users on product launch day with zero downtime.</li>
+        <li>Implemented PostgreSQL query optimisation and indexing strategy that cut average DB query time by 60%,
+          enabling real-time analytics dashboards across 10,000+ student records.</li>
+      </ul>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-header">
+        <span class="exp-role">Associate Software Engineer</span>
+        <span class="exp-date">Dec 2023 – Dec 2024</span>
+      </div>
+      <div class="exp-meta">
+        <span class="exp-company">QTIMINDS</span>
+        <span class="exp-location">Remote, India</span>
+      </div>
+      <ul>
+        <li>Designed and deployed 12+ microservices on Kubernetes (EKS), reducing average API latency by 38% through
+          connection pooling, Redis caching, and horizontal pod autoscaling.</li>
+        <li>Built and maintained CI/CD pipelines using GitHub Actions and Helm charts, cutting deployment time from 45
+          min to under 8 min and achieving 99.7% uptime across staging and production.</li>
+        <li>Led backend refactor of core authentication service (Node.js → Golang), reducing memory usage by 52% and
+          supporting 3× user traffic without infrastructure changes.</li>
+      </ul>
+    </div>
+
+
+  </div>
+
+  <!-- OPEN SOURCE -->
+  <div class="section">
+    <div class="section-title">Open Source Contributions</div>
+
+    <div class="os-item">
+      <span class="os-left"><span class="os-repo">helm/helm</span> &nbsp;·&nbsp; <a
+          href="https://github.com/helm/helm/pull/31931" style="color:#1a56db;text-decoration:none;">PR #31931</a> –
+        Removed legacy Go import path comments from pkg/kube package (CNCF project, 29k+ ⭐)</span>
+      <span class="os-badge badge-merged">MERGED</span>
+    </div>
+    <div class="os-item">
+      <span class="os-left"><span class="os-repo">goreleaser/goreleaser</span> &nbsp;·&nbsp; <a
+          href="https://github.com/goreleaser/goreleaser/pull/6462" style="color:#1a56db;text-decoration:none;">PR
+          #6462</a> – Fixed filterOut returning wrong tag when multiple ignore_tags are configured</span>
+      <span class="os-badge badge-merged">MERGED</span>
+    </div>
+    <div class="os-item">
+      <span class="os-left"><span class="os-repo">jaegertracing/jaeger</span> &nbsp;·&nbsp; <a
+          href="https://github.com/jaegertracing/jaeger/pull/8215" style="color:#1a56db;text-decoration:none;">PR
+          #8215</a> – Restored Grafana/SPM integration in docker-compose example (CNCF)</span>
+      <span class="os-badge badge-merged">MERGED</span>
+    </div>
+    <div class="os-item">
+      <span class="os-left"><span class="os-repo">jaegertracing/jaeger</span> &nbsp;·&nbsp; <a
+          href="https://github.com/jaegertracing/jaeger/pull/8216" style="color:#1a56db;text-decoration:none;">PR
+          #8216</a> – Go SDK dashboard generator for SPM observability stack (ADR-007 Step 2a)</span>
+      <span class="os-badge badge-merged">MERGED</span>
+    </div>
+    <div class="os-item">
+      <span class="os-left"><span style="color:#555;font-size:8.8pt;">9 open PRs across
+          <strong>argoproj/argo-cd</strong>, <strong>grafana/grafana</strong>, <strong>docker/cli</strong>,
+          <strong>meshery/meshery</strong>, <strong>NVIDIA/NeMo-Retriever</strong>,
+          <strong>hashicorp/terraform</strong>, <strong>prometheus/prometheus</strong></span></span>
+      <span class="os-badge badge-open">OPEN</span>
+    </div>
+  </div>
+
+  <!-- PROJECTS + EDUCATION side by side -->
+  <div class="two-col">
+    <div>
+      <!-- PROJECTS -->
+      <div class="section">
+        <div class="section-title">Projects</div>
+
+        <div class="proj-block">
+          <div class="proj-header">
+            <span class="proj-name">Netflix Clone</span>
+            <span class="proj-stack">React · Node.js · MongoDB · AWS S3</span>
+          </div>
+          <ul>
+            <li>Built a full-featured streaming platform with JWT auth, TMDB API integration, video playback, and user
+              profiles — deployed on AWS with CDN-backed media delivery.</li>
+          </ul>
+        </div>
+
+        <div class="proj-block">
+          <div class="proj-header">
+            <span class="proj-name">Real Estate Platform</span>
+            <span class="proj-stack">Next.js · Node.js · PostgreSQL · Maps API</span>
+          </div>
+          <ul>
+            <li>Developed a property listing platform with interactive map search, advanced filters, saved listings, and
+              an agent dashboard with real-time inquiry management.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- EDUCATION -->
+      <div class="section">
+        <div class="section-title">Education</div>
+        <div class="edu-header">
+          <span class="edu-degree">Integrated B.Tech + M.Tech – Information Technology</span>
+          <span class="edu-date">2018 – 2023</span>
+        </div>
+        <div class="edu-inst">ABV – Indian Institute of Information Technology (ABV-IIIT), Gwalior</div>
+        <div class="edu-gpa">CGPA: <strong>7.32 / 10</strong></div>
+      </div>
+
+      <!-- ACHIEVEMENTS -->
+      <div class="section">
+        <div class="section-title">Achievements &amp; Competitive Programming</div>
+        <div class="ach-item">🏆 <strong>LeetCode:</strong> 600+ problems solved — Easy 220+, Medium 310+, Hard 70+;
+          HackerRank 5★ Problem Solving.</div>
+        <div class="ach-item">🌐 <strong>CNCF Contributor:</strong> 4 merged PRs across Helm, Jaeger (×2), GoReleaser; 9
+          open PRs in Argo CD, Grafana, Docker, Terraform &amp; more.</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
