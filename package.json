@@ -10,7 +10,8 @@
     "preview:static": "npx serve -s out -l 5050",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "resume:pdf": "node scripts/generate-resume-pdf.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.1.0",
@@ -37,6 +38,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8.5.6",
+    "puppeteer-core": "^24.40.0",
     "typescript": "^5"
   },
   "keywords": [
