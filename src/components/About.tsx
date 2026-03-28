@@ -1,9 +1,9 @@
 "use client"
 
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { Code, Database, Cloud, Terminal, Cpu, Zap, Activity, Wifi } from 'lucide-react'
+import { Database, Cloud, Terminal, Cpu, Zap, Activity, Wifi, GitMerge } from 'lucide-react'
 import Image from 'next/image'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 // ─── Tilt Card ────────────────────────────────────────────────────────────────
 
@@ -49,16 +49,17 @@ const TiltCard = ({
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const SKILL_BARS = [
-  { name: 'React / Next.js',  pct: 95, bar: 'bg-cyan-400',    track: 'bg-cyan-400/15'    },
-  { name: 'Node.js / Python', pct: 90, bar: 'bg-purple-400',  track: 'bg-purple-400/15'  },
-  { name: 'AWS / Cloud',      pct: 85, bar: 'bg-emerald-400', track: 'bg-emerald-400/15' },
-  { name: 'Kubernetes',       pct: 75, bar: 'bg-amber-400',   track: 'bg-amber-400/15'   },
+  { name: 'Kubernetes / K8s', pct: 85, bar: 'bg-cyan-400',    track: 'bg-cyan-400/15'    },
+  { name: 'Go (Golang)',      pct: 75, bar: 'bg-emerald-400', track: 'bg-emerald-400/15' },
+  { name: 'AWS / Cloud',      pct: 85, bar: 'bg-purple-400',  track: 'bg-purple-400/15'  },
+  { name: 'CI/CD Pipelines',  pct: 80, bar: 'bg-amber-400',   track: 'bg-amber-400/15'   },
 ]
 
-const STATS = [
-  { value: '2+',   label: 'Years Exp',  Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.05]',    border: 'border-cyan-500/20'    },
-  { value: '15+',  label: 'Projects',   Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.05]',  border: 'border-purple-500/20'  },
-  { value: '600+', label: 'LeetCode',   Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.05]', border: 'border-emerald-500/20' },
+const BASE_STATS = [
+  { key: 'exp',      value: '2+',   label: 'Years Exp',    Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.05]',    border: 'border-cyan-500/20'    },
+  { key: 'projects', value: '15+',  label: 'Projects',     Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.05]',  border: 'border-purple-500/20'  },
+  { key: 'leetcode', value: '600+', label: 'LeetCode',     Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.05]', border: 'border-emerald-500/20' },
+  { key: 'prs',      value: '5+',   label: 'Merged PRs',   Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.05]',   border: 'border-amber-500/20'   },
 ]
 
 const CODING = {
@@ -83,38 +84,49 @@ const CODING = {
 
 const CAPS = [
   {
-    Icon: Cloud,     title: 'Cloud & DevOps',    desc: 'AWS · Kubernetes · Docker · CI/CD',
+    Icon: Cloud,     title: 'Cloud & DevOps',      desc: 'AWS · Kubernetes · Docker · Terraform',
     iconBg: 'bg-emerald-500/15', iconCls: 'text-emerald-400',
     border: 'border-emerald-500/20 hover:border-emerald-400/50',
     hoverGlow: 'hover:shadow-[0_0_40px_-10px_rgba(16,185,129,0.4)]',
   },
   {
-    Icon: Code,      title: 'Frontend Dev',       desc: 'React · Next.js · Tailwind · Motion',
+    Icon: Cpu,       title: 'Go & Backend',         desc: 'Golang · Node.js · REST APIs · gRPC',
     iconBg: 'bg-cyan-500/15',    iconCls: 'text-cyan-400',
     border: 'border-cyan-500/20 hover:border-cyan-400/50',
     hoverGlow: 'hover:shadow-[0_0_40px_-10px_rgba(6,182,212,0.4)]',
   },
   {
-    Icon: Database,  title: 'Backend Eng.',        desc: 'Node.js · Python · Go · REST APIs',
+    Icon: Database,  title: 'Open Source',          desc: 'CNCF · Helm · GitHub · Community',
     iconBg: 'bg-purple-500/15',  iconCls: 'text-purple-400',
     border: 'border-purple-500/20 hover:border-purple-400/50',
     hoverGlow: 'hover:shadow-[0_0_40px_-10px_rgba(168,85,247,0.4)]',
   },
 ]
 
-const ID_FIELDS = [
-  { prefix: '$', key: 'status',     val: '● available', valCls: 'text-emerald-400' },
-  { prefix: '~', key: 'location',   val: 'India',        valCls: 'text-neutral-300' },
-  { prefix: '>', key: 'experience', val: '2+ years',     valCls: 'text-neutral-300' },
-  { prefix: '#', key: 'github',     val: 'abhay1999',    valCls: 'text-cyan-300'    },
-  { prefix: '@', key: 'leetcode',   val: '600+ solved',  valCls: 'text-amber-300'   },
-]
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const About = () => {
+  const [mergedCount, setMergedCount] = useState('5+')
+
+  useEffect(() => {
+    fetch('https://api.github.com/search/issues?q=author:abhay1999+type:pr+is:merged&per_page=1')
+      .then(r => r.json())
+      .then(d => { if (d.total_count) setMergedCount(`${d.total_count}`) })
+      .catch(() => {})
+  }, [])
+
+  const STATS = BASE_STATS.map(s => s.key === 'prs' ? { ...s, value: mergedCount } : s)
+
+  const ID_FIELDS = [
+    { prefix: '$', key: 'status',     val: '● available',            valCls: 'text-emerald-400' },
+    { prefix: '~', key: 'location',   val: 'India',                   valCls: 'text-neutral-300' },
+    { prefix: '>', key: 'focus',      val: 'DevOps · Go · Cloud',    valCls: 'text-cyan-300'    },
+    { prefix: '#', key: 'github',     val: 'abhay1999',               valCls: 'text-cyan-300'    },
+    { prefix: '@', key: 'merged_prs', val: `${mergedCount} merged`,   valCls: 'text-purple-300'  },
+  ]
+
   return (
-    <section id="about" className="relative py-32 overflow-hidden bg-black">
+    <section id="about" className="relative py-20 overflow-hidden bg-black">
 
       {/* ── Technical Background ─────────────────────────────────────────── */}
 
@@ -207,7 +219,7 @@ const About = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="flex items-center gap-4 mb-20"
+          className="flex items-center gap-4 mb-14"
         >
           <span className="text-sm font-medium uppercase tracking-widest text-neutral-500">01.</span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
@@ -293,7 +305,7 @@ const About = () => {
                     </div>
 
                     <h3 className="text-white font-bold text-lg tracking-tight">Abhay Chaurasiya</h3>
-                    <p className="text-cyan-400 text-[11px] font-mono mt-1 tracking-[0.2em] uppercase">Full Stack Engineer</p>
+                    <p className="text-cyan-400 text-[11px] font-mono mt-1 tracking-[0.15em] uppercase">DevOps · Go · Open Source</p>
 
                     {/* Terminal data rows */}
                     <div className="w-full mt-5 space-y-1.5">
@@ -315,7 +327,7 @@ const About = () => {
                 <div className="px-5 pb-6">
                   <div className="flex items-center gap-2 mb-3.5">
                     <span className="h-px flex-1 bg-white/[0.05]" />
-                    <span className="text-[10px] font-mono text-neutral-600 tracking-widest uppercase">skill_metrics</span>
+                    <span className="text-[10px] font-mono text-neutral-600 tracking-widest uppercase">core_focus</span>
                     <span className="h-px flex-1 bg-white/[0.05]" />
                   </div>
                   <div className="space-y-3" style={{ transform: 'translateZ(10px)' }}>
@@ -367,26 +379,26 @@ const About = () => {
                 <div className="flex items-start gap-3">
                   <span className="text-cyan-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed">
-                    Hello! I&apos;m <span className="text-white font-semibold">Abhay Chaurasiya</span> — a software engineer fascinated by crafting interactive digital experiences. My journey into web dev started when I wanted to understand how the internet works under the hood.
+                    Hey, I&apos;m <span className="text-white font-semibold">Abhay Chaurasiya</span> — a DevOps engineer passionate about cloud-native infrastructure, Go, and building systems that scale. I love the intersection of reliability engineering and developer experience.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-purple-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed">
-                    I&apos;ve built software for diverse clients and projects. My focus is on accessible, inclusive products at the intersection of design and engineering.
+                    I actively contribute to the <span className="text-white font-semibold">CNCF ecosystem</span> — Helm, and other cloud-native projects — with multiple merged PRs to my name.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-emerald-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed">
-                    Off-screen: tackling LeetCode, contributing to CNCF open-source, and exploring the latest in GenAI and cloud-native tooling.
+                    Off-screen: deploying self-healing Kubernetes clusters, sharpening Go skills, and exploring GenAI &amp; LLM-powered developer tooling.
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Stats row */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {STATS.map(({ value, label, Icon, iconCls, numCls, bg, border }) => (
                 <TiltCard key={label} className="group will-change-transform">
                   <div className={`relative rounded-2xl border ${border} ${bg} bg-gradient-to-br from-neutral-900/70 to-black p-5 text-center overflow-hidden`}>
@@ -414,7 +426,7 @@ const About = () => {
                   <Cpu size={15} className="text-cyan-400 shrink-0 mt-0.5" />
                   <p className="text-[13px] font-mono text-neutral-400 leading-relaxed">
                     <span className="text-cyan-300 font-semibold">CONTRIBUTING</span>{' '}
-                    Active DevOps &amp; cloud-native open-source. CNCF ecosystem, Helm contributor.
+                    CNCF ecosystem &amp; Helm — {mergedCount} PRs merged. Focused on DevOps tooling &amp; Go.
                   </p>
                 </div>
                 <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-purple-500/10 hover:border-purple-500/25 transition-colors">

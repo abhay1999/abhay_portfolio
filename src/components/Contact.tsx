@@ -204,7 +204,7 @@ const Contact = () => {
           </div>
 
           <div className="flex items-end gap-5">
-            <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">06.</span>
+            <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">09.</span>
             <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Get In</span>{' '}
               <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Touch</span>

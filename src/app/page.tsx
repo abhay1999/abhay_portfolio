@@ -4,6 +4,9 @@ import Skills from '@/components/Skills'
 import Experience from '@/components/Experience'
 import Projects from '@/components/Projects'
 import OpenSource from '@/components/OpenSource'
+import DevOpsLive from '@/components/DevOpsLive'
+import DevOpsPlayground from '@/components/DevOpsPlayground'
+import TechRadar from '@/components/TechRadar'
 // import Testimonials from '@/components/Testimonials'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
@@ -19,6 +22,9 @@ export default function Home() {
       <Experience />
       <OpenSource />
       <Projects />
+      <DevOpsLive />
+      <DevOpsPlayground />
+      <TechRadar />
       {/* <Testimonials /> */}
       <Contact />
       <Footer />
