@@ -83,6 +83,42 @@ const FEATURED = [
   },
   {
     id: '02',
+    repo: 'abhay1999/dev-env-platform',
+    title: 'Dev Environment Platform',
+    description: 'One-click dev environment platform — spin up isolated MERN, React, or Go+PostgreSQL stacks on Kubernetes with a single CLI command. Automated namespace provisioning, port-forwarding, and teardown.',
+    techStack: ['Go', 'Kubernetes', 'CLI', 'MERN', 'PostgreSQL'],
+    github: 'https://github.com/abhay1999/dev-env-platform',
+    liveDemo: '',
+    category: 'DevOps · Go',
+    highlight: 'Single CLI · K8s isolated stacks',
+    accentColor: 'orange',
+    terminal: {
+      title: 'dev-env-platform ~ go run',
+      prompt: '$ devenv spin up --stack=go-postgres',
+      rows: [
+        { text: '✓ Namespace dev-go-001: Created   ', dim: true },
+        { text: '✓ PostgreSQL pod: Running          ', dim: false },
+        { text: '✓ Go app pod: Running              ', dim: false },
+        { text: '✓ Port-forward :5432 :8080 ready  ', dim: false },
+      ],
+      status: '● stack ready in 12s',
+    },
+    pillClass:       'bg-orange-900/40 text-orange-200 border-orange-500/25',
+    borderClass:     'border-orange-500/20 hover:border-orange-400/50',
+    gradientClass:   'from-orange-950/50 via-neutral-900/80 to-black',
+    accentText:      'text-orange-400',
+    titleHoverClass: 'group-hover:text-orange-300',
+    statusClass:     'text-orange-400',
+    termBorderClass: 'border-orange-500/15',
+    termBgClass:     'bg-orange-950/30',
+    highlightClass:  'bg-orange-500/10 border-orange-500/20 text-orange-300',
+    boxShadow:       '0 0 60px -20px rgba(249,115,22,0.22)',
+    numberClass:     'text-orange-400/8',
+    gridColor:       'rgba(251,146,60,0.05)',
+    scanClass:       'via-orange-400/50',
+  },
+  {
+    id: '03',
     repo: 'abhay1999/abhay_portfolio',
     title: 'Developer Portfolio',
     description: 'This portfolio — built with Next.js 14, Tailwind, and Framer Motion. Features 3D TiltCards, live GitHub API, circuit-board backgrounds, and a full DevOps setup with Docker + Nginx.',
@@ -118,7 +154,7 @@ const FEATURED = [
     scanClass:       'via-cyan-400/50',
   },
   {
-    id: '03',
+    id: '04',
     repo: 'abhay1999/Netflix-Clone-Deployment-on-Amazon-EKS',
     title: 'Netflix Clone on EKS',
     description: 'End-to-end Netflix clone on Amazon EKS — full DevSecOps pipeline with Terraform, Jenkins CI/CD, Docker, SonarQube, Trivy security scanning, Prometheus & Grafana monitoring.',
@@ -154,7 +190,7 @@ const FEATURED = [
     scanClass:       'via-red-400/50',
   },
   {
-    id: '04',
+    id: '05',
     repo: '',
     title: 'AvlokanIAS Educational Hub',
     description: 'Full-scale e-learning platform for UPSC aspirants — video streaming, secure auth, payment integration, and admin dashboard. Scaled to 5000+ concurrent users on launch day using AWS infrastructure.',
@@ -273,7 +309,7 @@ const Projects = () => {
             <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent mb-2" />
           </div>
           <p className="text-sm text-neutral-600 mt-3 font-mono">
-            <span className="text-neutral-500">4 handpicked projects</span> · more on{' '}
+            <span className="text-neutral-500">5 handpicked projects</span> · more on{' '}
             <a href="https://github.com/abhay1999" target="_blank" rel="noreferrer" className="text-cyan-500 hover:text-cyan-400 transition-colors">GitHub</a>
           </p>
         </motion.div>

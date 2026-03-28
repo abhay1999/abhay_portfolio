@@ -278,9 +278,199 @@ const SUGGESTIONS = [
   { cmd: 'help',                              label: 'help'             },
 ]
 
+// ─── DevEnv CLI ────────────────────────────────────────────────────────────────
+
+const O = (t: string): Seg => ({ t, c: 'text-orange-400' })
+const Am = (t: string): Seg => ({ t, c: 'text-amber-400' })
+
+const DEVENV_META: Record<string, { delay: number; msg: string }> = {
+  'help':                              { delay: 80,  msg: 'loading help...'                },
+  'devenv --help':                     { delay: 80,  msg: 'loading help...'                },
+  'devenv stacks':                     { delay: 200, msg: 'fetching stack templates...'    },
+  'devenv list':                       { delay: 380, msg: 'querying running environments...' },
+  'devenv status dev-go-001':          { delay: 420, msg: 'fetching environment status...' },
+  'devenv logs dev-go-001':            { delay: 550, msg: 'streaming logs...'              },
+  'devenv spin up --stack=go-postgres':{ delay: 1100, msg: 'provisioning environment...'  },
+  'devenv spin up --stack=mern':       { delay: 1300, msg: 'provisioning environment...'  },
+  'devenv spin up --stack=react':      { delay: 800,  msg: 'provisioning environment...'  },
+  'devenv teardown dev-go-001':        { delay: 700,  msg: 'tearing down environment...'  },
+  'devenv version':                    { delay: 100,  msg: 'reading version...'            },
+}
+
+const DEVENV_CMDS: Record<string, Line[]> = {
+  help: [
+    L(O('┌─ devenv CLI — Available Commands ────────────────────────────────────┐')),
+    L(O('│')),
+    L(O('│  '), C('devenv spin up --stack=go-postgres'), D('  spin up Go + PostgreSQL')),
+    L(O('│  '), C('devenv spin up --stack=mern'),        D('       spin up MERN stack')),
+    L(O('│  '), C('devenv spin up --stack=react'),       D('      spin up React + Vite')),
+    L(O('│')),
+    L(O('│  '), C('devenv list'),                        D('                  list running envs')),
+    L(O('│  '), C('devenv status dev-go-001'),           D('       environment details')),
+    L(O('│  '), C('devenv logs dev-go-001'),             D('         stream env logs')),
+    L(O('│  '), C('devenv teardown dev-go-001'),         D('     tear down an env')),
+    L(O('│  '), C('devenv stacks'),                      D('                list stack templates')),
+    L(O('│  '), C('devenv version'),                     D('               CLI version')),
+    L(O('│')),
+    L(O('│  '), C('clear'), D('  clear screen  ·  '), C('help'), D('  show this menu')),
+    L(O('└──────────────────────────────────────────────────────────────────────┘')),
+  ],
+
+  'devenv --help': [
+    L(O('┌─ devenv CLI — Available Commands ────────────────────────────────────┐')),
+    L(O('│')),
+    L(O('│  '), C('devenv spin up --stack=go-postgres'), D('  spin up Go + PostgreSQL')),
+    L(O('│  '), C('devenv spin up --stack=mern'),        D('       spin up MERN stack')),
+    L(O('│  '), C('devenv spin up --stack=react'),       D('      spin up React + Vite')),
+    L(O('│')),
+    L(O('│  '), C('devenv list'),                        D('                  list running envs')),
+    L(O('│  '), C('devenv status dev-go-001'),           D('       environment details')),
+    L(O('│  '), C('devenv logs dev-go-001'),             D('         stream env logs')),
+    L(O('│  '), C('devenv teardown dev-go-001'),         D('     tear down an env')),
+    L(O('│  '), C('devenv stacks'),                      D('                list stack templates')),
+    L(O('│  '), C('devenv version'),                     D('               CLI version')),
+    L(O('│')),
+    L(O('│  '), C('clear'), D('  clear screen  ·  '), C('help'), D('  show this menu')),
+    L(O('└──────────────────────────────────────────────────────────────────────┘')),
+  ],
+
+  'devenv stacks': [
+    L(D('NAME              DESCRIPTION                          SERVICES')),
+    L(O('go-postgres    '), W('  Go app + PostgreSQL                  '), C('app, postgres')),
+    L(O('mern           '), W('  MongoDB + Express + React + Node     '), C('mongo, api, web')),
+    L(O('react          '), W('  React + Vite dev server              '), C('web')),
+    L(O('go-mysql       '), W('  Go app + MySQL                       '), C('app, mysql')),
+    L(O('django-pg      '), W('  Django + PostgreSQL + Redis          '), C('app, postgres, redis')),
+    L(),
+    L(D('Use: '), O('devenv spin up --stack='), C('<NAME>')),
+  ],
+
+  'devenv list': [
+    L(D('ID               STACK          STATUS    AGE    PORTS')),
+    L(O('dev-go-001    '), W('   go-postgres  '), G('  Running'), W('   4h     '), C(':8080, :5432')),
+    L(O('dev-mern-002  '), W('   mern         '), G('  Running'), W('   2h     '), C(':3000, :5000, :27017')),
+    L(O('dev-react-003 '), W('   react        '), G('  Running'), W('   45m    '), C(':5173')),
+    L(),
+    L(G('✓ '), W('3 environments running')),
+  ],
+
+  'devenv status dev-go-001': [
+    L(O('Environment: '), W('dev-go-001')),
+    L(O('Stack:       '), W('go-postgres')),
+    L(O('Status:      '), G('Running')),
+    L(O('Age:         '), W('4h 12m')),
+    L(O('Namespace:   '), W('dev-go-001')),
+    L(),
+    L(D('Pods:')),
+    L(W('  dev-go-001-app-x9k2p       '), G('Running'), W('   '), Am('12m CPU'), W('   64Mi Mem')),
+    L(W('  dev-go-001-postgres-7f4b9c '), G('Running'), W('   '), G('8m CPU'),  W('   128Mi Mem')),
+    L(),
+    L(D('Port forwards:')),
+    L(W('  :8080 → localhost:8080   '), D('(Go app)')),
+    L(W('  :5432 → localhost:5432   '), D('(PostgreSQL)')),
+  ],
+
+  'devenv logs dev-go-001': [
+    L(D('2025/01/10 14:32:01 '), O('[INFO]  '), W('devenv v1.0.0 — environment dev-go-001')),
+    L(D('2025/01/10 14:32:01 '), O('[INFO]  '), W('Go app starting on :8080')),
+    L(D('2025/01/10 14:32:01 '), O('[INFO]  '), W('Connecting to PostgreSQL...')),
+    L(D('2025/01/10 14:32:02 '), G('[INFO]  '), W('Database connection established')),
+    L(D('2025/01/10 14:32:02 '), G('[INFO]  '), W('Migrations: 3 applied')),
+    L(D('2025/01/10 14:32:02 '), G('[INFO]  '), W('Server ready at http://0.0.0.0:8080')),
+    L(D('2025/01/10 14:35:18 '), G('[INFO]  '), W('GET /health → '), G('200'), W(' (2ms)')),
+    L(D('2025/01/10 14:36:05 '), G('[INFO]  '), W('GET /api/users → '), G('200'), W(' (8ms)')),
+    L(D('2025/01/10 14:41:33 '), G('[INFO]  '), W('POST /api/data → '), G('201'), W(' (14ms)')),
+    L(D('2025/01/10 14:58:07 '), Y('[WARN]  '), W('Slow query detected: '), Y('42ms')),
+    L(D('2025/01/10 15:02:44 '), G('[INFO]  '), W('GET /health → '), G('200'), W(' (1ms)')),
+  ],
+
+  'devenv spin up --stack=go-postgres': [
+    L(O('Generating environment ID: '), G('dev-go-004')),
+    L(),
+    L(G('✓ '), W('Namespace '), O('dev-go-004'), W(': Created')),
+    L(G('✓ '), W('Applying stack template: '), C('go-postgres-v1.2')),
+    L(G('✓ '), W('Pulling '), C('golang:1.21-alpine'), W(' (cached)')),
+    L(G('✓ '), W('Pulling '), C('postgres:15-alpine'), W(' (cached)')),
+    L(G('✓ '), W('PostgreSQL pod: '), G('Running'), D('  (dev-go-004-postgres-3k9p1)')),
+    L(G('✓ '), W('Go app pod:     '), G('Running'), D('  (dev-go-004-app-x7n2m)')),
+    L(G('✓ '), W('Port-forwarding :5432 → localhost:5432')),
+    L(G('✓ '), W('Port-forwarding :8080 → localhost:8080')),
+    L(),
+    L(G('● Environment ready in 11s')),
+    L(),
+    L(C('  Connect:  '), W('psql -h localhost -p 5432 -U dev -d devdb')),
+    L(C('  App:      '), W('http://localhost:8080')),
+  ],
+
+  'devenv spin up --stack=mern': [
+    L(O('Generating environment ID: '), G('dev-mern-005')),
+    L(),
+    L(G('✓ '), W('Namespace '), O('dev-mern-005'), W(': Created')),
+    L(G('✓ '), W('Applying stack template: '), C('mern-v2.1')),
+    L(G('✓ '), W('MongoDB pod:         '), G('Running'), D('  (dev-mern-005-mongo-4f2a1c)')),
+    L(G('✓ '), W('Express+Node pod:    '), G('Running'), D('  (dev-mern-005-api-m7p1q)')),
+    L(G('✓ '), W('React+Vite pod:      '), G('Running'), D('  (dev-mern-005-web-k3n8r)')),
+    L(G('✓ '), W('Port-forwarding :27017 → localhost:27017')),
+    L(G('✓ '), W('Port-forwarding :5000  → localhost:5000')),
+    L(G('✓ '), W('Port-forwarding :3000  → localhost:3000')),
+    L(),
+    L(G('● Environment ready in 18s')),
+    L(),
+    L(C('  MongoDB:   '), W('mongodb://localhost:27017/devdb')),
+    L(C('  API:       '), W('http://localhost:5000')),
+    L(C('  Frontend:  '), W('http://localhost:3000')),
+  ],
+
+  'devenv spin up --stack=react': [
+    L(O('Generating environment ID: '), G('dev-react-006')),
+    L(),
+    L(G('✓ '), W('Namespace '), O('dev-react-006'), W(': Created')),
+    L(G('✓ '), W('Applying stack template: '), C('react-v1.0')),
+    L(G('✓ '), W('Pulling '), C('node:20-alpine'), W(' (cached)')),
+    L(G('✓ '), W('React+Vite pod: '), G('Running'), D('  (dev-react-006-web-n8m2k)')),
+    L(G('✓ '), W('Port-forwarding :5173 → localhost:5173')),
+    L(),
+    L(G('● Environment ready in 8s')),
+    L(),
+    L(C('  Dev server:  '), W('http://localhost:5173')),
+  ],
+
+  'devenv teardown dev-go-001': [
+    L(Am('Tearing down '), O('dev-go-001'), Am('...')),
+    L(),
+    L(G('✓ '), W('Port-forwards stopped')),
+    L(G('✓ '), W('Pods terminated')),
+    L(G('✓ '), W('Namespace '), O('dev-go-001'), W(': Deleted')),
+    L(),
+    L(G('● Environment dev-go-001 torn down (2s)')),
+    L(D('  Cleaned up: 2 pods, 1 namespace, 2 port-forwards')),
+  ],
+
+  'devenv version': [
+    L(O('devenv '), W('v1.0.0'), D('  (go1.21.5, linux/amd64)')),
+    L(O('Built:   '), W('2025-01-10')),
+    L(O('Commit:  '), C('a3f2b1c')),
+    L(O('GitHub:  '), B('github.com/abhay1999/dev-env-platform')),
+  ],
+}
+
+const DEVENV_SUGGESTIONS = [
+  { cmd: 'devenv stacks',                      label: 'stacks'           },
+  { cmd: 'devenv spin up --stack=go-postgres', label: 'spin up go'       },
+  { cmd: 'devenv spin up --stack=mern',        label: 'spin up mern'     },
+  { cmd: 'devenv spin up --stack=react',       label: 'spin up react'    },
+  { cmd: 'devenv list',                        label: 'list envs'        },
+  { cmd: 'devenv status dev-go-001',           label: 'status'           },
+  { cmd: 'devenv logs dev-go-001',             label: 'logs'             },
+  { cmd: 'devenv teardown dev-go-001',         label: 'teardown'         },
+  { cmd: 'devenv version',                     label: 'version'          },
+  { cmd: 'help',                               label: 'help'             },
+]
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const DevOpsPlayground = () => {
+  const [mode,       setMode]       = useState<'k8s' | 'devenv'>('k8s')
   const [entries,    setEntries]    = useState<Entry[]>([])
   const [visLines,   setVisLines]   = useState<Record<number, number>>({})
   const [input,      setInput]      = useState('')
@@ -293,6 +483,22 @@ const DevOpsPlayground = () => {
   const inputRef   = useRef<HTMLInputElement>(null)
   const idRef      = useRef(0)
   const busyRef    = useRef(false)  // sync ref for timeout callbacks
+
+  // Derived command sets based on active mode
+  const activeCmds = mode === 'k8s' ? CMDS : DEVENV_CMDS
+  const activeMeta = mode === 'k8s' ? CMD_META : DEVENV_META
+  const activeSuggestions = mode === 'k8s' ? SUGGESTIONS : DEVENV_SUGGESTIONS
+
+  // Clear terminal when switching modes
+  useEffect(() => {
+    setEntries([])
+    setVisLines({})
+    setInput('')
+    setHist([])
+    setHistIdx(-1)
+    busyRef.current = false
+    setBusy(false)
+  }, [mode])
 
   // Spinner tick — only when any entry is processing
   const anyProcessing = entries.some(e => e.processing)
@@ -322,8 +528,8 @@ const DevOpsPlayground = () => {
   }, [])
 
   const execCmd = useCallback((cmd: string) => {
-    const meta = CMD_META[cmd] ?? { delay: 200, msg: 'running...' }
-    const lines = CMDS[cmd] ?? [
+    const meta = activeMeta[cmd] ?? { delay: 200, msg: 'running...' }
+    const lines = activeCmds[cmd] ?? [
       L(R('bash: '), W(`${cmd.split(' ')[0]}: command not found`)),
       L(D('type '), C('help'), D(' to see available commands')),
     ]
@@ -340,7 +546,7 @@ const DevOpsPlayground = () => {
       setEntries(prev => prev.map(e => e.id === id ? { ...e, processing: false, elapsedMs: elapsed } : e))
       streamLines(id, lines)
     }, meta.delay)
-  }, [streamLines])
+  }, [streamLines, activeMeta, activeCmds])
 
   // Typewriter animation for suggestion pills
   const typeAndExec = useCallback((cmd: string) => {
@@ -439,23 +645,53 @@ const DevOpsPlayground = () => {
                 <div className="w-3 h-3 rounded-full bg-emerald-500/90" />
               </div>
               <Terminal size={11} className="text-neutral-500" />
-              <span className="font-mono text-[11px] text-neutral-400">abhay@self-healing-k8s — zsh</span>
+              <span className="font-mono text-[11px] text-neutral-400">
+                {mode === 'k8s' ? 'abhay@self-healing-k8s — zsh' : 'abhay@dev-env-platform — zsh'}
+              </span>
+            </div>
+            {/* Mode tabs */}
+            <div className="flex items-center gap-1 font-mono text-[10px]">
+              <button
+                onClick={() => setMode('k8s')}
+                className={`px-2.5 py-1 rounded-md border transition-all duration-150 ${mode === 'k8s' ? 'border-emerald-500/60 bg-emerald-500/10 text-emerald-400' : 'border-white/[0.07] text-neutral-600 hover:text-neutral-400 hover:border-white/15'}`}
+              >K8s Platform</button>
+              <button
+                onClick={() => setMode('devenv')}
+                className={`px-2.5 py-1 rounded-md border transition-all duration-150 ${mode === 'devenv' ? 'border-orange-500/60 bg-orange-500/10 text-orange-400' : 'border-white/[0.07] text-neutral-600 hover:text-neutral-400 hover:border-white/15'}`}
+              >DevEnv CLI</button>
             </div>
             <div className="hidden sm:flex items-center gap-5 font-mono text-[10px]">
-              <div className="flex items-center gap-1.5">
-                <Cpu size={9} className="text-emerald-400" />
-                <span className="text-neutral-600">cluster:</span>
-                <span className="text-emerald-400">self-healing-k8s</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Layers size={9} className="text-cyan-400" />
-                <span className="text-neutral-600">ns:</span>
-                <span className="text-cyan-400">default</span>
-              </div>
+              {mode === 'k8s' ? (
+                <>
+                  <div className="flex items-center gap-1.5">
+                    <Cpu size={9} className="text-emerald-400" />
+                    <span className="text-neutral-600">cluster:</span>
+                    <span className="text-emerald-400">self-healing-k8s</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Layers size={9} className="text-cyan-400" />
+                    <span className="text-neutral-600">ns:</span>
+                    <span className="text-cyan-400">default</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-1.5">
+                    <Cpu size={9} className="text-orange-400" />
+                    <span className="text-neutral-600">cli:</span>
+                    <span className="text-orange-400">devenv v1.0.0</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Layers size={9} className="text-amber-400" />
+                    <span className="text-neutral-600">envs:</span>
+                    <span className="text-amber-400">3 running</span>
+                  </div>
+                </>
+              )}
               <div className="flex items-center gap-1.5">
                 <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }}
-                  className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]" />
-                <span className="text-emerald-400">CONNECTED</span>
+                  className={`w-1.5 h-1.5 rounded-full shadow-[0_0_6px_rgba(52,211,153,0.9)] ${mode === 'k8s' ? 'bg-emerald-400' : 'bg-orange-400'}`} />
+                <span className={mode === 'k8s' ? 'text-emerald-400' : 'text-orange-400'}>CONNECTED</span>
               </div>
             </div>
           </div>
@@ -469,24 +705,44 @@ const DevOpsPlayground = () => {
           >
             {/* Welcome */}
             {entries.length === 0 && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="mb-5">
-                <div className="text-emerald-400/60 text-[11px]">╔══════════════════════════════════════════════════════════════════╗</div>
-                <div className="text-[11px]">
-                  <span className="text-emerald-400/60">║  </span>
-                  <span className="text-white font-bold">    Self-Healing Kubernetes Platform  </span>
-                  <span className="text-emerald-400/40 text-[10px]">  [SANDBOX]             </span>
-                  <span className="text-emerald-400/60">║</span>
-                </div>
-                <div className="text-[11px]">
-                  <span className="text-emerald-400/60">║  </span>
-                  <span className="text-neutral-500">    3 nodes · 8 pods running · 12 healing rules active        </span>
-                  <span className="text-emerald-400/60">   ║</span>
-                </div>
-                <div className="text-emerald-400/60 text-[11px]">╚══════════════════════════════════════════════════════════════════╝</div>
-                <div className="mt-3 text-neutral-500">
-                  Click a <span className="text-emerald-400">suggestion</span> below to watch it run, or type a command.
-                </div>
-                <div className="text-neutral-700 text-[11px] mt-0.5">↑ ↓ history  ·  ctrl+l clear  ·  15+ commands supported</div>
+              <motion.div key={mode} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="mb-5">
+                {mode === 'k8s' ? (
+                  <>
+                    <div className="text-emerald-400/60 text-[11px]">╔══════════════════════════════════════════════════════════════════╗</div>
+                    <div className="text-[11px]">
+                      <span className="text-emerald-400/60">║  </span>
+                      <span className="text-white font-bold">    Self-Healing Kubernetes Platform  </span>
+                      <span className="text-emerald-400/40 text-[10px]">  [SANDBOX]             </span>
+                      <span className="text-emerald-400/60">║</span>
+                    </div>
+                    <div className="text-[11px]">
+                      <span className="text-emerald-400/60">║  </span>
+                      <span className="text-neutral-500">    3 nodes · 8 pods running · 12 healing rules active        </span>
+                      <span className="text-emerald-400/60">   ║</span>
+                    </div>
+                    <div className="text-emerald-400/60 text-[11px]">╚══════════════════════════════════════════════════════════════════╝</div>
+                    <div className="mt-3 text-neutral-500">Click a <span className="text-emerald-400">suggestion</span> below to watch it run, or type a command.</div>
+                    <div className="text-neutral-700 text-[11px] mt-0.5">↑ ↓ history  ·  ctrl+l clear  ·  15+ commands supported</div>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-orange-400/60 text-[11px]">╔══════════════════════════════════════════════════════════════════╗</div>
+                    <div className="text-[11px]">
+                      <span className="text-orange-400/60">║  </span>
+                      <span className="text-white font-bold">    Dev Environment Platform  </span>
+                      <span className="text-orange-400/40 text-[10px]">  [SANDBOX]                      </span>
+                      <span className="text-orange-400/60">║</span>
+                    </div>
+                    <div className="text-[11px]">
+                      <span className="text-orange-400/60">║  </span>
+                      <span className="text-neutral-500">    3 envs running · go-postgres · mern · react stacks          </span>
+                      <span className="text-orange-400/60"> ║</span>
+                    </div>
+                    <div className="text-orange-400/60 text-[11px]">╚══════════════════════════════════════════════════════════════════╝</div>
+                    <div className="mt-3 text-neutral-500">Click a <span className="text-orange-400">suggestion</span> below to spin up an environment, or type a command.</div>
+                    <div className="text-neutral-700 text-[11px] mt-0.5">↑ ↓ history  ·  ctrl+l clear  ·  10+ commands supported</div>
+                  </>
+                )}
               </motion.div>
             )}
 
@@ -496,10 +752,10 @@ const DevOpsPlayground = () => {
               return (
                 <div key={entry.id} className="mb-4">
                   {/* Prompt */}
-                  <div className="flex items-center gap-1 select-none mb-0.5">
-                    <span className="text-emerald-400">abhay</span>
+                  <div className="flex items-center gap-1 select-none mb-0.5 flex-wrap">
+                    <span className={mode === 'k8s' ? 'text-emerald-400' : 'text-orange-400'}>abhay</span>
                     <span className="text-neutral-600">@</span>
-                    <span className="text-cyan-400">k8s-master</span>
+                    <span className={mode === 'k8s' ? 'text-cyan-400' : 'text-amber-400'}>{mode === 'k8s' ? 'k8s-master' : 'dev-env'}</span>
                     <span className="text-neutral-600">:</span>
                     <span className="text-purple-400">~</span>
                     <span className="text-neutral-500">$</span>
@@ -509,7 +765,7 @@ const DevOpsPlayground = () => {
                   {/* Processing spinner */}
                   {entry.processing && (
                     <div className="flex items-center gap-2 text-neutral-500 pl-1 py-0.5">
-                      <span className="text-emerald-400">{SPINNER_FRAMES[spinFrame]}</span>
+                      <span className={mode === 'k8s' ? 'text-emerald-400' : 'text-orange-400'}>{SPINNER_FRAMES[spinFrame]}</span>
                       <span>{entry.processingMsg}</span>
                     </div>
                   )}
@@ -545,9 +801,9 @@ const DevOpsPlayground = () => {
 
             {/* Input row */}
             <div className="flex items-center gap-1">
-              <span className="text-emerald-400 select-none">abhay</span>
+              <span className={`select-none ${mode === 'k8s' ? 'text-emerald-400' : 'text-orange-400'}`}>abhay</span>
               <span className="text-neutral-600 select-none">@</span>
-              <span className="text-cyan-400 select-none">k8s-master</span>
+              <span className={`select-none ${mode === 'k8s' ? 'text-cyan-400' : 'text-amber-400'}`}>{mode === 'k8s' ? 'k8s-master' : 'dev-env'}</span>
               <span className="text-neutral-600 select-none">:</span>
               <span className="text-purple-400 select-none">~</span>
               <span className="text-neutral-500 select-none">$</span>
@@ -560,7 +816,7 @@ const DevOpsPlayground = () => {
                   onFocus={() => setFocused(true)}
                   onBlur={() => setFocused(false)}
                   readOnly={busy}
-                  className="bg-transparent outline-none text-white caret-emerald-400 font-mono text-[12px] w-full"
+                  className={`bg-transparent outline-none text-white font-mono text-[12px] w-full ${mode === 'k8s' ? 'caret-emerald-400' : 'caret-orange-400'}`}
                   spellCheck={false}
                   autoComplete="off"
                   autoCorrect="off"
@@ -571,7 +827,7 @@ const DevOpsPlayground = () => {
                   <motion.span
                     animate={{ opacity: [1, 0] }}
                     transition={{ duration: 0.55, repeat: Infinity }}
-                    className="absolute left-0 top-0.5 w-[7px] h-[14px] bg-emerald-400 pointer-events-none"
+                    className={`absolute left-0 top-0.5 w-[7px] h-[14px] pointer-events-none ${mode === 'k8s' ? 'bg-emerald-400' : 'bg-orange-400'}`}
                   />
                 )}
               </div>
@@ -584,14 +840,14 @@ const DevOpsPlayground = () => {
               <span className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest flex-shrink-0 mr-1">
                 Quick run →
               </span>
-              {SUGGESTIONS.map(s => (
+              {activeSuggestions.map(s => (
                 <button
                   key={s.cmd}
                   onClick={() => { typeAndExec(s.cmd); inputRef.current?.focus() }}
                   disabled={busy}
-                  className="group px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.07] hover:border-emerald-500/50 hover:bg-emerald-500/5 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+                  className={`group px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.07] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 ${mode === 'k8s' ? 'hover:border-emerald-500/50 hover:bg-emerald-500/5' : 'hover:border-orange-500/50 hover:bg-orange-500/5'}`}
                 >
-                  <span className="font-mono text-[10px] text-neutral-400 group-hover:text-emerald-400 transition-colors">
+                  <span className={`font-mono text-[10px] text-neutral-400 transition-colors ${mode === 'k8s' ? 'group-hover:text-emerald-400' : 'group-hover:text-orange-400'}`}>
                     {s.label}
                   </span>
                 </button>
@@ -605,9 +861,18 @@ const DevOpsPlayground = () => {
           initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-4 flex flex-wrap items-center justify-center gap-6 font-mono text-[11px] text-neutral-700"
         >
-          <span><span className="text-emerald-500">●</span> Sandboxed demo environment</span>
-          <span><span className="text-cyan-500">●</span> Based on: abhay1999/self-healing-k8s-platform</span>
-          <span><span className="text-purple-500">●</span> 15+ commands · kubectl · helm · docker</span>
+          <span><span className={mode === 'k8s' ? 'text-emerald-500' : 'text-orange-500'}>●</span> Sandboxed demo environment</span>
+          {mode === 'k8s' ? (
+            <>
+              <span><span className="text-cyan-500">●</span> Based on: abhay1999/self-healing-k8s-platform</span>
+              <span><span className="text-purple-500">●</span> 15+ commands · kubectl · helm · docker</span>
+            </>
+          ) : (
+            <>
+              <span><span className="text-amber-500">●</span> Based on: abhay1999/dev-env-platform</span>
+              <span><span className="text-purple-500">●</span> 10+ commands · devenv spin up · list · teardown</span>
+            </>
+          )}
         </motion.div>
       </div>
     </section>
