@@ -249,8 +249,8 @@ const Hero = () => {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
               <motion.a
-                href="/resume.pdf"
-                download="Abhay_Chaurasiya_Resume.pdf"
+                href="/resume.html"
+                download="Abhay_Chaurasiya_Resume.html"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="group relative flex items-center justify-center gap-2.5 px-6 py-3 bg-white text-black font-semibold rounded-xl overflow-hidden hover:bg-cyan-50 transition-colors"
