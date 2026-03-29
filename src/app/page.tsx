@@ -3,6 +3,7 @@ import About from '@/components/About'
 import Skills from '@/components/Skills'
 import Experience from '@/components/Experience'
 import Projects from '@/components/Projects'
+import InfraFlow from '@/components/InfraFlow'
 import OpenSource from '@/components/OpenSource'
 import DevOpsLive from '@/components/DevOpsLive'
 import DevOpsPlayground from '@/components/DevOpsPlayground'
@@ -22,6 +23,7 @@ export default function Home() {
       <Experience />
       <OpenSource />
       <Projects />
+      <InfraFlow />
       <DevOpsLive />
       <DevOpsPlayground />
       <TechRadar />

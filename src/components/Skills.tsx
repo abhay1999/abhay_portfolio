@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { Cloud, Server, Globe, Database, Cpu } from 'lucide-react'
+import { Cloud, Server, Globe, Activity, Cpu } from 'lucide-react'
 
 // ─── TiltCard ─────────────────────────────────────────────────────────────────
 
@@ -72,9 +72,9 @@ const DotMatrix = ({ level, dotClass }: { level: number; dotClass: string }) => 
 
 const CATEGORIES = [
   {
-    id: 'cloud',
+    id: 'devops',
     num: '01',
-    title: 'Cloud & DevOps',
+    title: 'DevOps',
     icon: Cloud,
     accentClass: 'text-emerald-400',
     borderClass: 'border-emerald-500/25',
@@ -86,17 +86,17 @@ const CATEGORIES = [
     pctClass: 'text-emerald-400',
     boxShadow: '0 0 45px -18px rgba(16,185,129,0.28)',
     skills: [
-      { name: 'AWS',           level: 85 },
-      { name: 'Docker',        level: 85 },
-      { name: 'Kubernetes',    level: 75 },
-      { name: 'CI/CD Pipelines', level: 80 },
-      { name: 'Terraform',     level: 70 },
+      { name: 'Kubernetes',   level: 85 },
+      { name: 'Helm',         level: 85 },
+      { name: 'Docker',       level: 90 },
+      { name: 'CI/CD (GitHub Actions / Jenkins)', level: 85 },
+      { name: 'ArgoCD / GitOps', level: 75 },
     ],
   },
   {
     id: 'backend',
     num: '02',
-    title: 'Backend',
+    title: 'Backend & Go',
     icon: Server,
     accentClass: 'text-purple-400',
     borderClass: 'border-purple-500/25',
@@ -108,17 +108,17 @@ const CATEGORIES = [
     pctClass: 'text-purple-400',
     boxShadow: '0 0 45px -18px rgba(168,85,247,0.28)',
     skills: [
-      { name: 'Node.js',    level: 90 },
-      { name: 'Python',     level: 90 },
-      { name: 'Golang',     level: 75 },
-      { name: 'Express.js', level: 85 },
-      { name: 'REST APIs',  level: 95 },
+      { name: 'Go (Golang)',  level: 85 },
+      { name: 'Node.js',      level: 90 },
+      { name: 'gRPC / REST',  level: 85 },
+      { name: 'GraphQL / WebSockets', level: 80 },
+      { name: 'TypeScript',   level: 85 },
     ],
   },
   {
-    id: 'frontend',
+    id: 'cloud',
     num: '03',
-    title: 'Frontend',
+    title: 'Cloud & Infra',
     icon: Globe,
     accentClass: 'text-cyan-400',
     borderClass: 'border-cyan-500/25',
@@ -130,18 +130,18 @@ const CATEGORIES = [
     pctClass: 'text-cyan-400',
     boxShadow: '0 0 45px -18px rgba(34,211,238,0.28)',
     skills: [
-      { name: 'React.js',      level: 95 },
-      { name: 'Next.js',       level: 90 },
-      { name: 'TypeScript',    level: 85 },
-      { name: 'Tailwind CSS',  level: 95 },
-      { name: 'Framer Motion', level: 85 },
+      { name: 'AWS (EKS · EC2 · S3 · Lambda)', level: 85 },
+      { name: 'Terraform',    level: 80 },
+      { name: 'Linux / Bash', level: 90 },
+      { name: 'PostgreSQL / MongoDB / Redis', level: 85 },
+      { name: 'Next.js / React', level: 90 },
     ],
   },
   {
-    id: 'databases',
+    id: 'observability',
     num: '04',
-    title: 'Databases & Tools',
-    icon: Database,
+    title: 'Observability',
+    icon: Activity,
     accentClass: 'text-orange-400',
     borderClass: 'border-orange-500/25',
     bgClass: 'bg-orange-500/5',
@@ -152,34 +152,34 @@ const CATEGORIES = [
     pctClass: 'text-orange-400',
     boxShadow: '0 0 45px -18px rgba(251,146,60,0.28)',
     skills: [
-      { name: 'MongoDB',    level: 85 },
-      { name: 'PostgreSQL', level: 80 },
-      { name: 'Redis',      level: 75 },
-      { name: 'Git/GitHub', level: 90 },
-      { name: 'Linux/Unix', level: 85 },
+      { name: 'Jaeger (distributed tracing)', level: 85 },
+      { name: 'Prometheus',   level: 85 },
+      { name: 'Grafana',      level: 80 },
+      { name: 'OpenTelemetry / SPM', level: 75 },
+      { name: 'Alertmanager', level: 80 },
     ],
   },
 ]
 
 const CORE_MODULES = [
-  { label: 'Cloud & DevOps', dotClass: 'bg-emerald-400', glowClass: 'shadow-[0_0_7px_rgba(52,211,153,0.8)]',  count: '5 skills' },
-  { label: 'Backend',         dotClass: 'bg-purple-400',  glowClass: 'shadow-[0_0_7px_rgba(192,132,252,0.8)]', count: '5 skills' },
-  { label: 'Frontend',        dotClass: 'bg-cyan-400',    glowClass: 'shadow-[0_0_7px_rgba(34,211,238,0.8)]',  count: '5 skills' },
-  { label: 'Databases',       dotClass: 'bg-orange-400',  glowClass: 'shadow-[0_0_7px_rgba(251,146,60,0.8)]',  count: '5 skills' },
+  { label: 'DevOps',         dotClass: 'bg-emerald-400', glowClass: 'shadow-[0_0_7px_rgba(52,211,153,0.8)]',  count: '5 skills' },
+  { label: 'Backend & Go',   dotClass: 'bg-purple-400',  glowClass: 'shadow-[0_0_7px_rgba(192,132,252,0.8)]', count: '5 skills' },
+  { label: 'Cloud & Infra',  dotClass: 'bg-cyan-400',    glowClass: 'shadow-[0_0_7px_rgba(34,211,238,0.8)]',  count: '5 skills' },
+  { label: 'Observability',  dotClass: 'bg-orange-400',  glowClass: 'shadow-[0_0_7px_rgba(251,146,60,0.8)]',  count: '5 skills' },
 ]
 
 const BADGES = [
-  { text: 'System Architecture', rx: 5,  ry: -8 },
-  { text: 'Microservices',        rx: -7, ry: 4  },
-  { text: 'Clean Code',           rx: 3,  ry: 9  },
+  { text: 'CNCF Contributor',     rx: 5,  ry: -8 },
+  { text: 'Kubernetes Operators', rx: -7, ry: 4  },
+  { text: 'Cloud Native',         rx: 3,  ry: 9  },
   { text: 'Go',                   rx: -5, ry: -6 },
-  { text: 'Cloud Native',         rx: 8,  ry: 3  },
-  { text: 'CNCF',                 rx: -4, ry: 7  },
-  { text: 'Helm',                 rx: 6,  ry: -5 },
+  { text: 'Helm',                 rx: 8,  ry: 3  },
+  { text: 'GitOps',               rx: -4, ry: 7  },
+  { text: 'Open Source',          rx: 6,  ry: -5 },
   { text: 'CI/CD',                rx: -8, ry: 2  },
-  { text: 'GenAI',                rx: 4,  ry: 8  },
-  { text: 'LLMs',                 rx: -6, ry: -3 },
-  { text: 'Prompt Engineering',   rx: 7,  ry: -9 },
+  { text: 'DevSecOps',            rx: 4,  ry: 8  },
+  { text: 'Microservices',        rx: -6, ry: -3 },
+  { text: 'IaC / Terraform',      rx: 7,  ry: -9 },
   { text: 'Performance Tuning',   rx: -3, ry: 6  },
 ]
 
@@ -307,10 +307,10 @@ const Skills = () => {
               {/* Left — system stats */}
               <div className="p-5 grid grid-cols-2 gap-2.5">
                 {[
-                  { label: 'TOTAL SKILLS', value: '24', unit: 'modules',          colorClass: 'text-cyan-400'    },
+                  { label: 'TOTAL SKILLS', value: '20', unit: 'modules',          colorClass: 'text-cyan-400'    },
                   { label: 'DOMAINS',      value: '04', unit: 'categories',       colorClass: 'text-purple-400'  },
-                  { label: 'EXPERIENCE',   value: '2+', unit: 'years active',     colorClass: 'text-emerald-400' },
-                  { label: 'STACK TYPE',   value: 'Full', unit: 'stack coverage', colorClass: 'text-orange-400'  },
+                  { label: 'CNCF PRs',     value: '6+', unit: 'merged',           colorClass: 'text-emerald-400' },
+                  { label: 'FOCUS',        value: 'K8s', unit: 'cloud native',    colorClass: 'text-orange-400'  },
                 ].map(stat => (
                   <div key={stat.label} className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                     <p className="font-mono text-[9px] text-neutral-500 uppercase tracking-widest mb-1">{stat.label}</p>

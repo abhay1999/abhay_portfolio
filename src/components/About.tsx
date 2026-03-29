@@ -379,19 +379,19 @@ const About = () => {
                 <div className="flex items-start gap-3">
                   <span className="text-cyan-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed">
-                    Hey, I&apos;m <span className="text-white font-semibold">Abhay Chaurasiya</span> — a DevOps engineer passionate about cloud-native infrastructure, Go, and building systems that scale. I love the intersection of reliability engineering and developer experience.
+                    I&apos;m <span className="text-white font-semibold">Abhay Chaurasiya</span> — a DevOps-focused engineer who builds infrastructure that heals itself, pipelines that ship without friction, and CLI tools that make developers faster. I gravitate toward hard distributed systems problems and cloud-native architecture.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-purple-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed">
-                    I actively contribute to the <span className="text-white font-semibold">CNCF ecosystem</span> — Helm, and other cloud-native projects — with multiple merged PRs to my name.
+                    I contribute to production-grade <span className="text-white font-semibold">CNCF projects</span> — 4 merged PRs in <span className="text-cyan-400 font-medium">Jaeger</span> (Go SDK dashboard generator, CI sync-check, MCP response limits, SPM restore), 1 in <span className="text-cyan-400 font-medium">Helm</span>, 1 in <span className="text-cyan-400 font-medium">GoReleaser</span>, and 11+ open PRs across Argo CD, Grafana, Tekton &amp; more.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-emerald-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed">
-                    Off-screen: deploying self-healing Kubernetes clusters, sharpening Go skills, and exploring GenAI &amp; LLM-powered developer tooling.
+                    Goal: go deeper into the <span className="text-white font-semibold">CNCF ecosystem</span> — targeting <span className="text-emerald-400 font-medium">GSoC / LFX Mentorship</span> with Jaeger or Argo CD, and eventually becoming a project maintainer. If it runs on Kubernetes and is written in Go, I want to be inside it.
                   </p>
                 </div>
               </div>
@@ -426,14 +426,21 @@ const About = () => {
                   <Cpu size={15} className="text-cyan-400 shrink-0 mt-0.5" />
                   <p className="text-[13px] font-mono text-neutral-400 leading-relaxed">
                     <span className="text-cyan-300 font-semibold">CONTRIBUTING</span>{' '}
-                    CNCF ecosystem &amp; Helm — {mergedCount} PRs merged. Focused on DevOps tooling &amp; Go.
+                    Active in Jaeger, Helm, Argo CD &amp; Tekton — {mergedCount} PRs merged, 11+ open. Targeting GSoC / LFX Mentorship in the CNCF ecosystem.
+                  </p>
+                </div>
+                <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-emerald-500/10 hover:border-emerald-500/25 transition-colors">
+                  <Zap size={15} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <p className="text-[13px] font-mono text-neutral-400 leading-relaxed">
+                    <span className="text-emerald-300 font-semibold">BUILDING</span>{' '}
+                    Self-healing Kubernetes operators in Go, dev environment platform CLI, and exploring eBPF &amp; service mesh internals.
                   </p>
                 </div>
                 <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-purple-500/10 hover:border-purple-500/25 transition-colors">
-                  <Zap size={15} className="text-purple-400 shrink-0 mt-0.5" />
+                  <Activity size={15} className="text-purple-400 shrink-0 mt-0.5" />
                   <p className="text-[13px] font-mono text-neutral-400 leading-relaxed">
-                    <span className="text-purple-300 font-semibold">LEARNING</span>{' '}
-                    Generative AI — LLMs, prompt engineering, and AI-powered developer tooling.
+                    <span className="text-purple-300 font-semibold">GOAL</span>{' '}
+                    Become a CNCF project maintainer. If it runs on Kubernetes and is written in Go — I want to be inside it.
                   </p>
                 </div>
               </div>

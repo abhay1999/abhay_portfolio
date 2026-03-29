@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { GitMerge, GitPullRequest, ArrowUpRight, Star, ExternalLink } from 'lucide-react'
+import { GitMerge, GitPullRequest, ArrowUpRight, Star, ExternalLink, Zap, Shield, GitBranch, BarChart3 } from 'lucide-react'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type MergedPR = {
@@ -87,6 +87,111 @@ function inferTags(title: string, repo: string): string[] {
   if (t.includes('observab') || t.includes('spm')) tags.push('Observability')
   return tags.length > 0 ? tags.slice(0, 3) : ['Open Source']
 }
+
+// ─── Featured Contributions ───────────────────────────────────────────────────
+const FEATURED_PROJECTS = [
+  {
+    org: 'jaegertracing/jaeger',
+    orgDisplay: 'Jaeger',
+    badge: 'CNCF Incubating',
+    badgeClass: 'bg-cyan-500/15 border-cyan-500/30 text-cyan-300',
+    description: 'Production-grade distributed tracing platform used at Uber, Netflix, and thousands of orgs. Part of the CNCF ADR-007 observability stack migration.',
+    mergedCount: 4,
+    openCount: 1,
+    accentClass: 'text-cyan-400',
+    borderClass: 'border-cyan-500/25',
+    glowColor: 'rgba(34,211,238,0.12)',
+    headerBg: 'from-cyan-950/40 to-black/60',
+    repoStars: '20k+',
+    prs: [
+      {
+        number: 8216,
+        icon: BarChart3,
+        iconClass: 'text-cyan-400',
+        iconBg: 'bg-cyan-500/10 border-cyan-500/20',
+        title: 'Go SDK Dashboard Generator',
+        subtitle: 'ADR-007 Step 2a',
+        problem: 'Jaeger SPM had static JSON dashboards — hard to maintain, impossible to keep in sync with changing metrics.',
+        solution: 'Built a programmatic Go SDK dashboard generator that replaces static JSON with code-driven Grafana provisioning.',
+        impact: 'Dynamic metric config across entire monitoring pipeline. Foundation for Jaeger\'s next-gen observability stack.',
+        url: 'https://github.com/jaegertracing/jaeger/pull/8216',
+        tags: ['Go', 'Grafana', 'SDK', 'Observability'],
+      },
+      {
+        number: 8240,
+        icon: Shield,
+        iconClass: 'text-emerald-400',
+        iconBg: 'bg-emerald-500/10 border-emerald-500/20',
+        title: 'CI Sync-Check Workflow',
+        subtitle: 'ADR-007 Step 3',
+        problem: 'Dashboard generator output could drift from what\'s committed — no automated way to catch it in CI.',
+        solution: 'Added a GitHub Actions workflow that validates generator output matches committed dashboards on every PR.',
+        impact: 'Prevents silent dashboard drift in CI/CD. Enforces consistency across the entire observability pipeline.',
+        url: 'https://github.com/jaegertracing/jaeger/pull/8240',
+        tags: ['Go', 'GitHub Actions', 'CI/CD'],
+      },
+      {
+        number: 8242,
+        icon: Zap,
+        iconClass: 'text-amber-400',
+        iconBg: 'bg-amber-500/10 border-amber-500/20',
+        title: 'MCP Server Response Limits',
+        subtitle: 'jaegermcp reliability fix',
+        problem: 'The jaegermcp server had no output size limit — unbounded responses could crash or hang MCP clients.',
+        solution: 'Enforced response size limits in the MCP server tool handlers, with clean truncation and error surfacing.',
+        impact: 'Improved reliability of Jaeger\'s MCP integration. Prevents resource exhaustion in tool response pipelines.',
+        url: 'https://github.com/jaegertracing/jaeger/pull/8242',
+        tags: ['Go', 'MCP', 'Reliability'],
+      },
+      {
+        number: 8215,
+        icon: GitBranch,
+        iconClass: 'text-purple-400',
+        iconBg: 'bg-purple-500/10 border-purple-500/20',
+        title: 'Grafana + SPM Restore',
+        subtitle: 'ADR-007 Step 1',
+        problem: 'Grafana service was removed from the docker-compose SPM example, breaking the full local observability stack for all users.',
+        solution: 'Restored Grafana + SPM to the docker-compose example as the first step of the ADR-007 migration.',
+        impact: 'Unblocked every developer trying to run the full Jaeger monitoring stack locally. First PR in the ADR-007 chain.',
+        url: 'https://github.com/jaegertracing/jaeger/pull/8215',
+        tags: ['Docker', 'Grafana', 'Observability'],
+      },
+    ],
+  },
+]
+
+const OTHER_FEATURED = [
+  {
+    number: 31931,
+    org: 'helm/helm',
+    orgDisplay: 'Helm',
+    badge: 'CNCF Graduated · 29k+ ⭐',
+    badgeClass: 'bg-amber-500/15 border-amber-500/30 text-amber-300',
+    title: 'Remove legacy Go import path comments',
+    description: 'Cleaned up pre-Go-modules Kythe import path comments from pkg/kube — Go module-based projects no longer require these annotations.',
+    impact: 'Keeps the most widely used Kubernetes package manager\'s codebase idiomatic and free of legacy noise.',
+    tags: ['Go', 'CNCF', 'Kubernetes'],
+    url: 'https://github.com/helm/helm/pull/31931',
+    accentClass: 'text-amber-400',
+    borderClass: 'border-amber-500/25',
+    glowColor: 'rgba(251,191,36,0.1)',
+  },
+  {
+    number: 6462,
+    org: 'goreleaser/goreleaser',
+    orgDisplay: 'GoReleaser',
+    badge: '14k+ ⭐',
+    badgeClass: 'bg-purple-500/15 border-purple-500/30 text-purple-300',
+    title: 'Fix filterOut tag selection bug',
+    description: 'Function was returning the excluded tag instead of remaining tags when multiple ignore_tags patterns were configured — breaking release pipelines.',
+    impact: 'Fixed silent release pipeline failures affecting any project using multiple ignore_tags in GoReleaser config.',
+    tags: ['Go', 'CI/CD', 'Release'],
+    url: 'https://github.com/goreleaser/goreleaser/pull/6462',
+    accentClass: 'text-purple-400',
+    borderClass: 'border-purple-500/25',
+    glowColor: 'rgba(192,132,252,0.1)',
+  },
+]
 
 // ─── Static Fallback ──────────────────────────────────────────────────────────
 const STATIC_MERGED: MergedPR[] = [
@@ -238,12 +343,189 @@ const OpenSource = () => {
           ))}
         </motion.div>
 
-        {/* ── Merged PRs — Infinite Marquee ───────────────────────────────── */}
+        {/* ── Featured: Jaeger Spotlight ──────────────────────────────────── */}
+        {FEATURED_PROJECTS.map((project) => (
+          <motion.div key={project.org} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mb-12">
+            {/* Section label */}
+            <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-2.5">
+                <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
+                <span className="text-xs font-bold tracking-widest uppercase text-cyan-400 font-mono">Featured Project · Deep Dive</span>
+              </div>
+              <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/30 to-transparent" />
+              <span className="text-xs font-mono text-neutral-600">{project.mergedCount} merged PRs · CNCF ecosystem</span>
+            </div>
+
+            {/* Jaeger hero card */}
+            <div
+              className={`relative rounded-3xl border ${project.borderClass} bg-gradient-to-br ${project.headerBg} overflow-hidden mb-4`}
+              style={{ boxShadow: `0 0 60px -20px ${project.glowColor}` }}
+            >
+              {/* Subtle grid overlay */}
+              <div aria-hidden="true" className="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style={{ backgroundImage: 'linear-gradient(to right,rgba(34,211,238,0.8) 1px,transparent 1px),linear-gradient(to bottom,rgba(34,211,238,0.8) 1px,transparent 1px)', backgroundSize: '28px 28px' }} />
+
+              {/* Header */}
+              <div className={`relative px-6 py-5 border-b ${project.borderClass} flex flex-col sm:flex-row sm:items-center gap-3 justify-between`}>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center font-black text-lg text-cyan-300 font-mono">J</div>
+                  <div>
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <h3 className={`text-xl font-bold ${project.accentClass}`}>{project.orgDisplay}</h3>
+                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${project.badgeClass}`}>{project.badge}</span>
+                    </div>
+                    <p className="font-mono text-[11px] text-neutral-500 mt-0.5">{project.org} · {project.repoStars} stars</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-900/40 border border-emerald-500/30">
+                    <GitMerge size={12} className="text-emerald-400" />
+                    <span className="text-[11px] font-bold text-emerald-300 font-mono">{project.mergedCount} Merged PRs</span>
+                  </div>
+                  <p className="text-xs text-neutral-400 max-w-sm hidden lg:block">{project.description}</p>
+                </div>
+              </div>
+
+              {/* Description — mobile */}
+              <p className="lg:hidden text-xs text-neutral-400 px-6 py-3 border-b border-white/5">{project.description}</p>
+
+              {/* PR cards grid */}
+              <div className="p-4 grid sm:grid-cols-2 gap-3">
+                {project.prs.map((pr) => (
+                  <motion.a
+                    key={pr.number}
+                    href={pr.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -2 }}
+                    transition={{ duration: 0.3 }}
+                    className="group/pr relative flex flex-col gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-cyan-500/30 hover:bg-white/[0.05] transition-all duration-200"
+                  >
+                    {/* PR header */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-2.5">
+                        <div className={`w-8 h-8 rounded-xl border ${pr.iconBg} flex items-center justify-center flex-shrink-0`}>
+                          <pr.icon size={15} className={pr.iconClass} />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-white leading-tight">{pr.title}</p>
+                          <p className="text-[10px] font-mono text-neutral-600 mt-0.5">{pr.subtitle}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="font-mono text-[10px] text-neutral-600">#{pr.number}</span>
+                        <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-900/40 border border-emerald-500/25">
+                          <GitMerge size={8} className="text-emerald-400" />
+                          <span className="text-[8px] font-bold text-emerald-300 font-mono">MERGED</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Problem → Solution */}
+                    <div className="space-y-2">
+                      <div className="flex gap-2">
+                        <span className="font-mono text-[9px] text-rose-400/80 uppercase tracking-wider w-16 shrink-0 pt-0.5">Problem</span>
+                        <p className="text-[11px] text-neutral-500 leading-snug">{pr.problem}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <span className="font-mono text-[9px] text-emerald-400/80 uppercase tracking-wider w-16 shrink-0 pt-0.5">Fix</span>
+                        <p className="text-[11px] text-neutral-300 leading-snug">{pr.solution}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <span className="font-mono text-[9px] text-cyan-400/80 uppercase tracking-wider w-16 shrink-0 pt-0.5">Impact</span>
+                        <p className="text-[11px] text-cyan-200/70 leading-snug">{pr.impact}</p>
+                      </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-1 border-t border-white/[0.05]">
+                      <div className="flex flex-wrap gap-1">
+                        {pr.tags.map(t => (
+                          <span key={t} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/[0.08] text-neutral-500">{t}</span>
+                        ))}
+                      </div>
+                      <div className="flex items-center gap-1 text-neutral-600 group-hover/pr:text-cyan-400 transition-colors">
+                        <span className="text-[10px] font-mono">View PR</span>
+                        <ArrowUpRight size={11} className="group-hover/pr:translate-x-0.5 group-hover/pr:-translate-y-0.5 transition-transform" />
+                      </div>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+
+        {/* ── Other Featured Contributions ────────────────────────────────── */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="mb-12">
+          <div className="flex items-center gap-4 mb-5">
+            <div className="flex items-center gap-2.5">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+              <span className="text-xs font-bold tracking-widest uppercase text-emerald-400 font-mono">Other Merged PRs</span>
+            </div>
+            <div className="h-px flex-1 bg-gradient-to-r from-emerald-500/30 to-transparent" />
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {OTHER_FEATURED.map((pr) => (
+              <motion.a
+                key={pr.number}
+                href={pr.url}
+                target="_blank"
+                rel="noreferrer"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.3 }}
+                className={`group/card flex flex-col gap-3 p-5 rounded-2xl border ${pr.borderClass} bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-200`}
+                style={{ boxShadow: `0 0 30px -12px ${pr.glowColor}` }}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <span className={`text-sm font-bold ${pr.accentClass}`}>{pr.orgDisplay}</span>
+                      <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded-full border ${pr.badgeClass}`}>{pr.badge}</span>
+                    </div>
+                    <p className="text-[11px] font-mono text-neutral-600">{pr.org} · PR #{pr.number}</p>
+                  </div>
+                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-900/40 border border-emerald-500/25 shrink-0">
+                    <GitMerge size={9} className="text-emerald-400" />
+                    <span className="text-[9px] font-bold text-emerald-300 font-mono">MERGED</span>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-neutral-200 leading-snug mb-2">{pr.title}</p>
+                  <p className="text-[12px] text-neutral-500 leading-relaxed mb-2">{pr.description}</p>
+                  <div className="flex gap-1.5 pt-1">
+                    <span className="font-mono text-[9px] text-emerald-400/70 uppercase tracking-wider">Impact:</span>
+                    <p className="text-[11px] text-emerald-200/60 leading-snug">{pr.impact}</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t border-white/[0.05]">
+                  <div className="flex flex-wrap gap-1">
+                    {pr.tags.map(t => (
+                      <span key={t} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/[0.08] text-neutral-500">{t}</span>
+                    ))}
+                  </div>
+                  <div className={`flex items-center gap-1 ${pr.accentClass} opacity-60 group-hover/card:opacity-100 transition-opacity`}>
+                    <span className="text-[10px] font-mono">View PR</span>
+                    <ArrowUpRight size={11} />
+                  </div>
+                </div>
+              </motion.a>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── All Merged PRs — Infinite Marquee ───────────────────────────── */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-4">
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-2.5">
               <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
-              <span className="text-xs font-bold tracking-widest uppercase text-emerald-400 font-mono">Merged Pull Requests</span>
+              <span className="text-xs font-bold tracking-widest uppercase text-emerald-400 font-mono">All Merged Pull Requests</span>
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-emerald-500/30 to-transparent" />
             <span className="text-xs font-mono text-neutral-600">{mergedCount} merged · hover to pause</span>

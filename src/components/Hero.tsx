@@ -8,11 +8,11 @@ import Image from 'next/image'
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const ROLES = [
-  'DevOps Engineer',
+  'CNCF Open Source Contributor',
+  'DevOps & Go Engineer',
+  'Kubernetes Platform Builder',
   'Cloud Native Specialist',
   'Full-Stack Developer',
-  'Python Specialist',
-  'React.js Expert',
 ]
 
 const SOCIALS = [
@@ -240,10 +240,11 @@ const Hero = () => {
 
             {/* Bio */}
             <p className="text-neutral-400 max-w-lg mx-auto lg:mx-0 leading-relaxed text-[15px]">
-              I build{' '}
-              <span className="text-white font-medium">scalable web applications</span> and craft
-              engaging digital experiences — from microservices on AWS to pixel-perfect frontends,
-              end-to-end.
+              <span className="text-white font-medium">CNCF contributor</span> with merged PRs in{' '}
+              <span className="text-cyan-400 font-medium">Helm</span>,{' '}
+              <span className="text-cyan-400 font-medium">Jaeger</span> &{' '}
+              <span className="text-cyan-400 font-medium">GoReleaser</span>.
+              Building scalable infra, Kubernetes platforms, and contributing to open source systems.
             </p>
 
             {/* CTAs */}
@@ -472,7 +473,7 @@ const Hero = () => {
                     Abhay Chaurasiya
                   </h2>
                   <p className="text-cyan-400 text-[10px] font-mono tracking-[0.22em] uppercase mb-5">
-                    Full Stack Engineer
+                    DevOps · Go · CNCF
                   </p>
 
                   {/* Quick stat chips */}

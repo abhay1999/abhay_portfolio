@@ -230,21 +230,36 @@ const Contact = () => {
                 transition={{ duration: 1.8, repeat: Infinity }}
                 className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"
               />
-              <span className="font-mono text-xs text-emerald-300 tracking-wider">AVAILABLE FOR OPPORTUNITIES</span>
+              <span className="font-mono text-xs text-emerald-300 tracking-wider">OPEN TO DEVOPS / GSOC OPPORTUNITIES</span>
             </div>
 
             {/* Main heading */}
             <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
               Let&apos;s build<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
-                something amazing
+                scalable systems together
               </span>
             </h3>
 
-            <p className="text-neutral-400 leading-relaxed mb-10 max-w-md text-base">
-              I&apos;m currently looking for new opportunities. Whether you have a question,
-              a project idea, or just want to say hi — I&apos;ll get back to you!
+            <p className="text-neutral-400 leading-relaxed mb-7 max-w-md text-base">
+              DevOps engineer and CNCF contributor open to roles where infrastructure
+              reliability, Kubernetes, and open source actually matter.
             </p>
+
+            {/* Opportunity tags */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {[
+                { label: 'DevOps / SRE Roles',       dot: 'bg-emerald-400', tag: 'bg-emerald-500/10 border-emerald-500/25 text-emerald-300' },
+                { label: 'GSoC 2026',                dot: 'bg-cyan-400',    tag: 'bg-cyan-500/10 border-cyan-500/25 text-cyan-300'          },
+                { label: 'CNCF LFX Mentorship',      dot: 'bg-blue-400',   tag: 'bg-blue-500/10 border-blue-500/25 text-blue-300'          },
+                { label: 'Open Source Collaboration', dot: 'bg-purple-400', tag: 'bg-purple-500/10 border-purple-500/25 text-purple-300'    },
+              ].map(({ label, dot, tag }) => (
+                <span key={label} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium ${tag}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dot}`} />
+                  {label}
+                </span>
+              ))}
+            </div>
 
             {/* Separator with circuit glow */}
             <div className="h-px w-full bg-gradient-to-r from-cyan-500/30 via-white/10 to-transparent mb-10" />
@@ -446,7 +461,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         rows={5}
-                        placeholder="Hello Abhay, I'd like to talk about..."
+                        placeholder="Hey Abhay, I'm reaching out about a DevOps role / GSoC / collab..."
                         className="w-full px-4 py-3.5 bg-black/40 border border-white/10 rounded-xl text-sm text-white placeholder-neutral-700 font-mono focus:outline-none focus:border-emerald-500/50 focus:shadow-[0_0_20px_-5px_rgba(52,211,153,0.25)] transition-all duration-300 resize-none"
                       />
                     </div>
