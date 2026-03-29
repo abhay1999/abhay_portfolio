@@ -4,6 +4,7 @@ import Skills from '@/components/Skills'
 import Experience from '@/components/Experience'
 import Projects from '@/components/Projects'
 import InfraFlow from '@/components/InfraFlow'
+import SystemsExperiments from '@/components/SystemsExperiments'
 import OpenSource from '@/components/OpenSource'
 import DevOpsLive from '@/components/DevOpsLive'
 import DevOpsPlayground from '@/components/DevOpsPlayground'
@@ -24,6 +25,7 @@ export default function Home() {
       <OpenSource />
       <Projects />
       <InfraFlow />
+      <SystemsExperiments />
       <DevOpsLive />
       <DevOpsPlayground />
       <TechRadar />
