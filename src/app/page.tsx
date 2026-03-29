@@ -20,10 +20,10 @@ export default function Home() {
       <Header />
       <Hero />
       <About />
-      <Skills />
       <Experience />
-      <OpenSource />
       <Projects />
+      <OpenSource />
+      <Skills />
       <InfraFlow />
       <SystemsExperiments />
       <DevOpsLive />

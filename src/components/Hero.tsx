@@ -22,6 +22,13 @@ const SOCIALS = [
   { Icon: Trophy,   href: 'https://www.hackerrank.com/profile/abhaychaurasiya1',  label: 'HackerRank' },
 ]
 
+const BEST_FIT_ROLES = [
+  'DevOps Engineer',
+  'Platform Engineer',
+  'Cloud Engineer',
+  'Backend / Go Engineer',
+]
+
 // Fixed positions — avoids hydration mismatch from random values
 const PARTICLES = [
   { x: '12%',  y: '18%', w: 8,  h: 8,  color: 'bg-cyan-400',    delay: 0    },
@@ -242,6 +249,24 @@ const Hero = () => {
               <span className="text-cyan-400 font-medium">GoReleaser</span>.
               Building scalable infra, Kubernetes platforms, and contributing to open source systems.
             </p>
+
+            {/* Best fit roles */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 justify-center lg:justify-start">
+                <span className="text-[10px] font-mono text-neutral-600 tracking-[0.22em] uppercase">Best Fit Roles</span>
+                <div className="h-px w-20 bg-white/[0.07]" />
+              </div>
+              <div className="flex flex-wrap gap-2.5 justify-center lg:justify-start">
+                {BEST_FIT_ROLES.map((role) => (
+                  <span
+                    key={role}
+                    className="px-3 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] text-[11px] font-medium text-neutral-300 backdrop-blur-sm"
+                  >
+                    {role}
+                  </span>
+                ))}
+              </div>
+            </div>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
