@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { Database, Cloud, Terminal, Cpu, Zap, Activity, Wifi, GitMerge } from 'lucide-react'
 import Image from 'next/image'
 import { useRef, useState, useEffect } from 'react'
+import { fetchJsonWithTimeout, readCachedValue, writeCachedValue, type DataSourceState } from '@/lib/client-data'
 
 // ─── Tilt Card ────────────────────────────────────────────────────────────────
 
@@ -103,19 +104,72 @@ const CAPS = [
   },
 ]
 
+const ABOUT_CACHE_KEY = 'about:merged-prs'
+const ABOUT_CACHE_TTL_MS = 1000 * 60 * 30
+
+function getSourceBadge(state: DataSourceState) {
+  if (state === 'live') {
+    return {
+      label: 'LIVE',
+      dotClass: 'bg-cyan-500',
+      textClass: 'text-cyan-400',
+      borderClass: 'border-cyan-500/25',
+      bgClass: 'bg-cyan-500/10',
+    }
+  }
+
+  if (state === 'cached') {
+    return {
+      label: 'CACHED',
+      dotClass: 'bg-amber-500',
+      textClass: 'text-amber-300',
+      borderClass: 'border-amber-500/25',
+      bgClass: 'bg-amber-500/10',
+    }
+  }
+
+  return {
+    label: 'STATIC SNAPSHOT',
+    dotClass: 'bg-neutral-500',
+    textClass: 'text-neutral-400',
+    borderClass: 'border-white/10',
+    bgClass: 'bg-white/[0.04]',
+  }
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const About = () => {
   const [mergedCount, setMergedCount] = useState('5+')
+  const [sourceState, setSourceState] = useState<DataSourceState>('static')
 
   useEffect(() => {
-    fetch('https://api.github.com/search/issues?q=author:abhay1999+type:pr+is:merged&per_page=1')
-      .then(r => r.json())
-      .then(d => { if (d.total_count) setMergedCount(`${d.total_count}`) })
+    const cached = readCachedValue<{ totalCount: number }>(ABOUT_CACHE_KEY, ABOUT_CACHE_TTL_MS)
+
+    if (cached) {
+      setMergedCount(String(cached.value.totalCount))
+      setSourceState('cached')
+    }
+
+    fetchJsonWithTimeout<{ total_count?: number }>(
+      'https://api.github.com/search/issues?q=author:abhay1999+type:pr+is:merged&per_page=1',
+      {
+        headers: { Accept: 'application/vnd.github.v3+json' },
+      },
+      4500
+    )
+      .then((data) => {
+        if (typeof data.total_count !== 'number') return
+
+        setMergedCount(String(data.total_count))
+        setSourceState('live')
+        writeCachedValue(ABOUT_CACHE_KEY, { totalCount: data.total_count })
+      })
       .catch(() => {})
   }, [])
 
   const STATS = BASE_STATS.map(s => s.key === 'prs' ? { ...s, value: mergedCount } : s)
+  const sourceBadge = getSourceBadge(sourceState)
 
   const ID_FIELDS = [
     { prefix: '$', key: 'status',     val: '● available',            valCls: 'text-emerald-400' },
@@ -419,7 +473,10 @@ const About = () => {
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500" />
                 </span>
                 <span className="text-[11px] text-neutral-400 font-mono ml-1 tracking-wider">current_focus.log</span>
-                <span className="ml-auto text-[10px] text-cyan-400 font-mono tracking-widest">LIVE</span>
+                <span className={`ml-auto inline-flex items-center gap-1.5 px-2 py-1 rounded-full border ${sourceBadge.borderClass} ${sourceBadge.bgClass}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${sourceBadge.dotClass}`} />
+                  <span className={`text-[10px] font-mono tracking-widest ${sourceBadge.textClass}`}>{sourceBadge.label}</span>
+                </span>
               </div>
               <div className="p-5 space-y-3">
                 <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-cyan-500/10 hover:border-cyan-500/25 transition-colors">

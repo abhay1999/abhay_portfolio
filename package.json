@@ -10,7 +10,8 @@
     "preview:static": "npx serve -s out -l 5050",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit -p tsconfig.typecheck.json",
+    "smoke": "npm run build && node --test scripts/smoke-check.mjs",
     "resume:pdf": "node scripts/generate-resume-pdf.js"
   },
   "dependencies": {

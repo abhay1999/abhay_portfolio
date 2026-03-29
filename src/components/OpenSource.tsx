@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { GitMerge, GitPullRequest, ArrowUpRight, Star, ExternalLink, Zap, Shield, GitBranch, BarChart3 } from 'lucide-react'
+import { fetchJsonWithTimeout, readCachedValue, writeCachedValue, type DataSourceState } from '@/lib/client-data'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type MergedPR = {
@@ -213,22 +214,72 @@ const STATIC_OPEN: OpenPR[] = [
   { number: 114,    repo: 'Rancheroo/r8s',            orgInitial: 'R', title: 'feat: add multi-arch Docker image and GHCR publish workflow',          tags: ['Docker','GHA'],          date: 'Mar 11', url: 'https://github.com/Rancheroo/r8s/pull/114',               dotClass: 'bg-teal-400',    borderClass: 'border-l-teal-500/50',    bgClass: 'bg-teal-950/20',   orgClass: 'bg-teal-500/20 text-teal-300 border-teal-500/30'     },
 ]
 
+const OPEN_SOURCE_CACHE_KEY = 'open-source:activity'
+const OPEN_SOURCE_CACHE_TTL_MS = 1000 * 60 * 30
+
+function getOpenSourceSourceMeta(state: DataSourceState) {
+  if (state === 'live') {
+    return {
+      label: 'live data',
+      badgeLabel: 'LIVE',
+      dotClass: 'bg-cyan-400',
+      textClass: 'text-cyan-400',
+      headerClass: 'text-emerald-500',
+    }
+  }
+
+  if (state === 'cached') {
+    return {
+      label: 'cached snapshot',
+      badgeLabel: 'CACHED',
+      dotClass: 'bg-amber-400',
+      textClass: 'text-amber-400',
+      headerClass: 'text-amber-400',
+    }
+  }
+
+  return {
+    label: 'static fallback',
+    badgeLabel: 'STATIC',
+    dotClass: 'bg-neutral-600',
+    textClass: 'text-neutral-500',
+    headerClass: 'text-neutral-500',
+  }
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 const OpenSource = () => {
   const [mergedPRs, setMergedPRs] = useState<MergedPR[]>(STATIC_MERGED)
   const [openPRs,   setOpenPRs]   = useState<OpenPR[]>(STATIC_OPEN)
-  const [isLive,    setIsLive]    = useState(false)
+  const [dataSource, setDataSource] = useState<DataSourceState>('static')
 
   useEffect(() => {
+    const cached = readCachedValue<{ mergedPRs: MergedPR[]; openPRs: OpenPR[] }>(
+      OPEN_SOURCE_CACHE_KEY,
+      OPEN_SOURCE_CACHE_TTL_MS
+    )
+
+    if (cached) {
+      setMergedPRs(cached.value.mergedPRs)
+      setOpenPRs(cached.value.openPRs)
+      setDataSource('cached')
+    }
+
     const fetchPRs = async () => {
       try {
         const headers = { Accept: 'application/vnd.github.v3+json' }
-        const [mRes, oRes] = await Promise.all([
-          fetch('https://api.github.com/search/issues?q=author:abhay1999+type:pr+is:merged&per_page=30&sort=updated&order=desc', { headers }),
-          fetch('https://api.github.com/search/issues?q=author:abhay1999+type:pr+is:open&per_page=30&sort=updated&order=desc',   { headers }),
+        const [mData, oData] = await Promise.all([
+          fetchJsonWithTimeout<{ items?: Array<{ number: number; repository_url: string; title: string; closed_at?: string; created_at: string; html_url: string }> }>(
+            'https://api.github.com/search/issues?q=author:abhay1999+type:pr+is:merged&per_page=30&sort=updated&order=desc',
+            { headers },
+            5000
+          ),
+          fetchJsonWithTimeout<{ items?: Array<{ number: number; repository_url: string; title: string; created_at: string; html_url: string }> }>(
+            'https://api.github.com/search/issues?q=author:abhay1999+type:pr+is:open&per_page=30&sort=updated&order=desc',
+            { headers },
+            5000
+          ),
         ])
-        if (!mRes.ok || !oRes.ok) return
-        const [mData, oData] = await Promise.all([mRes.json(), oRes.json()])
 
         const knownNumbers = new Set(STATIC_MERGED.map(p => p.number))
         const updatedMerged: MergedPR[] = [...STATIC_MERGED]
@@ -251,7 +302,11 @@ const OpenSource = () => {
 
         setMergedPRs(updatedMerged)
         setOpenPRs(liveOpen.length > 0 ? liveOpen : STATIC_OPEN)
-        setIsLive(true)
+        setDataSource('live')
+        writeCachedValue(OPEN_SOURCE_CACHE_KEY, {
+          mergedPRs: updatedMerged,
+          openPRs: liveOpen.length > 0 ? liveOpen : STATIC_OPEN,
+        })
       } catch { /* keep static fallback */ }
     }
     fetchPRs()
@@ -260,6 +315,7 @@ const OpenSource = () => {
   const mergedCount = mergedPRs.length
   const openCount   = openPRs.length
   const totalCount  = mergedCount + openCount
+  const sourceMeta = getOpenSourceSourceMeta(dataSource)
 
   // Duplicate for infinite marquee loop
   const marqueeItems = [...mergedPRs, ...mergedPRs]
@@ -308,13 +364,16 @@ const OpenSource = () => {
             <span className="text-white">›</span>
             <span className="text-emerald-400">pr_activity</span>
             <span className="text-neutral-300">.scan()</span>
-            {isLive ? (
+            {dataSource === 'live' ? (
               <span className="flex items-center gap-1 ml-1">
                 <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
                 <span className="text-emerald-500 text-[10px]">live</span>
               </span>
             ) : (
-              <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.7, repeat: Infinity }} className="w-1.5 h-3.5 bg-emerald-400 inline-block ml-0.5" />
+              <span className="flex items-center gap-1 ml-1">
+                <span className={`w-1.5 h-1.5 rounded-full inline-block ${sourceMeta.dotClass}`} />
+                <span className={`text-[10px] ${sourceMeta.headerClass}`}>{sourceMeta.label}</span>
+              </span>
             )}
           </div>
           <div className="flex items-end gap-5">
@@ -631,9 +690,9 @@ const OpenSource = () => {
             </div>
             <span className="flex-1 text-center text-[11px] font-mono text-neutral-600">gh pr list --author abhay1999 --state open</span>
             <div className="flex items-center gap-1.5">
-              <motion.div animate={{ opacity: isLive ? [1, 0.4, 1] : 1 }} transition={{ duration: 1.4, repeat: Infinity }}
-                className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-cyan-400' : 'bg-neutral-600'}`} />
-              <span className={`text-[9px] font-mono ${isLive ? 'text-cyan-400' : 'text-neutral-600'}`}>{isLive ? 'LIVE' : 'CACHED'}</span>
+              <motion.div animate={{ opacity: dataSource === 'live' ? [1, 0.4, 1] : 1 }} transition={{ duration: 1.4, repeat: Infinity }}
+                className={`w-1.5 h-1.5 rounded-full ${sourceMeta.dotClass}`} />
+              <span className={`text-[9px] font-mono ${sourceMeta.textClass}`}>{sourceMeta.badgeLabel}</span>
             </div>
           </div>
 
@@ -681,7 +740,7 @@ const OpenSource = () => {
           </a>
           <div className="flex items-center gap-2 text-xs text-neutral-600 font-mono">
             <GitPullRequest size={12} className="text-cyan-500/50" />
-            <span>{totalCount}+ total contributions · {isLive ? 'live data' : 'growing'}</span>
+            <span>{totalCount}+ total contributions · {sourceMeta.label}</span>
           </div>
         </motion.div>
 

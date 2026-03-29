@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Server, GitBranch, Activity } from 'lucide-react'
+import { fetchJsonWithTimeout, readCachedValue, writeCachedValue, type DataSourceState } from '@/lib/client-data'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -19,6 +20,11 @@ interface ContribDay {
   date: string
   count: number
   level: 0 | 1 | 2 | 3 | 4
+}
+
+interface HeatmapResponse {
+  contributions: ContribDay[]
+  total: Record<string, number>
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -66,6 +72,11 @@ const VITALS = [
   { label: 'RUNTIME',   value: 'NGINX', color: 'text-purple-400',  dot: 'bg-purple-400',  glow: 'shadow-[0_0_6px_rgba(192,132,252,0.8)]', pulse: false },
 ]
 
+const RUNS_CACHE_KEY = 'devops-live:workflow-runs'
+const RUNS_CACHE_TTL_MS = 1000 * 60 * 10
+const HEATMAP_CACHE_KEY = 'devops-live:heatmap'
+const HEATMAP_CACHE_TTL_MS = 1000 * 60 * 60 * 6
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function resolveStatus(run: WorkflowRun | null | undefined): {
@@ -74,8 +85,11 @@ function resolveStatus(run: WorkflowRun | null | undefined): {
   if (run === undefined) return { label: 'LOADING', labelCls: 'text-neutral-500', dotCls: 'bg-neutral-600', glowCls: '', pulse: false }
   if (run === null)      return { label: 'ACTIVE',  labelCls: 'text-cyan-400',    dotCls: 'bg-cyan-400',    glowCls: 'shadow-[0_0_8px_rgba(34,211,238,0.7)]', pulse: false }
   if (run.status === 'in_progress') return { label: 'RUNNING', labelCls: 'text-amber-400',   dotCls: 'bg-amber-400',   glowCls: 'shadow-[0_0_8px_rgba(251,191,36,0.9)]',  pulse: true  }
+  if (run.status === 'queued') return { label: 'QUEUED', labelCls: 'text-amber-300', dotCls: 'bg-amber-300', glowCls: 'shadow-[0_0_8px_rgba(252,211,77,0.8)]', pulse: true }
   if (run.conclusion === 'success') return { label: 'PASSING', labelCls: 'text-emerald-400', dotCls: 'bg-emerald-400', glowCls: 'shadow-[0_0_8px_rgba(52,211,153,0.9)]',  pulse: false }
-  if (run.conclusion === 'failure') return { label: 'ACTIVE',  labelCls: 'text-cyan-400',    dotCls: 'bg-cyan-400',    glowCls: 'shadow-[0_0_8px_rgba(34,211,238,0.7)]',  pulse: false }
+  if (run.conclusion === 'failure') return { label: 'FAILING', labelCls: 'text-red-400',     dotCls: 'bg-red-400',     glowCls: 'shadow-[0_0_8px_rgba(248,113,113,0.9)]',  pulse: false }
+  if (run.conclusion === 'cancelled') return { label: 'CANCELLED', labelCls: 'text-neutral-400', dotCls: 'bg-neutral-500', glowCls: '', pulse: false }
+  if (run.conclusion === 'skipped') return { label: 'SKIPPED', labelCls: 'text-neutral-400', dotCls: 'bg-neutral-500', glowCls: '', pulse: false }
   return { label: 'ACTIVE', labelCls: 'text-cyan-400', dotCls: 'bg-cyan-400', glowCls: 'shadow-[0_0_8px_rgba(34,211,238,0.7)]', pulse: false }
 }
 
@@ -104,6 +118,18 @@ function getMonthLabels(weeks: ContribDay[][]): { label: string; col: number }[]
   return labels
 }
 
+function getStateMeta(state: DataSourceState) {
+  if (state === 'live') {
+    return { label: 'LIVE', dotClass: 'bg-emerald-400', textClass: 'text-emerald-400' }
+  }
+
+  if (state === 'cached') {
+    return { label: 'CACHED', dotClass: 'bg-amber-400', textClass: 'text-amber-400' }
+  }
+
+  return { label: 'STATIC DATA', dotClass: 'bg-neutral-600', textClass: 'text-neutral-500' }
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const DevOpsLive = () => {
@@ -112,32 +138,58 @@ const DevOpsLive = () => {
   const [totalContribs, setTotalContribs] = useState<number | null>(null)
   const [heatmapLoading, setHeatmapLoading] = useState(true)
   const [heatmapError, setHeatmapError] = useState(false)
+  const [runsSource, setRunsSource] = useState<DataSourceState>('static')
+  const [heatmapSource, setHeatmapSource] = useState<DataSourceState>('static')
 
   useEffect(() => {
-    // Fetch latest workflow run per repo
-    SERVICES.forEach(svc => {
-      fetch(`https://api.github.com/repos/${svc.repo}/actions/runs?per_page=1`, {
-        headers: { Accept: 'application/vnd.github.v3+json' },
-      })
-        .then(r => r.ok ? r.json() : null)
-        .then(d => {
-          const run: WorkflowRun | null = d?.workflow_runs?.[0] ?? null
-          setRuns(prev => ({ ...prev, [svc.repo]: run }))
-        })
-        .catch(() => setRuns(prev => ({ ...prev, [svc.repo]: null })))
-    })
+    const cachedRuns = readCachedValue<Record<string, WorkflowRun | null>>(RUNS_CACHE_KEY, RUNS_CACHE_TTL_MS)
+    if (cachedRuns) {
+      setRuns(cachedRuns.value)
+      setRunsSource('cached')
+    } else {
+      setRuns(Object.fromEntries(SERVICES.map((svc) => [svc.repo, null])) as Record<string, WorkflowRun | null>)
+    }
 
-    // Fetch contribution heatmap
-    fetch('https://github-contributions-api.jogruber.de/v4/abhay1999?y=last')
-      .then(r => r.ok ? r.json() : Promise.reject())
-      .then((d: { contributions: ContribDay[]; total: Record<string, number> }) => {
-        setContribs(d.contributions ?? [])
-        const total = Object.values(d.total ?? {}).reduce((a, b) => a + b, 0)
-        setTotalContribs(total)
+    Promise.all(
+      SERVICES.map(async (svc) => {
+        const data = await fetchJsonWithTimeout<{ workflow_runs?: WorkflowRun[] }>(
+          `https://api.github.com/repos/${svc.repo}/actions/runs?per_page=1`,
+          {
+            headers: { Accept: 'application/vnd.github.v3+json' },
+          },
+          5000
+        )
+
+        return [svc.repo, data.workflow_runs?.[0] ?? null] as const
+      })
+    )
+      .then((entries) => {
+        const nextRuns = Object.fromEntries(entries) as Record<string, WorkflowRun | null>
+        setRuns(nextRuns)
+        setRunsSource('live')
+        writeCachedValue(RUNS_CACHE_KEY, nextRuns)
+      })
+      .catch(() => {})
+
+    const cachedHeatmap = readCachedValue<HeatmapResponse>(HEATMAP_CACHE_KEY, HEATMAP_CACHE_TTL_MS)
+    if (cachedHeatmap) {
+      setContribs(cachedHeatmap.value.contributions ?? [])
+      setTotalContribs(Object.values(cachedHeatmap.value.total ?? {}).reduce((a, b) => a + b, 0))
+      setHeatmapSource('cached')
+      setHeatmapLoading(false)
+    }
+
+    fetchJsonWithTimeout<HeatmapResponse>('https://github-contributions-api.jogruber.de/v4/abhay1999?y=last', {}, 5000)
+      .then((data) => {
+        setContribs(data.contributions ?? [])
+        setTotalContribs(Object.values(data.total ?? {}).reduce((a, b) => a + b, 0))
+        setHeatmapSource('live')
         setHeatmapLoading(false)
+        setHeatmapError(false)
+        writeCachedValue(HEATMAP_CACHE_KEY, data)
       })
       .catch(() => {
-        setHeatmapError(true)
+        setHeatmapError(!cachedHeatmap)
         setHeatmapLoading(false)
       })
   }, [])
@@ -153,6 +205,8 @@ const DevOpsLive = () => {
     if (week.length > 0) weeks.push(week)
   }
   const monthLabels = getMonthLabels(weeks)
+  const runsMeta = getStateMeta(runsSource)
+  const heatmapMeta = getStateMeta(heatmapSource)
 
   return (
     <section id="devops-live" className="relative py-24 overflow-hidden bg-black">
@@ -249,15 +303,15 @@ const DevOpsLive = () => {
                   <span className="font-mono text-[10px] text-neutral-500 tracking-wide">ci_cd_monitor.sh</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }}
-                    className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]" />
-                  <span className="font-mono text-[10px] text-emerald-400">LIVE</span>
+                  <motion.div animate={{ opacity: runsSource === 'live' ? [1, 0.3, 1] : 1 }} transition={{ duration: 1.5, repeat: Infinity }}
+                    className={`w-1.5 h-1.5 rounded-full ${runsMeta.dotClass} shadow-[0_0_6px_rgba(52,211,153,0.9)]`} />
+                  <span className={`font-mono text-[10px] ${runsMeta.textClass}`}>{runsMeta.label}</span>
                 </div>
               </div>
 
               {/* Prompt line */}
               <div className="px-4 pt-3 pb-1 font-mono text-[10px] text-neutral-600">
-                <span className="text-emerald-400">→</span> watching 3 repositories...
+                <span className="text-emerald-400">→</span> watching 3 repositories · {runsSource === 'live' ? 'fresh api results' : runsSource === 'cached' ? 'using cached snapshot' : 'using static defaults'}
               </div>
 
               {/* Service rows */}
@@ -364,9 +418,9 @@ const DevOpsLive = () => {
                   </span>
                 )}
                 <div className="flex items-center gap-1.5">
-                  <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }}
-                    className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-                  <span className="font-mono text-[10px] text-emerald-400">LIVE</span>
+                  <motion.div animate={{ opacity: heatmapSource === 'live' ? [1, 0.3, 1] : 1 }} transition={{ duration: 1.5, repeat: Infinity }}
+                    className={`w-1.5 h-1.5 rounded-full ${heatmapMeta.dotClass} shadow-[0_0_6px_rgba(52,211,153,0.8)]`} />
+                  <span className={`font-mono text-[10px] ${heatmapMeta.textClass}`}>{heatmapMeta.label}</span>
                 </div>
               </div>
             </div>
@@ -384,7 +438,7 @@ const DevOpsLive = () => {
 
               {heatmapError && (
                 <div className="flex items-center justify-center h-48">
-                  <span className="font-mono text-xs text-neutral-600">Could not load contribution data</span>
+                  <span className="font-mono text-xs text-neutral-600">Could not load contribution data. Showing static data until a cached snapshot is available.</span>
                 </div>
               )}
 
