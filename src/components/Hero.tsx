@@ -39,18 +39,14 @@ const PARTICLES = [
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const Hero = () => {
-  const [mounted, setMounted] = useState(false)
   const [currentRole, setCurrentRole] = useState(0)
 
   useEffect(() => {
-    setMounted(true)
     const interval = setInterval(() => {
       setCurrentRole(prev => (prev + 1) % ROLES.length)
     }, 3000)
     return () => clearInterval(interval)
   }, [])
-
-  if (!mounted) return null
 
   return (
     <section
