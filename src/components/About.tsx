@@ -161,9 +161,10 @@ const About = () => {
       .then((data) => {
         if (typeof data.total_count !== 'number') return
 
-        setMergedCount(String(data.total_count))
+        const actualTotal = data.total_count + 1 // +1 for golang/tools Gerrit merge
+        setMergedCount(String(actualTotal))
         setSourceState('live')
-        writeCachedValue(ABOUT_CACHE_KEY, { totalCount: data.total_count })
+        writeCachedValue(ABOUT_CACHE_KEY, { totalCount: actualTotal })
       })
       .catch(() => {})
   }, [])
