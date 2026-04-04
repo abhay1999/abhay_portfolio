@@ -9,12 +9,9 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     if (prefersReducedMotion) return
 
     const lenis = new Lenis({
-      duration: 1.5,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
+      lerp: 0.05, // Lower value creates a softer, more buttery scroll
       smoothWheel: true,
-      wheelMultiplier: 1.2,
+      wheelMultiplier: 0.8, // Slightly reduced to make each scroll wheel tick feel richer
       touchMultiplier: 2,
     })
 
