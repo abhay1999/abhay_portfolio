@@ -11,10 +11,10 @@
     body {
       font-family: 'Arial', sans-serif;
       font-size: 8.8pt;
-      line-height: 1.28;
+      line-height: 1.32;
       color: #1a1a1a;
       background: #fff;
-      padding: 14px 22px 10px 22px;
+      padding: 14px 22px 14px 22px;
     }
 
     /* ── HEADER ── */
@@ -26,8 +26,16 @@
     .header .contacts a { color: #1a56db; text-decoration: none; }
     .header .contacts span { margin: 0 4px; color: #bbb; }
 
+    /* ── SUMMARY ── */
+    .summary {
+      font-size: 8.7pt; color: #2a2a2a; line-height: 1.45;
+      border-left: 3px solid #1a56db;
+      padding: 5px 8px; background: #f8faff;
+      margin-bottom: 6px; border-radius: 0 4px 4px 0;
+    }
+
     /* ── SECTION ── */
-    .section { margin-bottom: 5px; }
+    .section { margin-bottom: 6px; }
     .section-title {
       font-size: 8.2pt; font-weight: 700; text-transform: uppercase;
       letter-spacing: 1.2px; color: #111;
@@ -36,7 +44,7 @@
     }
 
     /* ── EXPERIENCE BLOCKS ── */
-    .te-block { margin-bottom: 5px; }
+    .te-block { margin-bottom: 6px; }
     .te-header { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
     .te-org { font-weight: 700; font-size: 9pt; color: #111; }
     .te-org-note { font-weight: 400; color: #555; font-size: 8.2pt; }
@@ -44,7 +52,7 @@
     .te-sub { font-size: 8.2pt; color: #444; font-style: italic; margin-bottom: 2px; }
 
     ul { padding-left: 12px; }
-    ul li { margin-bottom: 1.5px; font-size: 8.6pt; line-height: 1.3; }
+    ul li { margin-bottom: 2px; font-size: 8.6pt; line-height: 1.32; }
     ul li::marker { color: #1a56db; }
 
     .pr-ref {
@@ -61,7 +69,7 @@
     .sv { font-size: 8.3pt; color: #1a1a1a; }
 
     /* ── PROJECTS ── */
-    .proj-block { margin-bottom: 3.5px; }
+    .proj-block { margin-bottom: 5px; }
     .proj-header { display: flex; justify-content: space-between; align-items: baseline; gap: 4px; }
     .proj-name { font-weight: 700; font-size: 8.8pt; color: #111; white-space: nowrap; }
     .proj-stack { font-size: 7.6pt; color: #666; font-style: italic; text-align: right; }
@@ -97,6 +105,12 @@
       <a href="https://linkedin.com/in/abhay-chaurasiya">linkedin.com/in/abhay-chaurasiya</a>
       <span>|</span>India
     </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    DevOps / Platform Engineer with strong expertise in <strong>Kubernetes, Go, and cloud-native systems</strong>. Active contributor to the <strong>official Go toolchain</strong> (golang/tools, reviewed by Google's core team) and <strong>CNCF ecosystem</strong> (Jaeger, Helm, GoReleaser) with 7 merged PRs reaching millions of developers.
+    Production-grade experience in <strong>observability, CI/CD pipeline automation, and Kubernetes operator development</strong> — targeting GSoC 2026 / LFX Mentorship with Jaeger or Argo CD.
   </div>
 
   <!-- SKILLS -->
@@ -242,7 +256,7 @@
       <!-- CORE COMPETENCIES -->
       <div class="section">
         <div class="section-title">Core Competencies</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px 6px; margin-top:1px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:3px 6px; margin-top:1px;">
           <span style="font-size:8.2pt; color:#1a1a1a;">✦ Kubernetes Operator Development</span>
           <span style="font-size:8.2pt; color:#1a1a1a;">✦ CI/CD Pipeline Automation</span>
           <span style="font-size:8.2pt; color:#1a1a1a;">✦ Go Static Analysis &amp; Tooling</span>
@@ -251,6 +265,16 @@
           <span style="font-size:8.2pt; color:#1a1a1a;">✦ Infrastructure as Code (IaC)</span>
           <span style="font-size:8.2pt; color:#1a1a1a;">✦ DevSecOps &amp; Security Hardening</span>
           <span style="font-size:8.2pt; color:#1a1a1a;">✦ Cloud-Native Architecture (AWS)</span>
+        </div>
+      </div>
+
+      <!-- CURRENTLY TARGETING -->
+      <div class="section">
+        <div class="section-title">Currently Targeting</div>
+        <div style="font-size:8.4pt; color:#1a1a1a; line-height:1.5;">
+          <div>🎯 &nbsp;<strong>GSoC 2026 / LFX Mentorship</strong> — Jaeger, Argo CD, or Kubernetes SIG</div>
+          <div>🚀 &nbsp;<strong>DevOps / Platform / SRE Engineer</strong> — cloud-native, Go, K8s-focused role</div>
+          <div>🌐 &nbsp;<strong>CNCF Maintainer track</strong> — building toward reviewer / maintainer status in Jaeger</div>
         </div>
       </div>
     </div>
