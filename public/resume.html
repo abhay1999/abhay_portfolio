@@ -10,74 +10,73 @@
 
     body {
       font-family: 'Arial', sans-serif;
-      font-size: 8.9pt;
-      line-height: 1.3;
+      font-size: 8.8pt;
+      line-height: 1.28;
       color: #1a1a1a;
       background: #fff;
-      padding: 15px 22px 12px 22px;
+      padding: 14px 22px 10px 22px;
     }
 
     /* ── HEADER ── */
-    .header { text-align: center; margin-bottom: 6px; }
-    .header h1 { font-size: 18.5pt; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #111; }
-    .header .title { font-size: 9pt; color: #444; letter-spacing: 0.4px; margin-top: 1px; }
-    .header .contacts { margin-top: 3px; font-size: 8.2pt; color: #333; }
+    .header { text-align: center; margin-bottom: 5px; }
+    .header h1 { font-size: 18pt; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #111; }
+    .header .title { font-size: 8.8pt; color: #444; letter-spacing: 0.3px; margin-top: 2px; }
+    .header .title span { color: #1a56db; font-weight: 700; }
+    .header .contacts { margin-top: 3px; font-size: 8pt; color: #333; }
     .header .contacts a { color: #1a56db; text-decoration: none; }
-    .header .contacts span { margin: 0 5px; color: #bbb; }
+    .header .contacts span { margin: 0 4px; color: #bbb; }
 
     /* ── SECTION ── */
     .section { margin-bottom: 5px; }
     .section-title {
-      font-size: 8.5pt; font-weight: 700; text-transform: uppercase;
+      font-size: 8.2pt; font-weight: 700; text-transform: uppercase;
       letter-spacing: 1.2px; color: #111;
       border-bottom: 1.5px solid #1a56db;
       padding-bottom: 2px; margin-bottom: 4px;
     }
 
-    /* ── TECH EXPERIENCE ── */
+    /* ── EXPERIENCE BLOCKS ── */
     .te-block { margin-bottom: 5px; }
     .te-header { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
-    .te-repo { font-weight: 700; font-size: 9.2pt; color: #111; }
-    .te-meta { font-size: 8.2pt; color: #555; white-space: nowrap; }
-    .te-sub { font-size: 8.4pt; color: #444; font-style: italic; margin-bottom: 2px; }
+    .te-org { font-weight: 700; font-size: 9pt; color: #111; }
+    .te-org-note { font-weight: 400; color: #555; font-size: 8.2pt; }
+    .te-meta { font-size: 8pt; color: #555; white-space: nowrap; flex-shrink: 0; }
+    .te-sub { font-size: 8.2pt; color: #444; font-style: italic; margin-bottom: 2px; }
 
-    ul { padding-left: 13px; }
-    ul li { margin-bottom: 1.5px; font-size: 8.7pt; }
+    ul { padding-left: 12px; }
+    ul li { margin-bottom: 1.5px; font-size: 8.6pt; line-height: 1.3; }
     ul li::marker { color: #1a56db; }
 
     .pr-ref {
-      font-size: 7.8pt; color: #1a56db; font-weight: 700;
+      font-size: 7.6pt; color: #1a56db; font-weight: 700;
       background: #eff6ff; border: 1px solid #bfdbfe;
-      padding: 0px 4px; border-radius: 3px;
+      padding: 0 3px; border-radius: 3px;
       text-decoration: none; margin-left: 3px;
     }
-    .open-prs {
-      font-size: 8.3pt; color: #555; margin-top: 3px; padding-left: 13px;
-    }
+    .open-prs { font-size: 8pt; color: #555; margin-top: 2px; padding-left: 12px; }
 
     /* ── SKILLS ── */
-    .skills-grid { display: grid; grid-template-columns: 90px 1fr; gap: 2px 8px; }
-    .skills-label { font-weight: 700; font-size: 8.5pt; color: #333; }
-    .skills-value { font-size: 8.5pt; color: #1a1a1a; }
+    .skills-grid { display: grid; grid-template-columns: 96px 1fr; gap: 2px 6px; }
+    .sk { font-weight: 700; font-size: 8.3pt; color: #222; }
+    .sv { font-size: 8.3pt; color: #1a1a1a; }
 
     /* ── PROJECTS ── */
+    .proj-block { margin-bottom: 3.5px; }
     .proj-header { display: flex; justify-content: space-between; align-items: baseline; gap: 4px; }
-    .proj-name { font-weight: 700; font-size: 9pt; color: #111; white-space: nowrap; }
-    .proj-stack { font-size: 7.8pt; color: #666; font-style: italic; text-align: right; }
-    .proj-block { margin-bottom: 4px; }
+    .proj-name { font-weight: 700; font-size: 8.8pt; color: #111; white-space: nowrap; }
+    .proj-stack { font-size: 7.6pt; color: #666; font-style: italic; text-align: right; }
 
     /* ── EDUCATION ── */
     .edu-header { display: flex; justify-content: space-between; align-items: baseline; }
-    .edu-degree { font-weight: 700; font-size: 8.9pt; color: #111; }
-    .edu-date { font-size: 8pt; color: #555; white-space: nowrap; }
-    .edu-inst { font-size: 8.6pt; color: #444; font-style: italic; }
-    .edu-gpa { font-size: 8.4pt; color: #333; margin-top: 1px; }
+    .edu-degree { font-weight: 700; font-size: 8.8pt; color: #111; }
+    .edu-date { font-size: 7.8pt; color: #555; white-space: nowrap; }
+    .edu-inst { font-size: 8.3pt; color: #444; font-style: italic; }
 
     /* ── ACHIEVEMENTS ── */
-    .ach-item { margin-bottom: 2px; font-size: 8.6pt; }
+    .ach-item { margin-bottom: 2px; font-size: 8.4pt; line-height: 1.3; }
 
     /* ── TWO COL ── */
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
   </style>
 </head>
 
@@ -86,15 +85,17 @@
   <!-- HEADER -->
   <div class="header">
     <h1>Abhay Chaurasiya</h1>
-    <div class="title">DevOps Engineer &nbsp;·&nbsp; Go &nbsp;·&nbsp; CNCF Open Source Contributor</div>
+    <div class="title">
+      <span>DevOps / Platform Engineer</span> &nbsp;|&nbsp; Kubernetes &nbsp;|&nbsp; Go &nbsp;|&nbsp; <span>CNCF &amp; Go Toolchain Contributor</span>
+    </div>
     <div class="contacts">
       <a href="mailto:abhaychaurasiya19@gmail.com">abhaychaurasiya19@gmail.com</a>
+      <span>|</span>+91 82992 11830
       <span>|</span>
       <a href="https://github.com/abhay1999">github.com/abhay1999</a>
       <span>|</span>
       <a href="https://linkedin.com/in/abhay-chaurasiya">linkedin.com/in/abhay-chaurasiya</a>
-      <span>|</span>
-      India
+      <span>|</span>India
     </div>
   </div>
 
@@ -102,89 +103,66 @@
   <div class="section">
     <div class="section-title">Technical Skills</div>
     <div class="skills-grid">
-      <span class="skills-label">Languages</span>
-      <span class="skills-value">Go (Golang), JavaScript (ES2022+), TypeScript, Python, SQL, Bash</span>
+      <span class="sk">Languages</span>
+      <span class="sv">Go (Golang), TypeScript, JavaScript (ES2022+), Python, Bash, SQL</span>
 
-      <span class="skills-label">DevOps / Cloud</span>
-      <span class="skills-value">Kubernetes, Helm, Terraform, Docker, AWS (EKS, EC2, S3, CloudFront, Lambda), GitHub Actions, Jenkins, GitOps, ArgoCD</span>
+      <span class="sk">Cloud &amp; Infra</span>
+      <span class="sv">Kubernetes, Helm, Terraform, Docker, AWS (EKS · EC2 · S3 · CloudFront · Lambda)</span>
 
-      <span class="skills-label">Backend</span>
-      <span class="skills-value">Node.js, Express.js, Go (net/http, gRPC), REST, GraphQL, WebSockets</span>
+      <span class="sk">CI/CD</span>
+      <span class="sv">GitHub Actions, Jenkins, ArgoCD, GitOps, Trivy, SonarQube</span>
 
-      <span class="skills-label">Observability</span>
-      <span class="skills-value">Prometheus, Grafana, Alertmanager, Jaeger (distributed tracing), OpenTelemetry, SPM</span>
+      <span class="sk">Observability</span>
+      <span class="sv">Prometheus, Grafana, Alertmanager, Jaeger, OpenTelemetry, SPM</span>
 
-      <span class="skills-label">Databases</span>
-      <span class="skills-value">PostgreSQL, MongoDB, Redis, MySQL</span>
+      <span class="sk">Backend &amp; DB</span>
+      <span class="sv">Node.js, Express.js, gRPC, REST, GraphQL &nbsp;·&nbsp; PostgreSQL, MongoDB, Redis, MySQL</span>
     </div>
   </div>
 
-  <!-- TECHNICAL EXPERIENCE -->
+  <!-- PROFESSIONAL EXPERIENCE -->
   <div class="section">
-    <div class="section-title">Technical Experience &nbsp;—&nbsp; Open Source Contributions</div>
+    <div class="section-title">Professional Experience &nbsp;(Open Source &amp; Engineering Work)</div>
 
     <!-- golang/tools -->
     <div class="te-block">
       <div class="te-header">
-        <span class="te-repo">Go Toolchain (golang/tools) &nbsp;<span style="font-weight:400;color:#555;">(Official Go SDK &nbsp;·&nbsp; Reviewed by Alan Donovan, Google)</span></span>
-        <span class="te-meta">Go Contributor &nbsp;·&nbsp; 1 Merged PR &nbsp;·&nbsp; Apr 2026</span>
+        <span class="te-org">Go Toolchain &nbsp;<span class="te-org-note">(golang/tools &nbsp;·&nbsp; Official Go SDK &nbsp;·&nbsp; Reviewed by Alan Donovan, Google)</span></span>
+        <span class="te-meta">Open Source Contributor &nbsp;·&nbsp; Apr 2026</span>
       </div>
-      <div class="te-sub">golang/tools &nbsp;·&nbsp; Ships in gopls — the official Go language server used by millions of developers in VSCode, JetBrains, and Neovim</div>
+      <div class="te-sub">Ships inside gopls — the official Go language server powering VSCode, JetBrains GoLand, Neovim (millions of daily users)</div>
       <ul>
-        <li>Added <strong>slicesbackward analyzer</strong> to <code style="font-size:8pt;">go/analysis/passes/modernize</code> suite — detects backward <code style="font-size:8pt;">for i := len(s)-1; i &gt;= 0; i--</code> loops and suggests modernizing with <code style="font-size:8pt;">slices.Backward</code> (Go 1.23); 422 lines, full AST analysis pass with edge-case handling and golden-file tests.
-          <a class="pr-ref" href="https://github.com/golang/tools/pull/627">PR #627</a></li>
-        <li>Contribution ships automatically in <strong>gopls</strong> (VSCode Go extension, JetBrains GoLand, Neovim) — modernization hint surfaces to every Go developer with Go 1.23+; fixes <a class="pr-ref" href="https://github.com/golang/go/issues/78484" style="margin-left:0;">golang/go#78484</a></li>
+        <li>Added <strong>slicesbackward analyzer</strong> to <code style="font-size:7.8pt;">go/analysis/passes/modernize</code> — detects legacy backward for-loops, suggests idiomatic <code style="font-size:7.8pt;">slices.Backward</code> (Go 1.23) &nbsp;<a class="pr-ref" href="https://github.com/golang/tools/pull/627">PR #627</a></li>
+        <li>422-line full AST pass with edge-case guards, golden-file tests; reviewed &amp; auto-submitted by Alan Donovan → <strong>ships to every Go developer via gopls auto-update</strong></li>
+        <li>Fixes <a class="pr-ref" href="https://github.com/golang/go/issues/78484" style="margin-left:0;">golang/go#78484</a> — improves code modernization coverage for Go 1.23+ codebases worldwide</li>
       </ul>
     </div>
 
     <!-- Jaeger -->
     <div class="te-block">
       <div class="te-header">
-        <span class="te-repo">Jaeger – Distributed Tracing System &nbsp;<span style="font-weight:400;color:#555;">(CNCF Incubating)</span></span>
-        <span class="te-meta">Go Contributor &nbsp;·&nbsp; 4 Merged PRs &nbsp;·&nbsp; Mar 2026</span>
+        <span class="te-org">Jaeger – Distributed Tracing &nbsp;<span class="te-org-note">(CNCF Incubating &nbsp;·&nbsp; used at Uber, Netflix, 1000s of orgs)</span></span>
+        <span class="te-meta">Open Source Contributor &nbsp;·&nbsp; 4 Merged PRs &nbsp;·&nbsp; Mar 2026</span>
       </div>
-      <div class="te-sub">jaegertracing/jaeger &nbsp;·&nbsp; Production-grade distributed tracing platform used at Uber, Netflix, and 1000s of orgs</div>
       <ul>
-        <li>Built <strong>Go SDK dashboard generator</strong> for SPM observability stack (ADR-007 Step 2a) — programmatic Grafana dashboard generation replacing static JSON, enabling dynamic metric configuration across the monitoring pipeline.
-          <a class="pr-ref" href="https://github.com/jaegertracing/jaeger/pull/8216">PR #8216</a></li>
-        <li>Added <strong>CI sync-check workflow</strong> to validate generator output against committed dashboards (ADR-007 Step 3) — prevents dashboard drift in CI/CD.
-          <a class="pr-ref" href="https://github.com/jaegertracing/jaeger/pull/8240">PR #8240</a></li>
-        <li>Fixed <strong>jaegermcp server</strong> to enforce response size limits — prevents unbounded output in tool responses, improving reliability of MCP integration.
-          <a class="pr-ref" href="https://github.com/jaegertracing/jaeger/pull/8242">PR #8242</a></li>
-        <li>Restored <strong>Grafana + SPM</strong> service in docker-compose observability example, unblocking users running the full monitoring stack locally (ADR-007 Step 1).
-          <a class="pr-ref" href="https://github.com/jaegertracing/jaeger/pull/8215">PR #8215</a></li>
+        <li>Built <strong>Go SDK dashboard generator</strong> for SPM stack (ADR-007) — replaced static JSON with programmatic Grafana provisioning; enabled dynamic metric config across monitoring pipeline &nbsp;<a class="pr-ref" href="https://github.com/jaegertracing/jaeger/pull/8216">PR #8216</a></li>
+        <li>Added <strong>CI sync-check workflow</strong> — validates generator output vs committed dashboards on every PR; eliminates dashboard drift &nbsp;<a class="pr-ref" href="https://github.com/jaegertracing/jaeger/pull/8240">PR #8240</a></li>
+        <li>Patched <strong>jaegermcp</strong> to enforce response size limits → prevents unbounded output crashes &nbsp;<a class="pr-ref" href="https://github.com/jaegertracing/jaeger/pull/8242">PR #8242</a> &nbsp;·&nbsp; Restored Grafana + SPM in docker-compose → unblocked full local observability stack &nbsp;<a class="pr-ref" href="https://github.com/jaegertracing/jaeger/pull/8215">PR #8215</a></li>
       </ul>
     </div>
 
-    <!-- Helm -->
+    <!-- Helm + GoReleaser -->
     <div class="te-block">
       <div class="te-header">
-        <span class="te-repo">Helm – Kubernetes Package Manager &nbsp;<span style="font-weight:400;color:#555;">(CNCF Graduated, 29k+ ⭐)</span></span>
-        <span class="te-meta">Go Contributor &nbsp;·&nbsp; 1 Merged · 2 Open PRs &nbsp;·&nbsp; Mar 2026</span>
-      </div>
-      <div class="te-sub">helm/helm &nbsp;·&nbsp; The de-facto standard for Kubernetes application packaging</div>
-      <ul>
-        <li>Removed <strong>legacy Go import path comments</strong> from <code style="font-size:8pt;">pkg/kube</code> package — Go module-based projects no longer require these, keeping codebase clean and idiomatic.
-          <a class="pr-ref" href="https://github.com/helm/helm/pull/31931">PR #31931</a></li>
-        <li><em>(Open)</em> Fixing <code style="font-size:8pt;">values.yaml</code> null-override bug — parent-defined subchart defaults should be erased when user explicitly sets <code style="font-size:8pt;">null</code>.
-          <a class="pr-ref" href="https://github.com/helm/helm/pull/31976">PR #31976</a></li>
-      </ul>
-    </div>
-
-    <!-- GoReleaser + others -->
-    <div class="te-block">
-      <div class="te-header">
-        <span class="te-repo">GoReleaser &nbsp;+&nbsp; Other Notable Contributions</span>
-        <span class="te-meta">1 Merged &nbsp;·&nbsp; 11 Open PRs across CNCF ecosystem</span>
+        <span class="te-org">Helm &nbsp;<span class="te-org-note">(CNCF Graduated · 29k+ ⭐)</span> &nbsp;&amp;&nbsp; GoReleaser &nbsp;<span class="te-org-note">(14k+ ⭐)</span></span>
+        <span class="te-meta">2 Merged PRs &nbsp;·&nbsp; Mar 2026</span>
       </div>
       <ul>
-        <li>Fixed <strong>filterOut tag selection bug</strong> in GoReleaser — function returned the excluded tag instead of remaining tags when multiple <code style="font-size:8pt;">ignore_tags</code> patterns configured.
-          <a class="pr-ref" href="https://github.com/goreleaser/goreleaser/pull/6462">PR #6462</a></li>
-        <li><em>(Open)</em> Security fix for <strong>Argo CD</strong> — added <code style="font-size:8pt;">X-Frame-Options</code> and <code style="font-size:8pt;">Content-Security-Policy</code> headers to Swagger UI endpoints.
-          <a class="pr-ref" href="https://github.com/argoproj/argo-cd/pull/26918">PR #26918</a></li>
+        <li>Removed <strong>legacy Kythe import path comments</strong> from <code style="font-size:7.8pt;">helm/pkg/kube</code> — improved module compliance &amp; codebase cleanliness; eliminated static analysis false-positives &nbsp;<a class="pr-ref" href="https://github.com/helm/helm/pull/31931">PR #31931</a></li>
+        <li>Fixed <strong>filterOut tag selection bug</strong> in GoReleaser — function returned the excluded tag instead of remaining ones; corrected multi-<code style="font-size:7.8pt;">ignore_tags</code> release pipelines &nbsp;<a class="pr-ref" href="https://github.com/goreleaser/goreleaser/pull/6462">PR #6462</a></li>
       </ul>
       <div class="open-prs">
-        Additional open PRs: <strong>tektoncd/pipeline</strong> (perf), <strong>kgateway-dev/kgateway</strong> (Helm/fix ×2), <strong>grafana/grafana</strong> (security), <strong>docker/cli</strong>, <strong>NVIDIA/NeMo-Retriever</strong> (Helm), <strong>meshery/meshery</strong>, <strong>jenkinsci/jenkins</strong>
+        Open PRs: <strong>Argo CD</strong> (X-Frame-Options + CSP security headers), <strong>Grafana</strong> (email security), <strong>Tekton</strong>, <strong>Docker CLI</strong>, <strong>NVIDIA/NeMo</strong> (Helm), <strong>Meshery</strong>, <strong>Jenkins</strong>, <strong>kgateway</strong> &nbsp;·&nbsp; 11+ active
       </div>
     </div>
   </div>
@@ -198,50 +176,44 @@
         <div class="proj-block">
           <div class="proj-header">
             <span class="proj-name">Self-Healing K8s Platform</span>
-            <span class="proj-stack">Go · Kubernetes · Prometheus · Helm · GitOps</span>
+            <span class="proj-stack">Go · Kubernetes · Prometheus · Helm</span>
           </div>
           <ul>
-            <li>3 custom Go operators for automated CrashLoopBackOff detection and pod remediation; 47+ incidents resolved autonomously with alert-driven healing via Prometheus + Alertmanager.</li>
+            <li>3 Go operators detect CrashLoopBackOff → auto-remediate pods via Prometheus + Alertmanager webhooks</li>
+            <li>47+ incidents resolved autonomously; ~11s avg heal time; zero on-call pages</li>
           </ul>
         </div>
 
         <div class="proj-block">
           <div class="proj-header">
             <span class="proj-name">Dev Environment Platform</span>
-            <span class="proj-stack">Go · Kubernetes · CLI</span>
+            <span class="proj-stack">Go · Kubernetes · CLI (cobra)</span>
           </div>
           <ul>
-            <li>Go CLI to spin up isolated MERN / React / Go+PostgreSQL dev stacks on K8s in a single command — automated namespace provisioning, port-forwarding, and teardown in &lt;15s.</li>
+            <li>Go CLI spins up isolated MERN / React / Go+PG stacks on K8s in a single command</li>
+            <li>Automated namespace provisioning, port-forwarding &amp; teardown in &lt;15s; eliminates "works on my machine"</li>
           </ul>
         </div>
 
         <div class="proj-block">
           <div class="proj-header">
             <span class="proj-name">Netflix Clone on AWS EKS</span>
-            <span class="proj-stack">EKS · Terraform · Jenkins · Docker · Trivy</span>
+            <span class="proj-stack">EKS · Terraform · Jenkins · Trivy</span>
           </div>
           <ul>
-            <li>End-to-end DevSecOps pipeline — Terraform EKS, Jenkins CI/CD, SonarQube, Trivy scanning (0 critical CVEs), Prometheus + Grafana monitoring stack.</li>
+            <li>Full DevSecOps pipeline — Terraform IaC, Jenkins CI/CD, SonarQube quality gates, Trivy container scanning</li>
+            <li>0 critical CVEs; automated deploy-on-merge; Prometheus + Grafana observability stack</li>
           </ul>
         </div>
 
         <div class="proj-block">
           <div class="proj-header">
             <span class="proj-name">AvlokanIAS – E-Learning Platform</span>
-            <span class="proj-stack">React · Node.js · AWS · PostgreSQL</span>
+            <span class="proj-stack">React · Node.js · AWS · HLS</span>
           </div>
           <ul>
-            <li>Full UPSC e-learning platform built from scratch — HLS video streaming via CloudFront, JWT auth, Razorpay payments; sustained 5,000+ concurrent users on launch with zero downtime.</li>
-          </ul>
-        </div>
-
-        <div class="proj-block">
-          <div class="proj-header">
-            <span class="proj-name">Developer Portfolio</span>
-            <span class="proj-stack">Next.js · TypeScript · Docker · Framer Motion</span>
-          </div>
-          <ul>
-            <li>Built with live GitHub API, interactive DevOps terminal playground, CI/CD health monitor, contribution heatmap, and ThoughtWorks-style Tech Radar — containerised with Docker + Nginx.</li>
+            <li>HLS video streaming via CloudFront CDN, JWT auth, Razorpay payments, Node.js + MySQL backend</li>
+            <li>Sustained <strong>5,000+ concurrent users</strong> on launch day with zero downtime</li>
           </ul>
         </div>
 
@@ -256,30 +228,29 @@
           <span class="edu-degree">Integrated B.Tech + M.Tech – IT</span>
           <span class="edu-date">2018 – 2023</span>
         </div>
-        <div class="edu-inst">ABV-IIIT Gwalior (Indian Institute of Information Technology)</div>
-        <div class="edu-gpa">CGPA: <strong>7.32 / 10</strong></div>
+        <div class="edu-inst">ABV-IIIT Gwalior, India &nbsp;(Institute of National Importance)</div>
       </div>
 
       <!-- ACHIEVEMENTS -->
       <div class="section">
         <div class="section-title">Achievements</div>
-        <div class="ach-item">🏆 <strong>LeetCode:</strong> 600+ problems solved — Easy 220+, Medium 310+, Hard 70+; HackerRank 5★ Problem Solving.</div>
-        <div class="ach-item">🌐 <strong>Open Source:</strong> 7 merged PRs — <strong>golang/tools</strong> (Go toolchain, reviewed by Alan Donovan), Helm, Jaeger (×4), GoReleaser; 11+ open PRs across Argo CD, Grafana, Tekton, Docker &amp; more.</div>
-        <div class="ach-item">🔧 <strong>Portfolio:</strong> Live DevOps playground, CI/CD health dashboard, GitHub contribution heatmap, ThoughtWorks-style Tech Radar — <a href="https://github.com/abhay1999/abhay_portfolio" style="color:#1a56db;text-decoration:none;">github.com/abhay1999</a></div>
+        <div class="ach-item">🌐 <strong>Go Toolchain Contributor:</strong> PR merged into <strong>golang/tools</strong> — new analyzer ships in gopls to millions of developers; reviewed by Alan Donovan (Go core team, Google).</div>
+        <div class="ach-item">🔷 <strong>CNCF Contributor:</strong> 6 merged PRs in Jaeger (×4), Helm, GoReleaser; 11+ open PRs across Argo CD, Grafana, Tekton, Docker, Meshery &amp; more.</div>
+        <div class="ach-item">🏆 <strong>LeetCode:</strong> 600+ problems — Medium 310+, Hard 70+; HackerRank 5★ Problem Solving.</div>
       </div>
 
       <!-- CORE COMPETENCIES -->
       <div class="section">
         <div class="section-title">Core Competencies</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:2.5px 6px; margin-top:1px;">
-          <span style="font-size:8.4pt; color:#1a1a1a;">✦ Kubernetes Operator Development</span>
-          <span style="font-size:8.4pt; color:#1a1a1a;">✦ CI/CD Pipeline Automation</span>
-          <span style="font-size:8.4pt; color:#1a1a1a;">✦ Go Microservices &amp; CLI Tools</span>
-          <span style="font-size:8.4pt; color:#1a1a1a;">✦ Observability &amp; Monitoring</span>
-          <span style="font-size:8.4pt; color:#1a1a1a;">✦ CNCF Open Source Contribution</span>
-          <span style="font-size:8.4pt; color:#1a1a1a;">✦ Infrastructure as Code (IaC)</span>
-          <span style="font-size:8.4pt; color:#1a1a1a;">✦ DevSecOps &amp; Security Hardening</span>
-          <span style="font-size:8.4pt; color:#1a1a1a;">✦ Cloud-Native Architecture (AWS)</span>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px 6px; margin-top:1px;">
+          <span style="font-size:8.2pt; color:#1a1a1a;">✦ Kubernetes Operator Development</span>
+          <span style="font-size:8.2pt; color:#1a1a1a;">✦ CI/CD Pipeline Automation</span>
+          <span style="font-size:8.2pt; color:#1a1a1a;">✦ Go Static Analysis &amp; Tooling</span>
+          <span style="font-size:8.2pt; color:#1a1a1a;">✦ Observability &amp; Monitoring</span>
+          <span style="font-size:8.2pt; color:#1a1a1a;">✦ Platform / Infrastructure Engineering</span>
+          <span style="font-size:8.2pt; color:#1a1a1a;">✦ Infrastructure as Code (IaC)</span>
+          <span style="font-size:8.2pt; color:#1a1a1a;">✦ DevSecOps &amp; Security Hardening</span>
+          <span style="font-size:8.2pt; color:#1a1a1a;">✦ Cloud-Native Architecture (AWS)</span>
         </div>
       </div>
     </div>
