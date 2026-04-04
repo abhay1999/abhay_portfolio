@@ -123,6 +123,20 @@
   <div class="section">
     <div class="section-title">Technical Experience &nbsp;—&nbsp; Open Source Contributions</div>
 
+    <!-- golang/tools -->
+    <div class="te-block">
+      <div class="te-header">
+        <span class="te-repo">Go Toolchain (golang/tools) &nbsp;<span style="font-weight:400;color:#555;">(Official Go SDK &nbsp;·&nbsp; Reviewed by Alan Donovan, Google)</span></span>
+        <span class="te-meta">Go Contributor &nbsp;·&nbsp; 1 Merged PR &nbsp;·&nbsp; Apr 2026</span>
+      </div>
+      <div class="te-sub">golang/tools &nbsp;·&nbsp; Ships in gopls — the official Go language server used by millions of developers in VSCode, JetBrains, and Neovim</div>
+      <ul>
+        <li>Added <strong>slicesbackward analyzer</strong> to <code style="font-size:8pt;">go/analysis/passes/modernize</code> suite — detects backward <code style="font-size:8pt;">for i := len(s)-1; i &gt;= 0; i--</code> loops and suggests modernizing with <code style="font-size:8pt;">slices.Backward</code> (Go 1.23); 422 lines, full AST analysis pass with edge-case handling and golden-file tests.
+          <a class="pr-ref" href="https://github.com/golang/tools/pull/627">PR #627</a></li>
+        <li>Contribution ships automatically in <strong>gopls</strong> (VSCode Go extension, JetBrains GoLand, Neovim) — modernization hint surfaces to every Go developer with Go 1.23+; fixes <a class="pr-ref" href="https://github.com/golang/go/issues/78484" style="margin-left:0;">golang/go#78484</a></li>
+      </ul>
+    </div>
+
     <!-- Jaeger -->
     <div class="te-block">
       <div class="te-header">
@@ -250,7 +264,7 @@
       <div class="section">
         <div class="section-title">Achievements</div>
         <div class="ach-item">🏆 <strong>LeetCode:</strong> 600+ problems solved — Easy 220+, Medium 310+, Hard 70+; HackerRank 5★ Problem Solving.</div>
-        <div class="ach-item">🌐 <strong>CNCF Contributor:</strong> 6 merged PRs in Helm, Jaeger (×4), GoReleaser; 11+ open PRs across Argo CD, Grafana, Tekton, Docker, Terraform &amp; more.</div>
+        <div class="ach-item">🌐 <strong>Open Source:</strong> 7 merged PRs — <strong>golang/tools</strong> (Go toolchain, reviewed by Alan Donovan), Helm, Jaeger (×4), GoReleaser; 11+ open PRs across Argo CD, Grafana, Tekton, Docker &amp; more.</div>
         <div class="ach-item">🔧 <strong>Portfolio:</strong> Live DevOps playground, CI/CD health dashboard, GitHub contribution heatmap, ThoughtWorks-style Tech Radar — <a href="https://github.com/abhay1999/abhay_portfolio" style="color:#1a56db;text-decoration:none;">github.com/abhay1999</a></div>
       </div>
 
