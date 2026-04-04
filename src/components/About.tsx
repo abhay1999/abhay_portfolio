@@ -60,7 +60,7 @@ const BASE_STATS = [
   { key: 'exp',      value: '2+',   label: 'Years Exp',    Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.05]',    border: 'border-cyan-500/20'    },
   { key: 'projects', value: '15+',  label: 'Projects',     Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.05]',  border: 'border-purple-500/20'  },
   { key: 'leetcode', value: '600+', label: 'LeetCode',     Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.05]', border: 'border-emerald-500/20' },
-  { key: 'prs',      value: '5+',   label: 'Merged PRs',   Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.05]',   border: 'border-amber-500/20'   },
+  { key: 'prs',      value: '7+',   label: 'Merged PRs',   Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.05]',   border: 'border-amber-500/20'   },
 ]
 
 const CODING = {
@@ -97,7 +97,7 @@ const CAPS = [
     hoverGlow: 'hover:shadow-[0_0_40px_-10px_rgba(6,182,212,0.4)]',
   },
   {
-    Icon: Database,  title: 'Open Source',          desc: 'CNCF · Helm · GitHub · Community',
+    Icon: Database,  title: 'Open Source',          desc: 'golang/tools · CNCF · Helm · Jaeger',
     iconBg: 'bg-purple-500/15',  iconCls: 'text-purple-400',
     border: 'border-purple-500/20 hover:border-purple-400/50',
     hoverGlow: 'hover:shadow-[0_0_40px_-10px_rgba(168,85,247,0.4)]',
@@ -174,7 +174,7 @@ const About = () => {
   const ID_FIELDS = [
     { prefix: '$', key: 'status',     val: '● available',            valCls: 'text-emerald-400' },
     { prefix: '~', key: 'location',   val: 'India',                   valCls: 'text-neutral-300' },
-    { prefix: '>', key: 'focus',      val: 'DevOps · Go · Cloud',    valCls: 'text-cyan-300'    },
+    { prefix: '>', key: 'focus',      val: 'DevOps · Go · golang/tools', valCls: 'text-cyan-300' },
     { prefix: '#', key: 'github',     val: 'abhay1999',               valCls: 'text-cyan-300'    },
     { prefix: '@', key: 'merged_prs', val: `${mergedCount} merged`,   valCls: 'text-purple-300'  },
   ]
@@ -439,7 +439,7 @@ const About = () => {
                 <div className="flex items-start gap-3">
                   <span className="text-purple-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed">
-                    I contribute to production-grade <span className="text-white font-semibold">CNCF projects</span> — 4 merged PRs in <span className="text-cyan-400 font-medium">Jaeger</span> (Go SDK dashboard generator, CI sync-check, MCP response limits, SPM restore), 1 in <span className="text-cyan-400 font-medium">Helm</span>, 1 in <span className="text-cyan-400 font-medium">GoReleaser</span>, and 11+ open PRs across Argo CD, Grafana, Tekton &amp; more.
+                    Contributor to the <span className="text-white font-semibold">official Go toolchain</span> — PR merged into <span className="text-cyan-400 font-medium">golang/tools</span>, adding the <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">slicesbackward</code> analyzer to <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">go/analysis/passes/modernize</code>; reviewed by Alan Donovan (Google) and ships in <span className="text-cyan-400 font-medium">gopls</span> to millions of Go developers. Also 6 merged PRs across <span className="text-cyan-400 font-medium">Jaeger</span>, <span className="text-cyan-400 font-medium">Helm</span> &amp; <span className="text-cyan-400 font-medium">GoReleaser</span>.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -483,7 +483,7 @@ const About = () => {
                   <Cpu size={15} className="text-cyan-400 shrink-0 mt-0.5" />
                   <p className="text-[13px] font-mono text-neutral-400 leading-relaxed">
                     <span className="text-cyan-300 font-semibold">CONTRIBUTING</span>{' '}
-                    Active in Jaeger, Helm, Argo CD &amp; Tekton — {mergedCount} PRs merged, 11+ open. Targeting GSoC / LFX Mentorship in the CNCF ecosystem.
+                    golang/tools (Go toolchain · gopls), Jaeger, Helm, GoReleaser, Argo CD &amp; more — {mergedCount} PRs merged, 11+ open. Targeting GSoC / LFX Mentorship in the CNCF ecosystem.
                   </p>
                 </div>
                 <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-emerald-500/10 hover:border-emerald-500/25 transition-colors">

@@ -8,11 +8,11 @@ import Image from 'next/image'
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const ROLES = [
+  'Go Toolchain Contributor',
   'CNCF Open Source Contributor',
   'DevOps & Go Engineer',
   'Kubernetes Platform Builder',
   'Cloud Native Specialist',
-  'Full-Stack Developer',
 ]
 
 const SOCIALS = [
@@ -243,11 +243,14 @@ const Hero = () => {
 
             {/* Bio */}
             <p className="text-neutral-400 max-w-lg mx-auto lg:mx-0 leading-relaxed text-[15px]">
-              <span className="text-white font-medium">CNCF contributor</span> with merged PRs in{' '}
+              Contributor to the{' '}
+              <span className="text-white font-medium">official Go toolchain</span>{' '}
+              (<span className="text-cyan-400 font-medium">golang/tools</span>, reviewed by Alan Donovan · ships in gopls) and{' '}
+              <span className="text-white font-medium">CNCF</span>{' '}
+              (<span className="text-cyan-400 font-medium">Jaeger</span>,{' '}
               <span className="text-cyan-400 font-medium">Helm</span>,{' '}
-              <span className="text-cyan-400 font-medium">Jaeger</span> &{' '}
-              <span className="text-cyan-400 font-medium">GoReleaser</span>.
-              Building scalable infra, Kubernetes platforms, and contributing to open source systems.
+              <span className="text-cyan-400 font-medium">GoReleaser</span>).
+              Building scalable infra, Kubernetes platforms, and cloud-native systems.
             </p>
 
             {/* Best fit roles */}
@@ -494,15 +497,15 @@ const Hero = () => {
                     Abhay Chaurasiya
                   </h2>
                   <p className="text-cyan-400 text-[10px] font-mono tracking-[0.22em] uppercase mb-5">
-                    DevOps · Go · CNCF
+                    DevOps · Go · CNCF · golang/tools
                   </p>
 
                   {/* Quick stat chips */}
                   <div className="flex gap-2 flex-wrap justify-center">
                     {[
-                      { label: '2+ yrs',   cls: 'text-cyan-400    border-cyan-500/25    bg-cyan-500/[0.08]'    },
-                      { label: '15+ proj', cls: 'text-purple-400  border-purple-500/25  bg-purple-500/[0.08]'  },
-                      { label: '500+ LC',  cls: 'text-amber-400   border-amber-500/25   bg-amber-500/[0.08]'   },
+                      { label: '2+ yrs',    cls: 'text-cyan-400    border-cyan-500/25    bg-cyan-500/[0.08]'    },
+                      { label: '7+ PRs',    cls: 'text-emerald-400 border-emerald-500/25 bg-emerald-500/[0.08]' },
+                      { label: '600+ LC',   cls: 'text-amber-400   border-amber-500/25   bg-amber-500/[0.08]'   },
                     ].map(c => (
                       <span
                         key={c.label}
