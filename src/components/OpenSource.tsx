@@ -163,6 +163,21 @@ const FEATURED_PROJECTS = [
 
 const OTHER_FEATURED = [
   {
+    number: 627,
+    org: 'golang/tools',
+    orgDisplay: 'Go Toolchain',
+    badge: 'Official Go SDK · Ships in gopls',
+    badgeClass: 'bg-sky-500/15 border-sky-500/30 text-sky-300',
+    title: 'go/analysis/passes/modernize: add slicesbackward analyzer',
+    description: 'Added a new static analysis pass to the Go modernize suite that detects manually-written backward for-loops and suggests replacing them with slices.Backward (Go 1.23) — reviewed and merged by Alan Donovan (Go core team, Google).',
+    impact: 'Ships inside gopls — the official Go language server used by millions of developers in VSCode, JetBrains, Vim, and every major IDE. Every Go project running go vet or gopls benefits from this modernizer.',
+    tags: ['Go', 'AST Analysis', 'gopls', 'Static Analysis'],
+    url: 'https://github.com/golang/tools/pull/627',
+    accentClass: 'text-sky-400',
+    borderClass: 'border-sky-500/25',
+    glowColor: 'rgba(56,189,248,0.12)',
+  },
+  {
     number: 31931,
     org: 'helm/helm',
     orgDisplay: 'Helm',
@@ -196,6 +211,7 @@ const OTHER_FEATURED = [
 
 // ─── Static Fallback ──────────────────────────────────────────────────────────
 const STATIC_MERGED: MergedPR[] = [
+  { number: 627,   repo: 'golang/tools',          orgInitial: 'G', title: 'go/analysis/passes/modernize: add slicesbackward analyzer',          description: 'New static analysis pass detecting backward for-loops and suggesting slices.Backward (Go 1.23). Ships in gopls. Reviewed by Alan Donovan (Go core team).',                tags: ['Go','AST','gopls','Go Toolchain'],  mergedAt: 'Apr 3, 2026',  repoStars: '10k+', url: 'https://github.com/golang/tools/pull/627',           ...MERGED_THEMES[4] },
   { number: 31931, repo: 'helm/helm',            orgInitial: 'H', title: 'pkg/kube: remove legacy import comments',                            description: 'Fixed legacy Kythe static analysis failures by migrating pre-Go modules import path comments to modern go.mod conventions.',  tags: ['Go','Kubernetes','CNCF'],           mergedAt: 'Mar 12, 2026', repoStars: '29k+', url: 'https://github.com/helm/helm/pull/31931',            ...MERGED_THEMES[0] },
   { number: 6462,  repo: 'goreleaser/goreleaser', orgInitial: 'G', title: 'fix: filterOut returns excluded tag when multiple ignore_tags set',   description: 'Resolved release pipeline bug where multiple ignore_tags caused incorrect tag exclusion logic.',                           tags: ['Go','CI/CD','Release'],             mergedAt: 'Mar 17, 2026', repoStars: '14k+', url: 'https://github.com/goreleaser/goreleaser/pull/6462',  ...MERGED_THEMES[1] },
   { number: 8215,  repo: 'jaegertracing/jaeger',  orgInitial: 'J', title: 'feat(monitor): restore Grafana to SPM docker-compose example',       description: 'Restored Grafana to the SPM docker-compose as part of ADR-007 observability stack migration.',                           tags: ['Go','Grafana','Docker','CNCF'],     mergedAt: 'Mar 21, 2026', repoStars: '20k+', url: 'https://github.com/jaegertracing/jaeger/pull/8215',   ...MERGED_THEMES[2] },
@@ -323,8 +339,8 @@ const OpenSource = () => {
   const STATS = [
     { value: String(mergedCount), label: 'Merged PRs',  icon: GitMerge,      accent: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/25', glow: 'shadow-[0_0_20px_rgba(52,211,153,0.2)]'  },
     { value: String(openCount),   label: 'Open PRs',    icon: GitPullRequest, accent: 'text-cyan-400',   bg: 'bg-cyan-500/10',    border: 'border-cyan-500/25',    glow: 'shadow-[0_0_20px_rgba(34,211,238,0.2)]'  },
-    { value: '8+',                label: 'Orgs',        icon: Star,           accent: 'text-purple-400', bg: 'bg-purple-500/10',  border: 'border-purple-500/25',  glow: 'shadow-[0_0_20px_rgba(192,132,252,0.2)]' },
-    { value: '60k+',              label: 'Repo Stars',  icon: Star,           accent: 'text-amber-400',  bg: 'bg-amber-500/10',   border: 'border-amber-500/25',   glow: 'shadow-[0_0_20px_rgba(251,191,36,0.2)]'  },
+    { value: '9+',                label: 'Orgs',        icon: Star,           accent: 'text-purple-400', bg: 'bg-purple-500/10',  border: 'border-purple-500/25',  glow: 'shadow-[0_0_20px_rgba(192,132,252,0.2)]' },
+    { value: '70k+',              label: 'Repo Stars',  icon: Star,           accent: 'text-amber-400',  bg: 'bg-amber-500/10',   border: 'border-amber-500/25',   glow: 'shadow-[0_0_20px_rgba(251,191,36,0.2)]'  },
   ]
 
   return (
