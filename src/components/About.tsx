@@ -104,7 +104,7 @@ const CAPS = [
   },
 ]
 
-const ABOUT_CACHE_KEY = 'about:merged-prs'
+const ABOUT_CACHE_KEY = 'about:merged-prs-v2'
 const ABOUT_CACHE_TTL_MS = 1000 * 60 * 30
 
 function getSourceBadge(state: DataSourceState) {
@@ -161,7 +161,7 @@ const About = () => {
       .then((data) => {
         if (typeof data.total_count !== 'number') return
 
-        const actualTotal = data.total_count + 1 // +1 for golang/tools Gerrit merge
+        const actualTotal = Math.max(8, data.total_count + 1) // +1 for golang/tools Gerrit merge
         setMergedCount(String(actualTotal))
         setSourceState('live')
         writeCachedValue(ABOUT_CACHE_KEY, { totalCount: actualTotal })
