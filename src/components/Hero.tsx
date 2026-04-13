@@ -504,7 +504,7 @@ const Hero = () => {
                   <div className="flex gap-2 flex-wrap justify-center">
                     {[
                       { label: '2+ yrs',    cls: 'text-cyan-400    border-cyan-500/25    bg-cyan-500/[0.08]'    },
-                      { label: '7+ PRs',    cls: 'text-emerald-400 border-emerald-500/25 bg-emerald-500/[0.08]' },
+                      { label: '8+ PRs',    cls: 'text-emerald-400 border-emerald-500/25 bg-emerald-500/[0.08]' },
                       { label: '600+ LC',   cls: 'text-amber-400   border-amber-500/25   bg-amber-500/[0.08]'   },
                     ].map(c => (
                       <span

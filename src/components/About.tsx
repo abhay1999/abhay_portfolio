@@ -60,7 +60,7 @@ const BASE_STATS = [
   { key: 'exp',      value: '2+',   label: 'Years Exp',    Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.05]',    border: 'border-cyan-500/20'    },
   { key: 'projects', value: '15+',  label: 'Projects',     Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.05]',  border: 'border-purple-500/20'  },
   { key: 'leetcode', value: '600+', label: 'LeetCode',     Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.05]', border: 'border-emerald-500/20' },
-  { key: 'prs',      value: '7+',   label: 'Merged PRs',   Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.05]',   border: 'border-amber-500/20'   },
+  { key: 'prs',      value: '8+',   label: 'Merged PRs',   Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.05]',   border: 'border-amber-500/20'   },
 ]
 
 const CODING = {
@@ -140,7 +140,7 @@ function getSourceBadge(state: DataSourceState) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const About = () => {
-  const [mergedCount, setMergedCount] = useState('7+')
+  const [mergedCount, setMergedCount] = useState('8+')
   const [sourceState, setSourceState] = useState<DataSourceState>('static')
 
   useEffect(() => {
@@ -440,7 +440,7 @@ const About = () => {
                 <div className="flex items-start gap-3">
                   <span className="text-purple-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed">
-                    Contributor to the <span className="text-white font-semibold">official Go toolchain</span> — PR merged into <span className="text-cyan-400 font-medium">golang/tools</span>, adding the <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">slicesbackward</code> analyzer to <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">go/analysis/passes/modernize</code>; reviewed by Alan Donovan (Google) and ships in <span className="text-cyan-400 font-medium">gopls</span> to millions of Go developers. Also 6 more merged PRs across <span className="text-cyan-400 font-medium">Jaeger</span> (×4), <span className="text-cyan-400 font-medium">Helm</span> &amp; <span className="text-cyan-400 font-medium">GoReleaser</span> — <strong className="text-white">7 total</strong>.
+                    Contributor to the <span className="text-white font-semibold">official Go toolchain</span> — PR merged into <span className="text-cyan-400 font-medium">golang/tools</span>, adding the <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">slicesbackward</code> analyzer to <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">go/analysis/passes/modernize</code>; reviewed by Alan Donovan (Google) and ships in <span className="text-cyan-400 font-medium">gopls</span> to millions of Go developers. Also 7 more merged PRs across <span className="text-cyan-400 font-medium">Jaeger</span> (×4), <span className="text-cyan-400 font-medium">Helm</span> &amp; <span className="text-cyan-400 font-medium">GoReleaser</span> — <strong className="text-white">8 total</strong>.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
