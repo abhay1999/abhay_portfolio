@@ -161,7 +161,7 @@ const About = () => {
       .then((data) => {
         if (typeof data.total_count !== 'number') return
 
-        const actualTotal = Math.max(8, data.total_count + 1) // +1 for golang/tools Gerrit merge
+        const actualTotal = Math.max(8, data.total_count + 2) // +2 for golang/tools Gerrit CLs (not indexed by GitHub)
         setMergedCount(String(actualTotal))
         setSourceState('live')
         writeCachedValue(ABOUT_CACHE_KEY, { totalCount: actualTotal })
