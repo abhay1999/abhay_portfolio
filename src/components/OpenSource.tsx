@@ -92,6 +92,62 @@ function inferTags(title: string, repo: string): string[] {
 // ─── Featured Contributions ───────────────────────────────────────────────────
 const FEATURED_PROJECTS = [
   {
+    org: 'golang/tools',
+    orgDisplay: 'Go Toolchain',
+    badge: 'Official Go SDK · Ships in gopls',
+    badgeClass: 'bg-sky-500/15 border-sky-500/30 text-sky-300',
+    description: 'Official Go toolchain — home of gopls, the Go language server powering VSCode, JetBrains, Neovim, and every major IDE. 3 CLs merged, all reviewed by Alan Donovan (Go core team, Google).',
+    mergedCount: 3,
+    openCount: 0,
+    accentClass: 'text-sky-400',
+    borderClass: 'border-sky-500/25',
+    glowColor: 'rgba(56,189,248,0.12)',
+    headerBg: 'from-sky-950/40 to-black/60',
+    repoStars: '10k+',
+    orgInitial: 'G',
+    prs: [
+      {
+        number: 627,
+        icon: GitBranch,
+        iconClass: 'text-sky-400',
+        iconBg: 'bg-sky-500/10 border-sky-500/20',
+        title: 'slicesbackward Analyzer',
+        subtitle: 'go/analysis/passes/modernize · PR #627',
+        problem: 'Go codebases still used manual backward for-loops — no automated way to detect or modernize them to Go 1.23 idioms.',
+        solution: 'Built a 422-line full AST analyzer that detects backward for-loops and suggests slices.Backward (Go 1.23). Edge-case guards + golden-file tests.',
+        impact: 'Ships in gopls to every Go developer worldwide. Fixes golang/go#78484. Reviewed & merged by Alan Donovan (Google).',
+        url: 'https://github.com/golang/tools/pull/627',
+        tags: ['Go', 'AST', 'gopls', 'Go 1.23'],
+      },
+      {
+        number: 629,
+        icon: Zap,
+        iconClass: 'text-emerald-400',
+        iconBg: 'bg-emerald-500/10 border-emerald-500/20',
+        title: 'stringscut Analyzer',
+        subtitle: 'modernize/stringscut · PR #629',
+        problem: 'Code using strings.Split/SplitN[0] is more verbose and error-prone than strings.Cut — no tooling to auto-migrate these patterns.',
+        solution: '267-line AST pass that detects Split/SplitN[0] patterns and rewrites them to strings.Cut (Go 1.18). 5 patch sets, comprehensive edge-case handling.',
+        impact: 'Ships in gopls to all Go developers globally. Reviewed by Alan Donovan & Madeline Kalil (Google). Modernizes every Go 1.18+ codebase automatically.',
+        url: 'https://github.com/golang/tools/pull/629',
+        tags: ['Go', 'AST', 'gopls', 'Go 1.18'],
+      },
+      {
+        number: 762540,
+        icon: Shield,
+        iconClass: 'text-purple-400',
+        iconBg: 'bg-purple-500/10 border-purple-500/20',
+        title: 'gopls Completion Fix',
+        subtitle: 'gopls/completion · CL #762540',
+        problem: 'gopls completion triggered right after "//" produced malformed output — missing the required space before a declaration.',
+        solution: 'Fixed the completion engine to prepend a space when completing immediately after "//" before any declaration.',
+        impact: 'Eliminates malformed comment output for all Go developers. Reviewed by Alan Donovan & Dmitri Shuralyov (Google). Ships via gopls auto-update.',
+        url: 'https://go-review.googlesource.com/c/tools/+/762540',
+        tags: ['Go', 'gopls', 'IDE', 'Completion'],
+      },
+    ],
+  },
+  {
     org: 'jaegertracing/jaeger',
     orgDisplay: 'Jaeger',
     badge: 'CNCF Incubating',
@@ -104,6 +160,7 @@ const FEATURED_PROJECTS = [
     glowColor: 'rgba(34,211,238,0.12)',
     headerBg: 'from-cyan-950/40 to-black/60',
     repoStars: '20k+',
+    orgInitial: 'J',
     prs: [
       {
         number: 8216,
@@ -162,21 +219,6 @@ const FEATURED_PROJECTS = [
 ]
 
 const OTHER_FEATURED = [
-  {
-    number: 629,
-    org: 'golang/tools',
-    orgDisplay: 'Go Toolchain',
-    badge: 'Official Go SDK · 3 Merged CLs · Ships in gopls',
-    badgeClass: 'bg-sky-500/15 border-sky-500/30 text-sky-300',
-    title: 'go/analysis/passes/modernize: 3 analyzers merged into the Go toolchain',
-    description: 'Three merged CLs in the official Go toolchain: (1) slicesbackward — detects backward for-loops, suggests slices.Backward (Go 1.23) · PR #627; (2) stringscut — replaces Split/SplitN[0] with strings.Cut (Go 1.18) · PR #629; (3) gopls completion fix — prepends space after // before declarations · CL #762540. All reviewed by Alan Donovan (Go core team, Google).',
-    impact: 'Ships inside gopls — the official Go language server used by millions of developers in VSCode, JetBrains, Vim, and every major IDE. Each analyzer runs automatically on every Go project worldwide.',
-    tags: ['Go', 'AST Analysis', 'gopls', 'Static Analysis'],
-    url: 'https://github.com/golang/tools/pull/629',
-    accentClass: 'text-sky-400',
-    borderClass: 'border-sky-500/25',
-    glowColor: 'rgba(56,189,248,0.12)',
-  },
   {
     number: 31931,
     org: 'helm/helm',
@@ -444,7 +486,7 @@ const OpenSource = () => {
               {/* Header */}
               <div className={`relative px-6 py-5 border-b ${project.borderClass} flex flex-col sm:flex-row sm:items-center gap-3 justify-between`}>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center font-black text-lg text-cyan-300 font-mono">J</div>
+                  <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center font-black text-lg font-mono ${project.accentClass}`} style={{ background: project.glowColor, borderColor: project.glowColor }}>{project.orgInitial}</div>
                   <div>
                     <div className="flex items-center gap-2.5 flex-wrap">
                       <h3 className={`text-xl font-bold ${project.accentClass}`}>{project.orgDisplay}</h3>
