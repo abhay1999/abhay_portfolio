@@ -140,7 +140,7 @@ function getSourceBadge(state: DataSourceState) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const About = () => {
-  const [mergedCount, setMergedCount] = useState('8+')
+  const [mergedCount, setMergedCount] = useState('9+')
   const [sourceState, setSourceState] = useState<DataSourceState>('static')
 
   useEffect(() => {
@@ -161,7 +161,7 @@ const About = () => {
       .then((data) => {
         if (typeof data.total_count !== 'number') return
 
-        const actualTotal = Math.max(8, data.total_count + 2) // +2 for golang/tools Gerrit CLs (not indexed by GitHub)
+        const actualTotal = Math.max(9, data.total_count + 3) // +3 for golang/tools Gerrit CLs (not indexed by GitHub)
         setMergedCount(String(actualTotal))
         setSourceState('live')
         writeCachedValue(ABOUT_CACHE_KEY, { totalCount: actualTotal })
@@ -440,7 +440,7 @@ const About = () => {
                 <div className="flex items-start gap-3">
                   <span className="text-purple-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed">
-                    Contributor to the <span className="text-white font-semibold">official Go toolchain</span> — PR merged into <span className="text-cyan-400 font-medium">golang/tools</span>, adding the <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">slicesbackward</code> analyzer to <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">go/analysis/passes/modernize</code>; reviewed by Alan Donovan (Google) and ships in <span className="text-cyan-400 font-medium">gopls</span> to millions of Go developers. Also 7 more merged PRs across <span className="text-cyan-400 font-medium">Jaeger</span> (×4), <span className="text-cyan-400 font-medium">Helm</span> &amp; <span className="text-cyan-400 font-medium">GoReleaser</span> — <strong className="text-white">8 total</strong>.
+                    <strong className="text-white">3 CLs merged into the official Go toolchain</strong> (<span className="text-cyan-400 font-medium">golang/tools</span>): <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">slicesbackward</code> analyzer, <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">stringscut</code> analyzer, and a gopls completion fix — all reviewed by Alan Donovan (Google) and shipping in <span className="text-cyan-400 font-medium">gopls</span> to millions of Go developers. Also 6 merged PRs across <span className="text-cyan-400 font-medium">Jaeger</span> (×4), <span className="text-cyan-400 font-medium">Helm</span> &amp; <span className="text-cyan-400 font-medium">GoReleaser</span> — <strong className="text-white">9 total</strong>.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">

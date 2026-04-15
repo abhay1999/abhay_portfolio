@@ -112,7 +112,7 @@
 
   <!-- SUMMARY -->
   <div class="summary">
-    DevOps / Platform Engineer with strong expertise in <strong>Kubernetes, Go, and cloud-native systems</strong>. Designing and building <strong>scalable, fault-tolerant, distributed systems</strong> — from self-healing Kubernetes operators to high-availability CI/CD pipelines. Active contributor to the <strong>official Go toolchain</strong> (golang/tools, reviewed by Google's core team) and <strong>CNCF ecosystem</strong> (Jaeger, Helm, GoReleaser) with 8 merged PRs reaching millions of developers.
+    DevOps / Platform Engineer with strong expertise in <strong>Kubernetes, Go, and cloud-native systems</strong>. Designing and building <strong>scalable, fault-tolerant, distributed systems</strong> — from self-healing Kubernetes operators to high-availability CI/CD pipelines. Active contributor to the <strong>official Go toolchain</strong> (golang/tools, reviewed by Google's core team) and <strong>CNCF ecosystem</strong> (Jaeger, Helm, GoReleaser) with 9 merged PRs reaching millions of developers.
     Focused on building <strong>developer platforms and internal tooling</strong> to improve engineering velocity and system reliability. Production-grade experience in observability, CI/CD pipeline automation, and platform engineering.
   </div>
 
@@ -145,14 +145,15 @@
     <div class="te-block">
       <div class="te-header">
         <span class="te-org">Go Toolchain &nbsp;<span class="te-org-note">(golang/tools &nbsp;·&nbsp; Official Go SDK &nbsp;·&nbsp; Reviewed by Alan Donovan, Google)</span></span>
-        <span class="te-meta">Open Source Contributor &nbsp;·&nbsp; 2 Merged CLs &nbsp;·&nbsp; Mar–Apr 2026</span>
+        <span class="te-meta">Open Source Contributor &nbsp;·&nbsp; 3 Merged CLs &nbsp;·&nbsp; Mar–Apr 2026</span>
       </div>
       <div class="te-sub">Ships inside gopls — the official Go language server powering VSCode, JetBrains GoLand, Neovim (millions of daily users)</div>
       <ul>
         <li>Added <strong>slicesbackward analyzer</strong> to <code style="font-size:7.8pt;">go/analysis/passes/modernize</code> — detects legacy backward for-loops, suggests idiomatic <code style="font-size:7.8pt;">slices.Backward</code> (Go 1.23) &nbsp;<a class="pr-ref" href="https://github.com/golang/tools/pull/627">PR #627</a></li>
         <li>Built <strong>422-line AST analyzer</strong> with edge-case guards and golden-file tests — full static analysis pass for the Go modernize suite; fixes <a class="pr-ref" href="https://github.com/golang/go/issues/78484" style="margin-left:0;">golang/go#78484</a></li>
-        <li>Fixed <strong>gopls completion</strong> — prepends space when completing right after <code style="font-size:7.8pt;">//</code> before a declaration; eliminates malformed comment output for all Go developers &nbsp;<a class="pr-ref" href="https://go-review.googlesource.com/c/tools/+/762540">CL #762540</a></li>
-        <li>Both CLs reviewed by <strong>Alan Donovan</strong> (Go core team, Google); CL #762540 also approved by Dmitri Shuralyov → shipped via gopls — <strong>impacts millions of Go developers globally</strong></li>
+        <li>Added <strong>stringscut analyzer</strong> to <code style="font-size:7.8pt;">go/analysis/passes/modernize</code> — replaces <code style="font-size:7.8pt;">strings.Split/SplitN[0]</code> patterns with <code style="font-size:7.8pt;">strings.Cut</code> (Go 1.18); 267-line AST pass &nbsp;<a class="pr-ref" href="https://github.com/golang/tools/pull/629">PR #629</a></li>
+        <li>Fixed <strong>gopls completion</strong> — prepends space when completing right after <code style="font-size:7.8pt;">//</code> before a declaration; eliminates malformed output for all Go developers &nbsp;<a class="pr-ref" href="https://go-review.googlesource.com/c/tools/+/762540">CL #762540</a></li>
+        <li>All 3 CLs reviewed by <strong>Alan Donovan</strong> (Go core team, Google); PR #629 also approved by Madeline Kalil (Google) → shipped via gopls — <strong>impacts millions of Go developers globally</strong></li>
       </ul>
     </div>
 
@@ -256,7 +257,7 @@
       <!-- ACHIEVEMENTS -->
       <div class="section">
         <div class="section-title">Achievements</div>
-        <div class="ach-item">🌐 <strong>Go Toolchain Contributor:</strong> 2 CLs merged into <strong>golang/tools</strong> — slicesbackward analyzer + gopls completion fix; reviewed by Alan Donovan &amp; Dmitri Shuralyov (Go core team, Google); ships to millions of developers.</div>
+        <div class="ach-item">🌐 <strong>Go Toolchain Contributor:</strong> 3 CLs merged into <strong>golang/tools</strong> — slicesbackward analyzer, stringscut analyzer &amp; gopls completion fix; reviewed by Alan Donovan &amp; Madeline Kalil (Google); ships to millions of developers via gopls.</div>
         <div class="ach-item">🔷 <strong>CNCF Contributor:</strong> 6 merged PRs in Jaeger (×4), Helm, GoReleaser; 11+ open PRs across Argo CD, Grafana, Tekton, Docker, Meshery &amp; more.</div>
         <div class="ach-item">🏆 <strong>LeetCode:</strong> 600+ problems — Medium 310+, Hard 70+; HackerRank 5★ Problem Solving.</div>
       </div>

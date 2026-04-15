@@ -163,16 +163,16 @@ const FEATURED_PROJECTS = [
 
 const OTHER_FEATURED = [
   {
-    number: 627,
+    number: 629,
     org: 'golang/tools',
     orgDisplay: 'Go Toolchain',
-    badge: 'Official Go SDK · Ships in gopls',
+    badge: 'Official Go SDK · 3 Merged CLs · Ships in gopls',
     badgeClass: 'bg-sky-500/15 border-sky-500/30 text-sky-300',
-    title: 'go/analysis/passes/modernize: add slicesbackward analyzer',
-    description: 'Added a new static analysis pass to the Go modernize suite that detects manually-written backward for-loops and suggests replacing them with slices.Backward (Go 1.23) — reviewed and merged by Alan Donovan (Go core team, Google).',
-    impact: 'Ships inside gopls — the official Go language server used by millions of developers in VSCode, JetBrains, Vim, and every major IDE. Every Go project running go vet or gopls benefits from this modernizer.',
+    title: 'go/analysis/passes/modernize: 3 analyzers merged into the Go toolchain',
+    description: 'Three merged CLs in the official Go toolchain: (1) slicesbackward — detects backward for-loops, suggests slices.Backward (Go 1.23) · PR #627; (2) stringscut — replaces Split/SplitN[0] with strings.Cut (Go 1.18) · PR #629; (3) gopls completion fix — prepends space after // before declarations · CL #762540. All reviewed by Alan Donovan (Go core team, Google).',
+    impact: 'Ships inside gopls — the official Go language server used by millions of developers in VSCode, JetBrains, Vim, and every major IDE. Each analyzer runs automatically on every Go project worldwide.',
     tags: ['Go', 'AST Analysis', 'gopls', 'Static Analysis'],
-    url: 'https://github.com/golang/tools/pull/627',
+    url: 'https://github.com/golang/tools/pull/629',
     accentClass: 'text-sky-400',
     borderClass: 'border-sky-500/25',
     glowColor: 'rgba(56,189,248,0.12)',
@@ -211,6 +211,7 @@ const OTHER_FEATURED = [
 
 // ─── Static Fallback ──────────────────────────────────────────────────────────
 const STATIC_MERGED: MergedPR[] = [
+  { number: 629,   repo: 'golang/tools',          orgInitial: 'G', title: 'modernize/stringscut: simplify Split/SplitN[0] to strings.Cut',       description: 'New analyzer replacing strings.Split/SplitN[0] patterns with strings.Cut (Go 1.18). 267-line AST pass. Reviewed by Alan Donovan & Madeline Kalil (Google). Ships in gopls.', tags: ['Go','AST','gopls','Go Toolchain'],  mergedAt: 'Apr 15, 2026', repoStars: '10k+', url: 'https://github.com/golang/tools/pull/629',           ...MERGED_THEMES[4] },
   { number: 627,   repo: 'golang/tools',          orgInitial: 'G', title: 'go/analysis/passes/modernize: add slicesbackward analyzer',          description: 'New static analysis pass detecting backward for-loops and suggesting slices.Backward (Go 1.23). Ships in gopls. Reviewed by Alan Donovan (Go core team).',                tags: ['Go','AST','gopls','Go Toolchain'],  mergedAt: 'Apr 3, 2026',  repoStars: '10k+', url: 'https://github.com/golang/tools/pull/627',           ...MERGED_THEMES[4] },
   { number: 31931, repo: 'helm/helm',            orgInitial: 'H', title: 'pkg/kube: remove legacy import comments',                            description: 'Fixed legacy Kythe static analysis failures by migrating pre-Go modules import path comments to modern go.mod conventions.',  tags: ['Go','Kubernetes','CNCF'],           mergedAt: 'Mar 12, 2026', repoStars: '29k+', url: 'https://github.com/helm/helm/pull/31931',            ...MERGED_THEMES[0] },
   { number: 6462,  repo: 'goreleaser/goreleaser', orgInitial: 'G', title: 'fix: filterOut returns excluded tag when multiple ignore_tags set',   description: 'Resolved release pipeline bug where multiple ignore_tags caused incorrect tag exclusion logic.',                           tags: ['Go','CI/CD','Release'],             mergedAt: 'Mar 17, 2026', repoStars: '14k+', url: 'https://github.com/goreleaser/goreleaser/pull/6462',  ...MERGED_THEMES[1] },
