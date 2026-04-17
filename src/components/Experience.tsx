@@ -48,23 +48,6 @@ const Experience = () => (
 
     {/* Background */}
     <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
-      <div className="absolute inset-0 opacity-[0.022]" style={{
-        backgroundImage: `linear-gradient(rgba(139,92,246,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,0.8) 1px,transparent 1px)`,
-        backgroundSize: '32px 32px',
-      }} />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[40%] opacity-[0.05]" style={{
-        backgroundImage: `linear-gradient(to right,rgba(139,92,246,0.9) 1px,transparent 1px),linear-gradient(to bottom,rgba(139,92,246,0.9) 1px,transparent 1px)`,
-        backgroundSize: '60px 60px',
-        transform: 'perspective(700px) rotateX(58deg) translateY(20%)',
-        maskImage: 'radial-gradient(ellipse at 50% 0%, black 20%, transparent 75%)',
-      }} />
-      {/* Circuit traces */}
-      <div className="absolute top-[25%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent">
-        <div className="trace-x-fwd absolute top-0 left-0 w-32 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '6s' }} />
-      </div>
-      <div className="absolute top-[70%] left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/10 to-transparent">
-        <div className="trace-x-bwd absolute top-0 left-0 w-32 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" style={{ animationDuration: '7s' }} />
-      </div>
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-cyan-500/4 blur-[160px]" />
       <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-purple-500/4 blur-[140px]" />
     </div>

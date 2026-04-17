@@ -125,40 +125,6 @@ const About = () => {
   return (
     <section id="about" className="relative py-20 overflow-hidden bg-black">
 
-      {/* ── Background ───────────────────────────────────────────────────── */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{
-        backgroundImage: 'linear-gradient(rgba(6,182,212,1) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)',
-        backgroundSize: '40px 40px',
-      }} />
-
-      {/* Circuit traces — CSS only */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"    style={{ top: '28%' }} />
-        <div className="trace-x-fwd absolute h-px w-48 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"    style={{ top: '28%', opacity: 0.8, animationDuration: '6s' }} />
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/15 to-transparent"  style={{ top: '66%' }} />
-        <div className="trace-x-bwd absolute h-px w-36 bg-gradient-to-r from-transparent via-purple-400 to-transparent"  style={{ top: '66%', opacity: 0.7, animationDuration: '7s', animationDelay: '2s' }} />
-        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent" style={{ left: '30%' }} />
-        <div className="trace-y-fwd absolute w-px h-28 bg-gradient-to-b from-transparent via-emerald-400 to-transparent"  style={{ left: '30%', opacity: 0.65, animationDuration: '8s', animationDelay: '1s' }} />
-        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-amber-500/[0.08] to-transparent" style={{ left: '72%' }} />
-        <div className="trace-y-bwd absolute w-px h-20 bg-gradient-to-b from-transparent via-amber-400 to-transparent"    style={{ left: '72%', opacity: 0.5, animationDuration: '9s', animationDelay: '3s' }} />
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/[0.08] to-transparent"   style={{ top: '45%', transform: 'rotate(-8deg) scaleX(1.2)' }} />
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/[0.06] to-transparent" style={{ top: '78%', transform: 'rotate(5deg) scaleX(1.3)' }} />
-        {/* Glow nodes */}
-        <div className="absolute w-2 h-2 rounded-full bg-cyan-400    animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.9)]"   style={{ top: 'calc(28% - 4px)', left: 'calc(30% - 4px)' }} />
-        <div className="absolute w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse shadow-[0_0_10px_rgba(168,85,247,0.9)]" style={{ top: 'calc(66% - 3px)', left: 'calc(72% - 3px)', animationDelay: '1s' }} />
-        <div className="absolute w-2 h-2 rounded-full bg-emerald-400  animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.9)]"  style={{ top: 'calc(28% - 4px)', left: 'calc(72% - 4px)', animationDelay: '0.5s' }} />
-        <div className="absolute w-1.5 h-1.5 rounded-full bg-amber-400   animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.9)]"  style={{ top: 'calc(66% - 3px)', left: 'calc(30% - 3px)', animationDelay: '1.5s' }} />
-        <div className="absolute w-1 h-1 rounded-full bg-cyan-300    animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.7)]"    style={{ top: '14%', left: '55%', animationDelay: '2s' }} />
-        <div className="absolute w-1 h-1 rounded-full bg-purple-300  animate-pulse shadow-[0_0_8px_rgba(168,85,247,0.7)]"   style={{ top: '86%', left: '45%', animationDelay: '0.8s' }} />
-      </div>
-
-      {/* Perspective floor grid */}
-      <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-[320px] pointer-events-none" style={{
-        backgroundImage: 'linear-gradient(to right, rgba(6,182,212,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,182,212,0.15) 1px, transparent 1px)',
-        backgroundSize: '70px 70px', transform: 'rotateX(65deg) translateY(60px)', transformOrigin: 'bottom center',
-        maskImage: 'linear-gradient(to top, black 10%, transparent 75%)', opacity: 0.12,
-      }} />
-
       {/* Ambient orbs */}
       <div aria-hidden="true" className="absolute top-1/4 left-0 w-[520px] h-[520px] bg-cyan-500/[0.06] rounded-full blur-[160px] pointer-events-none" />
       <div aria-hidden="true" className="absolute bottom-1/4 right-0 w-[420px] h-[420px] bg-purple-500/[0.06] rounded-full blur-[140px] pointer-events-none" />

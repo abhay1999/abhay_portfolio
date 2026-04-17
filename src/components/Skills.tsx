@@ -123,33 +123,6 @@ const Skills = () => (
 
     {/* Background */}
     <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
-      <div className="absolute inset-0 opacity-[0.025]" style={{
-        backgroundImage: `linear-gradient(rgba(34,211,238,0.8) 1px, transparent 1px),linear-gradient(90deg, rgba(34,211,238,0.8) 1px, transparent 1px)`,
-        backgroundSize: '30px 30px',
-      }} />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[55%] opacity-[0.07]" style={{
-        backgroundImage: `linear-gradient(to right, rgba(139,92,246,0.9) 1px, transparent 1px),linear-gradient(to bottom, rgba(139,92,246,0.9) 1px, transparent 1px)`,
-        backgroundSize: '56px 56px',
-        transform: 'perspective(700px) rotateX(58deg) translateY(18%)',
-        maskImage: 'radial-gradient(ellipse at 50% 0%, black 20%, transparent 75%)',
-      }} />
-      {/* Traces */}
-      <div className="absolute top-[25%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent">
-        <div className="trace-x-fwd absolute top-0 left-0 w-36 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '4.5s' }} />
-      </div>
-      <div className="absolute top-[72%] left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/15 to-transparent">
-        <div className="trace-x-bwd absolute top-0 left-0 w-36 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" style={{ animationDuration: '5.5s' }} />
-      </div>
-      <div className="absolute top-0 left-[20%] h-full w-px bg-gradient-to-b from-transparent via-emerald-500/12 to-transparent">
-        <div className="trace-y-fwd absolute top-0 left-0 h-28 w-px bg-gradient-to-b from-transparent via-emerald-400 to-transparent" style={{ animationDuration: '7s' }} />
-      </div>
-      <div className="absolute top-0 right-[20%] h-full w-px bg-gradient-to-b from-transparent via-orange-500/12 to-transparent">
-        <div className="trace-y-bwd absolute top-0 left-0 h-28 w-px bg-gradient-to-b from-transparent via-orange-400 to-transparent" style={{ animationDuration: '8s' }} />
-      </div>
-      <div className="absolute top-[25%] left-[20%] w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_12px_3px_rgba(34,211,238,0.55)]" />
-      <div className="absolute top-[25%] right-[20%] w-2 h-2 translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-400 shadow-[0_0_12px_3px_rgba(251,146,60,0.55)]" />
-      <div className="absolute top-[72%] left-[20%] w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400 shadow-[0_0_12px_3px_rgba(52,211,153,0.55)]" />
-      <div className="absolute top-[72%] right-[20%] w-2 h-2 translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-400 shadow-[0_0_12px_3px_rgba(192,132,252,0.55)]" />
       <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-cyan-600/6 blur-[140px]" />
       <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-purple-600/6 blur-[130px]" />
     </div>

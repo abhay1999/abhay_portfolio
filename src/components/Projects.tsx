@@ -1,233 +1,360 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { ExternalLink, ArrowUpRight, Star, GitFork } from 'lucide-react'
+import { ExternalLink, ArrowUpRight, Star, GitFork, BookOpen } from 'lucide-react'
 import Reveal from '@/components/Reveal'
 import TiltCard from '@/components/TiltCard'
 
-// ─── GitHub SVG icon ──────────────────────────────────────────────────────────
+// ─── Icons ────────────────────────────────────────────────────────────────────
 const GithubIcon = ({ size = 13 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.031 1.531 1.031.892 1.529 2.341 1.088 2.91.832.091-.647.349-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.749 0 .267.18.578.688.48A10.019 10.019 0 0 0 22 12c0-5.523-4.477-10-10-10z" />
   </svg>
 )
 
-// ─── Featured Projects ────────────────────────────────────────────────────────
+// ─── Architecture Diagrams ────────────────────────────────────────────────────
+
+function DiagramK8sHealing({ c }: { c: string }) {
+  return (
+    <svg viewBox="0 0 280 118" fill="none" className="w-full h-full">
+      <defs>
+        <marker id="arr-k8s" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+          <path d="M0 0 L5 2.5 L0 5 Z" fill={c} fillOpacity={0.55} />
+        </marker>
+      </defs>
+      {/* Edges */}
+      <line x1="88" y1="52" x2="113" y2="52" stroke={c} strokeOpacity={0.45} strokeWidth={1} markerEnd="url(#arr-k8s)" />
+      <line x1="169" y1="52" x2="194" y2="52" stroke={c} strokeOpacity={0.45} strokeWidth={1} markerEnd="url(#arr-k8s)" />
+      <line x1="141" y1="86" x2="141" y2="70" stroke={c} strokeOpacity={0.3} strokeWidth={1} strokeDasharray="3 2" markerEnd="url(#arr-k8s)" />
+      {/* Operator glow */}
+      <ellipse cx="141" cy="52" rx="32" ry="21" fill={c} fillOpacity={0.08} />
+      {/* CrashLoop Pod */}
+      <rect x="8" y="39" width="80" height="26" rx="4" fill={c} fillOpacity={0.07} stroke={c} strokeOpacity={0.22} strokeWidth={1} />
+      <text x="48" y="50" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fontWeight="600" fill="#fca5a5">CrashLoop</text>
+      <text x="48" y="61" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">pod · restart↑</text>
+      {/* Go Operator */}
+      <rect x="113" y="36" width="56" height="32" rx="5" fill={c} fillOpacity={0.14} stroke={c} strokeOpacity={0.72} strokeWidth={1.5} />
+      <text x="141" y="49" textAnchor="middle" fontFamily="monospace" fontSize={8} fontWeight="700" fill={c}>Operator</text>
+      <text x="141" y="61" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#d1d5db">Go · ctrl-rt</text>
+      {/* Healed Pod */}
+      <rect x="194" y="39" width="78" height="26" rx="4" fill={c} fillOpacity={0.07} stroke={c} strokeOpacity={0.18} strokeWidth={1} />
+      <text x="233" y="50" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fontWeight="600" fill="#86efac">Auto-Healed</text>
+      <text x="233" y="61" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">pod · Running</text>
+      {/* Prometheus */}
+      <rect x="93" y="86" width="96" height="22" rx="4" fill={c} fillOpacity={0.05} stroke={c} strokeOpacity={0.13} strokeWidth={1} />
+      <text x="141" y="96" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#9ca3af">Prometheus</text>
+      <text x="141" y="105" textAnchor="middle" fontFamily="monospace" fontSize={6} fill="#4b5563">alert webhook trigger</text>
+    </svg>
+  )
+}
+
+function DiagramDevEnv({ c }: { c: string }) {
+  return (
+    <svg viewBox="0 0 280 118" fill="none" className="w-full h-full">
+      <defs>
+        <marker id="arr-dev" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+          <path d="M0 0 L5 2.5 L0 5 Z" fill={c} fillOpacity={0.55} />
+        </marker>
+      </defs>
+      {/* Edges */}
+      <line x1="90" y1="59" x2="115" y2="59" stroke={c} strokeOpacity={0.5} strokeWidth={1} markerEnd="url(#arr-dev)" />
+      <line x1="171" y1="48" x2="196" y2="33" stroke={c} strokeOpacity={0.45} strokeWidth={1} markerEnd="url(#arr-dev)" />
+      <line x1="171" y1="59" x2="196" y2="59" stroke={c} strokeOpacity={0.3} strokeWidth={1} strokeDasharray="3 2" markerEnd="url(#arr-dev)" />
+      <line x1="171" y1="70" x2="196" y2="84" stroke={c} strokeOpacity={0.45} strokeWidth={1} markerEnd="url(#arr-dev)" />
+      {/* Namespace glow */}
+      <ellipse cx="143" cy="59" rx="32" ry="21" fill={c} fillOpacity={0.08} />
+      {/* devenv CLI */}
+      <rect x="8" y="46" width="82" height="26" rx="4" fill={c} fillOpacity={0.08} stroke={c} strokeOpacity={0.28} strokeWidth={1} />
+      <text x="49" y="57" textAnchor="middle" fontFamily="monospace" fontSize={8} fontWeight="700" fill={c}>devenv CLI</text>
+      <text x="49" y="68" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">cobra · client-go</text>
+      {/* K8s NS */}
+      <rect x="115" y="43" width="56" height="32" rx="5" fill={c} fillOpacity={0.15} stroke={c} strokeOpacity={0.72} strokeWidth={1.5} />
+      <text x="143" y="56" textAnchor="middle" fontFamily="monospace" fontSize={8} fontWeight="700" fill={c}>K8s NS</text>
+      <text x="143" y="68" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#d1d5db">isolated</text>
+      {/* App Pod */}
+      <rect x="196" y="20" width="76" height="22" rx="4" fill={c} fillOpacity={0.07} stroke={c} strokeOpacity={0.2} strokeWidth={1} />
+      <text x="234" y="31" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#d1d5db">App Pod</text>
+      <text x="234" y="39" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">:8080 ready</text>
+      {/* Port-forward */}
+      <rect x="196" y="48" width="76" height="22" rx="4" fill={c} fillOpacity={0.05} stroke={c} strokeOpacity={0.13} strokeWidth={1} />
+      <text x="234" y="58" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#9ca3af">port-forward</text>
+      <text x="234" y="67" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#4b5563">:5432  :8080</text>
+      {/* DB Pod */}
+      <rect x="196" y="76" width="76" height="22" rx="4" fill={c} fillOpacity={0.07} stroke={c} strokeOpacity={0.2} strokeWidth={1} />
+      <text x="234" y="87" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#d1d5db">DB Pod</text>
+      <text x="234" y="95" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">PG / Mongo</text>
+    </svg>
+  )
+}
+
+function DiagramPortfolio({ c }: { c: string }) {
+  return (
+    <svg viewBox="0 0 280 118" fill="none" className="w-full h-full">
+      <defs>
+        <marker id="arr-pf" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+          <path d="M0 0 L5 2.5 L0 5 Z" fill={c} fillOpacity={0.55} />
+        </marker>
+      </defs>
+      {/* Edges */}
+      <line x1="92" y1="43" x2="116" y2="54" stroke={c} strokeOpacity={0.45} strokeWidth={1} markerEnd="url(#arr-pf)" />
+      <line x1="92" y1="79" x2="116" y2="68" stroke={c} strokeOpacity={0.32} strokeWidth={1} strokeDasharray="3 2" markerEnd="url(#arr-pf)" />
+      <line x1="178" y1="54" x2="200" y2="43" stroke={c} strokeOpacity={0.45} strokeWidth={1} markerEnd="url(#arr-pf)" />
+      <line x1="178" y1="66" x2="200" y2="79" stroke={c} strokeOpacity={0.35} strokeWidth={1} markerEnd="url(#arr-pf)" />
+      {/* Docker glow */}
+      <ellipse cx="147" cy="60" rx="35" ry="22" fill={c} fillOpacity={0.08} />
+      {/* Next.js */}
+      <rect x="8" y="30" width="84" height="26" rx="4" fill={c} fillOpacity={0.08} stroke={c} strokeOpacity={0.28} strokeWidth={1} />
+      <text x="50" y="41" textAnchor="middle" fontFamily="monospace" fontSize={8} fontWeight="700" fill={c}>Next.js 14</text>
+      <text x="50" y="52" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">TypeScript · GSAP</text>
+      {/* GitHub API */}
+      <rect x="8" y="66" width="84" height="26" rx="4" fill={c} fillOpacity={0.05} stroke={c} strokeOpacity={0.14} strokeWidth={1} />
+      <text x="50" y="77" textAnchor="middle" fontFamily="monospace" fontSize={8} fill="#9ca3af">GitHub API</text>
+      <text x="50" y="88" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#4b5563">live PR data</text>
+      {/* Docker/Nginx */}
+      <rect x="116" y="46" width="62" height="28" rx="5" fill={c} fillOpacity={0.15} stroke={c} strokeOpacity={0.72} strokeWidth={1.5} />
+      <text x="147" y="58" textAnchor="middle" fontFamily="monospace" fontSize={8} fontWeight="700" fill={c}>Docker</text>
+      <text x="147" y="69" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#d1d5db">Nginx · static</text>
+      {/* Vercel */}
+      <rect x="200" y="28" width="72" height="26" rx="4" fill={c} fillOpacity={0.08} stroke={c} strokeOpacity={0.22} strokeWidth={1} />
+      <text x="236" y="39" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fontWeight="600" fill="#d1d5db">Vercel CDN</text>
+      <text x="236" y="50" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">edge deploy</text>
+      {/* Lighthouse */}
+      <rect x="200" y="66" width="72" height="26" rx="4" fill={c} fillOpacity={0.06} stroke={c} strokeOpacity={0.14} strokeWidth={1} />
+      <text x="236" y="77" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#86efac">Lighthouse A+</text>
+      <text x="236" y="88" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#4b5563">perf · a11y</text>
+    </svg>
+  )
+}
+
+function DiagramNetflixEKS({ c }: { c: string }) {
+  return (
+    <svg viewBox="0 0 280 118" fill="none" className="w-full h-full">
+      <defs>
+        <marker id="arr-eks" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+          <path d="M0 0 L5 2.5 L0 5 Z" fill={c} fillOpacity={0.55} />
+        </marker>
+      </defs>
+      {/* Edges */}
+      <line x1="84" y1="40" x2="110" y2="52" stroke={c} strokeOpacity={0.45} strokeWidth={1} markerEnd="url(#arr-eks)" />
+      <line x1="84" y1="79" x2="110" y2="68" stroke={c} strokeOpacity={0.35} strokeWidth={1} strokeDasharray="3 2" markerEnd="url(#arr-eks)" />
+      <line x1="168" y1="50" x2="192" y2="38" stroke={c} strokeOpacity={0.45} strokeWidth={1} markerEnd="url(#arr-eks)" />
+      <line x1="168" y1="68" x2="192" y2="80" stroke={c} strokeOpacity={0.4} strokeWidth={1} markerEnd="url(#arr-eks)" />
+      {/* EKS glow */}
+      <ellipse cx="139" cy="59" rx="33" ry="22" fill={c} fillOpacity={0.08} />
+      {/* Terraform */}
+      <rect x="6" y="27" width="78" height="26" rx="4" fill={c} fillOpacity={0.08} stroke={c} strokeOpacity={0.26} strokeWidth={1} />
+      <text x="45" y="38" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fontWeight="600" fill="#d1d5db">Terraform</text>
+      <text x="45" y="49" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">EKS node groups</text>
+      {/* Jenkins */}
+      <rect x="6" y="66" width="78" height="26" rx="4" fill={c} fillOpacity={0.07} stroke={c} strokeOpacity={0.2} strokeWidth={1} />
+      <text x="45" y="77" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#d1d5db">Jenkins CI/CD</text>
+      <text x="45" y="88" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">multi-stage</text>
+      {/* Amazon EKS */}
+      <rect x="110" y="43" width="58" height="32" rx="5" fill={c} fillOpacity={0.15} stroke={c} strokeOpacity={0.72} strokeWidth={1.5} />
+      <text x="139" y="56" textAnchor="middle" fontFamily="monospace" fontSize={8} fontWeight="700" fill={c}>Amazon</text>
+      <text x="139" y="68" textAnchor="middle" fontFamily="monospace" fontSize={8} fontWeight="700" fill={c}>EKS</text>
+      {/* Trivy */}
+      <rect x="192" y="25" width="80" height="26" rx="4" fill={c} fillOpacity={0.07} stroke={c} strokeOpacity={0.18} strokeWidth={1} />
+      <text x="232" y="36" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#f87171">Trivy Scan</text>
+      <text x="232" y="47" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">0 critical CVEs</text>
+      {/* Grafana */}
+      <rect x="192" y="68" width="80" height="26" rx="4" fill={c} fillOpacity={0.05} stroke={c} strokeOpacity={0.13} strokeWidth={1} />
+      <text x="232" y="79" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#9ca3af">Grafana</text>
+      <text x="232" y="90" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#4b5563">Prometheus alerts</text>
+    </svg>
+  )
+}
+
+function DiagramAvlokan({ c }: { c: string }) {
+  return (
+    <svg viewBox="0 0 280 118" fill="none" className="w-full h-full">
+      <defs>
+        <marker id="arr-av" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+          <path d="M0 0 L5 2.5 L0 5 Z" fill={c} fillOpacity={0.55} />
+        </marker>
+      </defs>
+      {/* Edges */}
+      <line x1="88" y1="59" x2="114" y2="59" stroke={c} strokeOpacity={0.5} strokeWidth={1} markerEnd="url(#arr-av)" />
+      <line x1="172" y1="49" x2="196" y2="35" stroke={c} strokeOpacity={0.45} strokeWidth={1} markerEnd="url(#arr-av)" />
+      <line x1="172" y1="59" x2="196" y2="59" stroke={c} strokeOpacity={0.28} strokeWidth={1} strokeDasharray="3 2" markerEnd="url(#arr-av)" />
+      <line x1="172" y1="69" x2="196" y2="83" stroke={c} strokeOpacity={0.4} strokeWidth={1} markerEnd="url(#arr-av)" />
+      {/* Node.js glow */}
+      <ellipse cx="143" cy="59" rx="33" ry="22" fill={c} fillOpacity={0.08} />
+      {/* React SPA */}
+      <rect x="6" y="46" width="82" height="26" rx="4" fill={c} fillOpacity={0.08} stroke={c} strokeOpacity={0.27} strokeWidth={1} />
+      <text x="47" y="57" textAnchor="middle" fontFamily="monospace" fontSize={8} fontWeight="700" fill={c}>React SPA</text>
+      <text x="47" y="68" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">HLS video · auth</text>
+      {/* Node.js API */}
+      <rect x="114" y="43" width="58" height="32" rx="5" fill={c} fillOpacity={0.15} stroke={c} strokeOpacity={0.72} strokeWidth={1.5} />
+      <text x="143" y="56" textAnchor="middle" fontFamily="monospace" fontSize={8} fontWeight="700" fill={c}>Node.js</text>
+      <text x="143" y="68" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#d1d5db">REST API</text>
+      {/* MySQL */}
+      <rect x="196" y="22" width="76" height="24" rx="4" fill={c} fillOpacity={0.07} stroke={c} strokeOpacity={0.2} strokeWidth={1} />
+      <text x="234" y="33" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#d1d5db">MySQL</text>
+      <text x="234" y="43" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">AWS RDS</text>
+      {/* Razorpay */}
+      <rect x="196" y="48" width="76" height="22" rx="4" fill={c} fillOpacity={0.05} stroke={c} strokeOpacity={0.13} strokeWidth={1} />
+      <text x="234" y="58" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#9ca3af">Razorpay</text>
+      <text x="234" y="67" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#4b5563">payments</text>
+      {/* S3 + CloudFront */}
+      <rect x="196" y="72" width="76" height="24" rx="4" fill={c} fillOpacity={0.07} stroke={c} strokeOpacity={0.18} strokeWidth={1} />
+      <text x="234" y="83" textAnchor="middle" fontFamily="monospace" fontSize={7.5} fill="#d1d5db">S3 + CloudFront</text>
+      <text x="234" y="93" textAnchor="middle" fontFamily="monospace" fontSize={6.5} fill="#6b7280">HLS CDN stream</text>
+    </svg>
+  )
+}
+
+// ─── Project Data ─────────────────────────────────────────────────────────────
 const FEATURED = [
   {
     id: '01',
     repo: 'abhay1999/self-healing-k8s-platform',
     title: 'Self-Healing K8s Platform',
-    problem: 'Production clusters crash silently at 3am — on-call engineers waste hours manually restarting pods with no root-cause visibility.',
-    solution: 'Built 3 Go operators using controller-runtime that detect CrashLoopBackOff, trigger automated pod remediation, and restore health without human intervention.',
+    solution: 'Built 3 Go operators using controller-runtime that detect CrashLoopBackOff, trigger automated pod remediation, and restore cluster health without human intervention.',
     metrics: [
       { value: '47+',  label: 'Incidents Healed' },
       { value: '~11s', label: 'Avg Heal Time'    },
       { value: '100%', label: 'Success Rate'      },
     ],
-    arch: 'Custom CRDs · Prometheus webhooks · Helm chart · GitOps',
     techStack: ['Kubernetes', 'Go', 'Prometheus', 'Helm', 'GitOps'],
     github: 'https://github.com/abhay1999/self-healing-k8s-platform',
     liveDemo: '',
-    category: 'DevOps',
+    caseStudy: '',
+    category: 'DevOps · Go',
     highlight: '3 custom K8s operators',
-    accentColor: 'emerald',
-    terminal: {
-      title: 'self-healing-k8s ~ kubectl',
-      prompt: '$ kubectl get pods -n platform',
-      rows: [
-        { text: 'NAME                     READY   STATUS    ', dim: true },
-        { text: 'self-healer-ctrl-x9k2    1/1     Running   ', dim: false },
-        { text: 'prometheus-server-m7p1   1/1     Running   ', dim: false },
-        { text: 'alertmanager-0           1/1     Running   ', dim: false },
-      ],
-      status: '✓ self-healing loop: ACTIVE',
-    },
+    accentHex: '#10b981',
+    Diagram: DiagramK8sHealing,
     pillClass:       'bg-emerald-900/40 text-emerald-200 border-emerald-500/25',
-    borderClass:     'border-emerald-500/20 hover:border-emerald-400/50',
-    gradientClass:   'from-emerald-950/50 via-neutral-900/80 to-black',
+    borderClass:     'border-emerald-500/20',
     accentText:      'text-emerald-400',
     titleHoverClass: 'group-hover:text-emerald-300',
-    statusClass:     'text-emerald-400',
-    termBorderClass: 'border-emerald-500/15',
-    termBgClass:     'bg-emerald-950/30',
     highlightClass:  'bg-emerald-500/10 border-emerald-500/20 text-emerald-300',
-    boxShadow:       '0 0 60px -20px rgba(16,185,129,0.22)',
-    numberClass:     'text-emerald-400/8',
-    gridColor:       'rgba(52,211,153,0.05)',
-    scanClass:       'via-emerald-400/50',
+    metricClass:     'text-emerald-400',
+    ctaClass:        'border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 hover:border-emerald-400/50',
+    diagBgClass:     'bg-emerald-950/40',
+    diagBorderClass: 'border-emerald-500/12',
+    boxShadow:       '0 0 0 1px rgba(16,185,129,0.12), 0 4px 40px -12px rgba(16,185,129,0.18)',
+    hoverShadow:     '0 0 0 1px rgba(16,185,129,0.45), 0 8px 60px -10px rgba(16,185,129,0.35)',
   },
   {
     id: '02',
     repo: 'abhay1999/dev-env-platform',
     title: 'Dev Environment Platform',
-    problem: 'Spinning up a dev stack takes 20+ mins of config, breaks across machines, and can\'t be reproduced — "works on my machine" is a real blocker.',
-    solution: 'Go CLI that provisions isolated K8s namespaces with a full stack (MERN / React / Go+PG) in one command — with port-forwarding, teardown, and lifecycle managed automatically.',
+    solution: 'Go CLI that provisions isolated K8s namespaces with a full stack (MERN / Go+PG) in one command — port-forwarding, teardown, and lifecycle managed automatically.',
     metrics: [
-      { value: '<15s', label: 'Stack Spin-Up'  },
+      { value: '<15s', label: 'Stack Spin-Up'   },
       { value: '3',    label: 'Stack Templates' },
-      { value: '1 cmd', label: 'Full Setup'     },
+      { value: '1 cmd', label: 'Full Setup'      },
     ],
-    arch: 'client-go · Dynamic namespaces · Port-forward mux · Go CLI (cobra)',
     techStack: ['Go', 'Kubernetes', 'CLI', 'MERN', 'PostgreSQL'],
     github: 'https://github.com/abhay1999/dev-env-platform',
     liveDemo: '',
+    caseStudy: '',
     category: 'DevOps · Go',
     highlight: 'Single CLI · K8s isolated stacks',
-    accentColor: 'orange',
-    terminal: {
-      title: 'dev-env-platform ~ go run',
-      prompt: '$ devenv spin up --stack=go-postgres',
-      rows: [
-        { text: '✓ Namespace dev-go-001: Created   ', dim: true },
-        { text: '✓ PostgreSQL pod: Running          ', dim: false },
-        { text: '✓ Go app pod: Running              ', dim: false },
-        { text: '✓ Port-forward :5432 :8080 ready  ', dim: false },
-      ],
-      status: '● stack ready in 12s',
-    },
+    accentHex: '#f97316',
+    Diagram: DiagramDevEnv,
     pillClass:       'bg-orange-900/40 text-orange-200 border-orange-500/25',
-    borderClass:     'border-orange-500/20 hover:border-orange-400/50',
-    gradientClass:   'from-orange-950/50 via-neutral-900/80 to-black',
+    borderClass:     'border-orange-500/20',
     accentText:      'text-orange-400',
     titleHoverClass: 'group-hover:text-orange-300',
-    statusClass:     'text-orange-400',
-    termBorderClass: 'border-orange-500/15',
-    termBgClass:     'bg-orange-950/30',
     highlightClass:  'bg-orange-500/10 border-orange-500/20 text-orange-300',
-    boxShadow:       '0 0 60px -20px rgba(249,115,22,0.22)',
-    numberClass:     'text-orange-400/8',
-    gridColor:       'rgba(251,146,60,0.05)',
-    scanClass:       'via-orange-400/50',
+    metricClass:     'text-orange-400',
+    ctaClass:        'border-orange-500/30 text-orange-300 hover:bg-orange-500/10 hover:border-orange-400/50',
+    diagBgClass:     'bg-orange-950/40',
+    diagBorderClass: 'border-orange-500/12',
+    boxShadow:       '0 0 0 1px rgba(249,115,22,0.12), 0 4px 40px -12px rgba(249,115,22,0.18)',
+    hoverShadow:     '0 0 0 1px rgba(249,115,22,0.45), 0 8px 60px -10px rgba(249,115,22,0.35)',
   },
   {
     id: '03',
     repo: 'abhay1999/abhay_portfolio',
     title: 'Developer Portfolio',
-    problem: 'Generic portfolio sites list skills but don\'t prove DevOps depth — no interactive demos, no live data, no evidence of system thinking.',
-    solution: 'Built this site with Next.js 14 + Docker, including a live K8s self-healing visualizer, DevOps playground terminal, CI/CD health monitor, and CNCF PR feed — all pulling live GitHub data.',
+    solution: 'Built with Next.js 14 + Docker, featuring a live K8s self-healing visualizer, DevOps terminal, CI/CD monitor, and CNCF PR feed — all pulling live GitHub data.',
     metrics: [
-      { value: '9',     label: 'Interactive Sections' },
-      { value: 'Live',  label: 'GitHub API Data'       },
-      { value: 'A+',    label: 'Lighthouse Score'      },
+      { value: '9',    label: 'Live Sections'  },
+      { value: 'Live', label: 'GitHub API'      },
+      { value: 'A+',   label: 'Lighthouse'      },
     ],
-    arch: 'Next.js static export · Docker + Nginx · Vercel · GitHub REST API',
     techStack: ['Next.js', 'TypeScript', 'GSAP', 'Tailwind', 'Docker'],
     github: 'https://github.com/abhay1999/abhay_portfolio',
     liveDemo: '',
+    caseStudy: '',
     category: 'Full-Stack',
     highlight: 'Live GitHub API · 3D UI',
-    accentColor: 'cyan',
-    terminal: {
-      title: 'abhay-portfolio ~ next',
-      prompt: '$ npm run build',
-      rows: [
-        { text: '▲ Next.js 14.2.5 (static export)', dim: true },
-        { text: '✓ Compiled successfully           ', dim: false },
-        { text: '✓ Generating static pages (8/8)  ', dim: false },
-        { text: '✓ Docker image built              ', dim: false },
-      ],
-      status: '✓ deployed · nginx serving',
-    },
+    accentHex: '#06b6d4',
+    Diagram: DiagramPortfolio,
     pillClass:       'bg-cyan-900/40 text-cyan-200 border-cyan-500/25',
-    borderClass:     'border-cyan-500/20 hover:border-cyan-400/50',
-    gradientClass:   'from-cyan-950/50 via-neutral-900/80 to-black',
+    borderClass:     'border-cyan-500/20',
     accentText:      'text-cyan-400',
     titleHoverClass: 'group-hover:text-cyan-300',
-    statusClass:     'text-cyan-400',
-    termBorderClass: 'border-cyan-500/15',
-    termBgClass:     'bg-cyan-950/30',
     highlightClass:  'bg-cyan-500/10 border-cyan-500/20 text-cyan-300',
-    boxShadow:       '0 0 60px -20px rgba(34,211,238,0.22)',
-    numberClass:     'text-cyan-400/8',
-    gridColor:       'rgba(34,211,238,0.05)',
-    scanClass:       'via-cyan-400/50',
+    metricClass:     'text-cyan-400',
+    ctaClass:        'border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10 hover:border-cyan-400/50',
+    diagBgClass:     'bg-cyan-950/40',
+    diagBorderClass: 'border-cyan-500/12',
+    boxShadow:       '0 0 0 1px rgba(6,182,212,0.12), 0 4px 40px -12px rgba(6,182,212,0.18)',
+    hoverShadow:     '0 0 0 1px rgba(6,182,212,0.45), 0 8px 60px -10px rgba(6,182,212,0.35)',
   },
   {
     id: '04',
     repo: 'abhay1999/Netflix-Clone-Deployment-on-Amazon-EKS',
     title: 'Netflix Clone on EKS',
-    problem: 'Deploying on AWS EKS manually is error-prone — no security scanning, no reproducible infra, no observability, and configuration drift breaks deployments.',
-    solution: 'Complete DevSecOps pipeline: Terraform provisions EKS, Jenkins runs CI/CD stages, SonarQube enforces quality gates, Trivy scans images, Prometheus + Grafana provides full observability.',
+    solution: 'Complete DevSecOps pipeline: Terraform provisions EKS, Jenkins runs CI/CD, SonarQube enforces quality gates, Trivy scans images, Prometheus + Grafana provides observability.',
     metrics: [
-      { value: '0',    label: 'Critical CVEs'    },
-      { value: '100%', label: 'IaC Coverage'     },
-      { value: 'Auto', label: 'Deploy on Merge'  },
+      { value: '0',    label: 'Critical CVEs'  },
+      { value: '100%', label: 'IaC Coverage'   },
+      { value: 'Auto', label: 'Deploy on Merge' },
     ],
-    arch: 'Terraform modules · Jenkins pipeline · Multi-stage Docker builds · EKS node groups',
     techStack: ['AWS EKS', 'Terraform', 'Jenkins', 'Docker', 'Trivy'],
     github: 'https://github.com/abhay1999/Netflix-Clone-Deployment-on-Amazon-EKS',
     liveDemo: '',
+    caseStudy: '',
     category: 'DevSecOps',
     highlight: '0 critical vulns · full CI/CD',
-    accentColor: 'red',
-    terminal: {
-      title: 'netflix-eks ~ terraform',
-      prompt: '$ terraform apply -target=module.eks',
-      rows: [
-        { text: 'aws_eks_cluster.netflix: Creating...', dim: true },
-        { text: 'aws_eks_cluster.netflix: Complete   ', dim: false },
-        { text: '✓ Jenkins pipeline: PASSED          ', dim: false },
-        { text: '✓ Trivy scan: 0 critical found      ', dim: false },
-      ],
-      status: '✓ EKS cluster: RUNNING',
-    },
+    accentHex: '#ef4444',
+    Diagram: DiagramNetflixEKS,
     pillClass:       'bg-red-900/40 text-red-200 border-red-500/25',
-    borderClass:     'border-red-500/20 hover:border-red-400/50',
-    gradientClass:   'from-red-950/50 via-neutral-900/80 to-black',
+    borderClass:     'border-red-500/20',
     accentText:      'text-red-400',
     titleHoverClass: 'group-hover:text-red-300',
-    statusClass:     'text-red-400',
-    termBorderClass: 'border-red-500/15',
-    termBgClass:     'bg-red-950/30',
     highlightClass:  'bg-red-500/10 border-red-500/20 text-red-300',
-    boxShadow:       '0 0 60px -20px rgba(239,68,68,0.22)',
-    numberClass:     'text-red-400/8',
-    gridColor:       'rgba(248,113,113,0.05)',
-    scanClass:       'via-red-400/50',
+    metricClass:     'text-red-400',
+    ctaClass:        'border-red-500/30 text-red-300 hover:bg-red-500/10 hover:border-red-400/50',
+    diagBgClass:     'bg-red-950/40',
+    diagBorderClass: 'border-red-500/12',
+    boxShadow:       '0 0 0 1px rgba(239,68,68,0.12), 0 4px 40px -12px rgba(239,68,68,0.18)',
+    hoverShadow:     '0 0 0 1px rgba(239,68,68,0.45), 0 8px 60px -10px rgba(239,68,68,0.35)',
   },
   {
     id: '05',
     repo: '',
-    title: 'AvlokanIAS – E-Learning Platform',
-    problem: 'UPSC aspirants had no affordable, structured video platform — existing solutions were slow, expensive, or geographically unavailable.',
-    solution: 'Built the entire platform from scratch: HLS video streaming via CloudFront CDN, JWT auth, Razorpay payments, admin dashboard, and Node.js backend — deployed on AWS EC2 + S3.',
+    title: 'AvlokanIAS — E-Learning Platform',
+    solution: 'Built from scratch: HLS video streaming via CloudFront CDN, JWT auth, Razorpay payments, admin dashboard, Node.js backend — deployed on AWS EC2 + S3 with 5000+ concurrent users on launch day.',
     metrics: [
-      { value: '5k+',  label: 'Concurrent Users'  },
-      { value: '0',    label: 'Downtime on Launch' },
-      { value: 'HLS',  label: 'Adaptive Streaming' },
+      { value: '5k+', label: 'Concurrent Users'  },
+      { value: '0',   label: 'Downtime on Launch' },
+      { value: 'HLS', label: 'Adaptive Stream'    },
     ],
-    arch: 'Node.js + MySQL · React SPA · AWS EC2 + S3 + CloudFront · HLS pipeline',
     techStack: ['React', 'Node.js', 'MySQL', 'AWS', 'CloudFront'],
     github: '',
     liveDemo: 'https://avlokanias.com',
+    caseStudy: '',
     category: 'Full-Stack',
     highlight: '5000+ concurrent users',
-    accentColor: 'purple',
-    terminal: {
-      title: 'avlokan-ias ~ server',
-      prompt: '$ node server.js --env=production',
-      rows: [
-        { text: 'Connecting to MySQL... OK          ', dim: true },
-        { text: 'Video CDN: initialized             ', dim: false },
-        { text: 'Payment gateway: connected         ', dim: false },
-        { text: 'Listening on :443 (SSL)            ', dim: false },
-      ],
-      status: '● 5000+ users online',
-    },
+    accentHex: '#a855f7',
+    Diagram: DiagramAvlokan,
     pillClass:       'bg-purple-900/40 text-purple-200 border-purple-500/25',
-    borderClass:     'border-purple-500/20 hover:border-purple-400/50',
-    gradientClass:   'from-purple-950/50 via-neutral-900/80 to-black',
+    borderClass:     'border-purple-500/20',
     accentText:      'text-purple-400',
     titleHoverClass: 'group-hover:text-purple-300',
-    statusClass:     'text-purple-400',
-    termBorderClass: 'border-purple-500/15',
-    termBgClass:     'bg-purple-950/30',
     highlightClass:  'bg-purple-500/10 border-purple-500/20 text-purple-300',
-    boxShadow:       '0 0 60px -20px rgba(168,85,247,0.22)',
-    numberClass:     'text-purple-400/8',
-    gridColor:       'rgba(192,132,252,0.05)',
-    scanClass:       'via-purple-400/50',
+    metricClass:     'text-purple-400',
+    ctaClass:        'border-purple-500/30 text-purple-300 hover:bg-purple-500/10 hover:border-purple-400/50',
+    diagBgClass:     'bg-purple-950/40',
+    diagBorderClass: 'border-purple-500/12',
+    boxShadow:       '0 0 0 1px rgba(168,85,247,0.12), 0 4px 40px -12px rgba(168,85,247,0.18)',
+    hoverShadow:     '0 0 0 1px rgba(168,85,247,0.45), 0 8px 60px -10px rgba(168,85,247,0.35)',
   },
 ]
 
@@ -259,32 +386,15 @@ const Projects = () => {
   return (
     <section id="projects" className="relative py-24 overflow-hidden bg-black">
 
-      {/* ── Background ──────────────────────────────────────────────────────── */}
+      {/* Background */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
-        <div className="absolute inset-0 opacity-[0.025]" style={{
-          backgroundImage: `linear-gradient(rgba(34,211,238,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.8) 1px, transparent 1px)`,
-          backgroundSize: '30px 30px',
-        }} />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[50%] opacity-[0.06]" style={{
-          backgroundImage: `linear-gradient(to right, rgba(139,92,246,0.9) 1px, transparent 1px), linear-gradient(to bottom, rgba(139,92,246,0.9) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-          transform: 'perspective(700px) rotateX(58deg) translateY(20%)',
-          maskImage: 'radial-gradient(ellipse at 50% 0%, black 20%, transparent 75%)',
-        }} />
-        {/* Circuit traces — CSS animations */}
-        <div className="absolute top-[22%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/12 to-transparent">
-          <div className="trace-x-fwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '5s' }} />
-        </div>
-        <div className="absolute top-[70%] left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/12 to-transparent">
-          <div className="trace-x-bwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" style={{ animationDuration: '6s' }} />
-        </div>
         <div className="absolute top-1/4 left-1/3 w-[600px] h-[600px] rounded-full bg-cyan-500/4 blur-[160px]" />
         <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-purple-500/4 blur-[140px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-        {/* ── Section Header ───────────────────────────────────────────────── */}
+        {/* Section Header */}
         <Reveal className="mb-12">
           <div className="flex items-center gap-2 mb-4 font-mono text-xs text-neutral-500">
             <span className="text-cyan-400">$</span>
@@ -295,7 +405,6 @@ const Projects = () => {
             <span className="text-neutral-300">.load()</span>
             <span className="cursor-blink w-1.5 h-3.5 bg-cyan-400 inline-block ml-0.5" />
           </div>
-
           <div className="flex items-end gap-5">
             <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">05.</span>
             <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
@@ -310,10 +419,11 @@ const Projects = () => {
           </p>
         </Reveal>
 
-        {/* ── Project Grid ─────────────────────────────────────────────────── */}
+        {/* Project Grid */}
         <div className="grid sm:grid-cols-2 gap-5 mb-10">
           {FEATURED.map((project, idx) => {
             const repoStats = project.repo ? stats[project.repo] : undefined
+            const { Diagram } = project
             return (
               <Reveal
                 key={project.id}
@@ -322,67 +432,92 @@ const Projects = () => {
                 className="group [perspective:900px]"
               >
                 <TiltCard
-                  className={`relative flex flex-col rounded-3xl overflow-hidden border transition-all duration-500 bg-gradient-to-br ${project.gradientClass} ${project.borderClass}`}
+                  className={`relative flex flex-col rounded-3xl overflow-hidden border transition-all duration-500 bg-gradient-to-b from-neutral-900/70 to-black ${project.borderClass}`}
                   style={{ boxShadow: project.boxShadow }}
                 >
-                  {/* ── Terminal Visual Strip ── */}
-                  <div className={`relative overflow-hidden border-b ${project.termBorderClass}`}>
 
-                    {/* Subtle grid bg */}
-                    <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
-                      backgroundImage: `linear-gradient(to right, ${project.gridColor} 1px, transparent 1px), linear-gradient(to bottom, ${project.gridColor} 1px, transparent 1px)`,
-                      backgroundSize: '20px 20px',
-                    }} />
+                  {/* ── Progress line — fills on hover ── */}
+                  <div className="absolute top-0 left-0 right-0 h-[2px] overflow-hidden z-30 pointer-events-none">
+                    <div
+                      className="h-full w-0 group-hover:w-full transition-[width] duration-700 ease-out"
+                      style={{ background: `linear-gradient(to right, transparent, ${project.accentHex}dd, transparent)` }}
+                    />
+                  </div>
 
-                    {/* Scan line — CSS animation */}
+                  {/* ── Hover glow border overlay ── */}
+                  <div
+                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20"
+                    style={{ boxShadow: `inset 0 0 0 1px ${project.accentHex}55` }}
+                  />
+
+                  {/* ── Architecture diagram strip ── */}
+                  <div className={`relative overflow-hidden border-b ${project.diagBorderClass} ${project.diagBgClass}`} style={{ height: 140 }}>
+
+                    {/* Scan line */}
                     <div
                       aria-hidden="true"
-                      className={`scan-line absolute left-0 right-0 h-px bg-gradient-to-r from-transparent ${project.scanClass} to-transparent opacity-60 pointer-events-none z-10`}
+                      className="scan-line absolute left-0 right-0 h-px pointer-events-none z-10 opacity-50"
+                      style={{ background: `linear-gradient(to right, transparent, ${project.accentHex}99, transparent)` }}
                     />
 
-                    {/* macOS title bar */}
-                    <div className={`flex items-center gap-2 px-4 py-2.5 border-b ${project.termBorderClass} bg-black/40 backdrop-blur-sm`}>
-                      <div className="flex gap-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-                      </div>
-                      <span className="text-[10px] font-mono text-neutral-500 ml-1 tracking-wide truncate">{project.terminal.title}</span>
-
-                      {/* Category pill pushed right */}
-                      <span className={`ml-auto shrink-0 px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase rounded-full border ${project.pillClass}`}>
-                        {project.category}
-                      </span>
+                    {/* SVG diagram */}
+                    <div className="absolute inset-0 flex items-center justify-center p-3">
+                      <Diagram c={project.accentHex} />
                     </div>
 
-                    {/* Terminal body */}
-                    <div className={`relative px-4 pt-3 pb-3 font-mono text-[11px] leading-[1.7] ${project.termBgClass} overflow-hidden`}>
-                      {/* Ghost number — behind terminal text */}
-                      <span aria-hidden="true" className={`absolute -bottom-2 right-2 font-black text-[5rem] leading-none select-none pointer-events-none ${project.numberClass}`}>
-                        {project.id}
+                    {/* Bottom overlay: category + repo stats */}
+                    <div className="absolute bottom-0 left-0 right-0 px-3 py-2 flex items-center justify-between bg-gradient-to-t from-black/60 to-transparent">
+                      <span className={`px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase rounded-full border ${project.pillClass}`}>
+                        {project.category}
                       </span>
-                      <div className={`relative z-10 mb-1 ${project.accentText}`}>{project.terminal.prompt}</div>
-                      {project.terminal.rows.map((row, i) => (
-                        <div key={i} className={`relative z-10 ${row.dim ? 'text-neutral-600' : 'text-neutral-300'}`}>
-                          {row.text}
+                      {repoStats && (
+                        <div className="flex items-center gap-3">
+                          {repoStats.stars > 0 && (
+                            <div className="flex items-center gap-1">
+                              <Star size={9} className="text-yellow-400 fill-yellow-400" />
+                              <span className="text-[10px] font-mono text-neutral-500">{repoStats.stars}</span>
+                            </div>
+                          )}
+                          {repoStats.forks > 0 && (
+                            <div className="flex items-center gap-1">
+                              <GitFork size={9} className="text-neutral-600" />
+                              <span className="text-[10px] font-mono text-neutral-500">{repoStats.forks}</span>
+                            </div>
+                          )}
                         </div>
-                      ))}
-                      <div className={`relative z-10 mt-1.5 font-semibold ${project.statusClass}`}>
-                        {project.terminal.status}
-                      </div>
+                      )}
+                      {!project.repo && (
+                        <span className="text-[9px] font-mono text-neutral-700">Private repo</span>
+                      )}
                     </div>
                   </div>
 
-                  {/* ── Card Content ── */}
+                  {/* ── Metric strip ── */}
+                  <div className="grid grid-cols-3 divide-x divide-white/[0.06] border-b border-white/[0.07]">
+                    {project.metrics.map((m, i) => (
+                      <div key={i} className="flex flex-col items-center py-3.5 px-2 bg-white/[0.015]">
+                        <span className={`font-black text-[22px] leading-none tabular-nums ${project.metricClass}`}>
+                          {m.value}
+                        </span>
+                        <span className="font-mono text-[8.5px] text-neutral-600 uppercase tracking-widest mt-1 text-center leading-tight">
+                          {m.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* ── Card content ── */}
                   <div className="flex flex-col flex-1 p-5" style={{ transform: 'translateZ(8px)' }}>
 
-                    {/* Title row */}
+                    {/* Title */}
                     <div className="flex items-start justify-between gap-2 mb-2.5">
                       <h3 className={`text-[17px] font-bold text-white ${project.titleHoverClass} transition-colors duration-300 leading-snug`}>
                         {project.title}
                       </h3>
-                      <ArrowUpRight size={15}
-                        className={`${project.accentText} opacity-0 group-hover:opacity-100 shrink-0 mt-0.5 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} />
+                      <ArrowUpRight
+                        size={15}
+                        className={`${project.accentText} opacity-0 group-hover:opacity-100 shrink-0 mt-0.5 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5`}
+                      />
                     </div>
 
                     {/* Highlight badge */}
@@ -393,36 +528,13 @@ const Projects = () => {
                       </span>
                     </div>
 
-                    {/* Problem / Solution */}
-                    <div className="space-y-2 mb-3">
-                      <div className="flex gap-2">
-                        <span className="font-mono text-[9px] text-rose-400/80 uppercase tracking-wider w-14 shrink-0 pt-0.5">Problem</span>
-                        <p className="text-[11px] text-neutral-500 leading-snug">{project.problem}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <span className={`font-mono text-[9px] uppercase tracking-wider w-14 shrink-0 pt-0.5 ${project.accentText} opacity-80`}>Built</span>
-                        <p className="text-[11px] text-neutral-300 leading-snug">{project.solution}</p>
-                      </div>
-                    </div>
-
-                    {/* Impact metrics */}
-                    <div className="grid grid-cols-3 gap-1.5 mb-3">
-                      {project.metrics.map(m => (
-                        <div key={m.label} className="flex flex-col items-center py-1.5 px-1 rounded-lg bg-white/[0.03] border border-white/[0.06]">
-                          <span className={`font-mono text-sm font-black leading-none ${project.accentText}`}>{m.value}</span>
-                          <span className="font-mono text-[8px] text-neutral-600 mt-0.5 text-center leading-tight">{m.label}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Architecture line */}
-                    <div className="flex items-start gap-2 mb-3 pb-3 border-b border-white/[0.06]">
-                      <span className="font-mono text-[9px] text-neutral-700 uppercase tracking-wider shrink-0 pt-0.5">Arch</span>
-                      <p className="font-mono text-[10px] text-neutral-600 leading-snug">{project.arch}</p>
-                    </div>
+                    {/* Solution */}
+                    <p className="text-[12px] text-neutral-400 leading-relaxed line-clamp-3 mb-4">
+                      {project.solution}
+                    </p>
 
                     {/* Tech pills */}
-                    <div className="flex flex-wrap gap-1.5 mb-3">
+                    <div className="flex flex-wrap gap-1.5 mb-4">
                       {project.techStack.map(tech => (
                         <span key={tech} className={`text-[10px] font-mono px-2 py-0.5 rounded-md border ${project.pillClass}`}>
                           {tech}
@@ -430,56 +542,52 @@ const Projects = () => {
                       ))}
                     </div>
 
-                    {/* ── Bottom row: stats + links ── */}
-                    <div className="flex items-center justify-between gap-3 pt-3 border-t border-white/[0.07] mt-auto">
-
-                      {/* Stars / Forks */}
-                      <div className="flex items-center gap-2">
-                        {repoStats && repoStats.stars > 0 && (
-                          <div className="flex items-center gap-1">
-                            <Star size={10} className="text-yellow-400 fill-yellow-400" />
-                            <span className="text-[10px] font-mono text-neutral-500">{repoStats.stars}</span>
-                          </div>
-                        )}
-                        {repoStats && repoStats.forks > 0 && (
-                          <div className="flex items-center gap-1">
-                            <GitFork size={10} className="text-neutral-600" />
-                            <span className="text-[10px] font-mono text-neutral-500">{repoStats.forks}</span>
-                          </div>
-                        )}
-                        {!repoStats && !project.github && (
-                          <span className="text-[10px] font-mono text-neutral-700">Private project</span>
-                        )}
-                      </div>
-
-                      {/* Links */}
-                      <div className="flex items-center gap-3">
-                        {project.github && (
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noreferrer"
-                            className={`inline-flex items-center gap-1.5 text-[11px] font-mono ${project.accentText} hover:opacity-75 transition-opacity`}
-                          >
-                            <GithubIcon size={11} />
-                            Repo
-                          </a>
-                        )}
-                        {project.github && project.liveDemo && (
-                          <span className="text-neutral-700">·</span>
-                        )}
-                        {project.liveDemo && (
-                          <a
-                            href={project.liveDemo}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1.5 text-[11px] font-mono text-neutral-400 hover:text-white transition-colors"
-                          >
-                            <ExternalLink size={10} />
-                            Live
-                          </a>
-                        )}
-                      </div>
+                    {/* ── CTA row ── */}
+                    <div className="flex items-center gap-2 pt-3.5 border-t border-white/[0.07] mt-auto">
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}
+                        >
+                          <GithubIcon size={11} />
+                          Repo
+                        </a>
+                      )}
+                      {project.liveDemo && (
+                        <a
+                          href={project.liveDemo}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}
+                        >
+                          <ExternalLink size={10} />
+                          Live ↗
+                        </a>
+                      )}
+                      {project.caseStudy && (
+                        <a
+                          href={project.caseStudy}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/10 text-[11px] font-mono font-medium text-neutral-500 hover:text-neutral-300 hover:border-white/20 transition-all duration-200"
+                        >
+                          <BookOpen size={10} />
+                          Case Study
+                        </a>
+                      )}
+                      {/* README fallback shown only when no live demo and no case study but has github */}
+                      {project.github && !project.liveDemo && !project.caseStudy && (
+                        <a
+                          href={`${project.github}#readme`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="ml-auto inline-flex items-center gap-1 text-[10px] font-mono text-neutral-700 hover:text-neutral-400 transition-colors"
+                        >
+                          README →
+                        </a>
+                      )}
                     </div>
                   </div>
 
@@ -489,7 +597,7 @@ const Projects = () => {
           })}
         </div>
 
-        {/* ── Footer CTA ───────────────────────────────────────────────────── */}
+        {/* Footer CTA */}
         <Reveal from={{ opacity: 0, y: 20 }} delay={0.3} className="flex items-center justify-center">
           <a
             href="https://github.com/abhay1999"

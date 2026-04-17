@@ -108,12 +108,6 @@ const Testimonials = () => {
           <div className="trace-y-bwd absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '8s' }} />
         </div>
 
-        {/* Intersection glow nodes */}
-        <div className="absolute top-[35%] left-[12%] w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-400 shadow-[0_0_12px_3px_rgba(192,132,252,0.6)]" />
-        <div className="absolute top-[35%] right-[12%] w-2 h-2 translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_12px_3px_rgba(34,211,238,0.6)]" />
-        <div className="absolute top-[68%] left-[12%] w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400 shadow-[0_0_12px_3px_rgba(52,211,153,0.6)]" />
-        <div className="absolute top-[68%] right-[12%] w-2 h-2 translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-400 shadow-[0_0_12px_3px_rgba(251,191,36,0.6)]" />
-
         {/* Ambient orbs */}
         <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-purple-500/5 blur-[160px]" />
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[140px]" />
