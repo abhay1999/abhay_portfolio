@@ -61,7 +61,7 @@ const TESTIMONIALS = [
 
 const Testimonials = () => {
   return (
-    <section id="testimonials" className="relative py-32 overflow-hidden bg-neutral-950">
+    <section id="testimonials" className="relative py-32 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 55% 40%, #100828 0%, #060416 45%, #000 100%)' }}>
 
       {/* ── Background System ───────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
@@ -109,8 +109,8 @@ const Testimonials = () => {
         </div>
 
         {/* Ambient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-purple-500/5 blur-[160px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[140px]" />
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-purple-500/10 blur-[160px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-cyan-500/8 blur-[140px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

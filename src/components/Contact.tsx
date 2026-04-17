@@ -103,7 +103,7 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact" className="relative py-32 overflow-hidden bg-black">
+    <section id="contact" className="relative py-32 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 50% 70%, #050a28 0%, #020516 45%, #000 100%)' }}>
 
       {/* ── Background System ───────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
@@ -191,38 +191,60 @@ const Contact = () => {
 
           {/* ── Left: Contact Info Panel ──────────────────────────────────── */}
           <Reveal from={{ opacity: 0, x: -40 }} className="flex flex-col">
-            {/* Availability badge */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/25 w-fit mb-8">
-              <div className="opacity-pulse w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-              <span className="font-mono text-xs text-emerald-300 tracking-wider">OPEN TO DEVOPS / GSOC OPPORTUNITIES</span>
-            </div>
-
             {/* Main heading */}
             <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              Let&apos;s build<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
-                scalable systems together
+              Let&apos;s Build<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400">
+                Reliable Systems
               </span>
             </h3>
 
-            <p className="text-neutral-400 leading-relaxed mb-7 max-w-md text-base">
-              DevOps engineer and CNCF contributor open to roles where infrastructure
-              reliability, Kubernetes, and open source actually matter.
+            <p className="text-neutral-400 leading-relaxed mb-8 max-w-md text-base">
+              I specialize in architecting resilient infrastructure and scalable delivery pipelines. If you&apos;re tackling complex engineering challenges, I&apos;d love to connect.
             </p>
 
-            {/* Opportunity tags */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {[
-                { label: 'DevOps / SRE Roles',       dot: 'bg-emerald-400', tag: 'bg-emerald-500/10 border-emerald-500/25 text-emerald-300' },
-                { label: 'GSoC 2026',                dot: 'bg-cyan-400',    tag: 'bg-cyan-500/10 border-cyan-500/25 text-cyan-300'          },
-                { label: 'CNCF LFX Mentorship',      dot: 'bg-blue-400',   tag: 'bg-blue-500/10 border-blue-500/25 text-blue-300'          },
-                { label: 'Open Source Collaboration', dot: 'bg-purple-400', tag: 'bg-purple-500/10 border-purple-500/25 text-purple-300'    },
-              ].map(({ label, dot, tag }) => (
-                <span key={label} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium ${tag}`}>
-                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dot}`} />
-                  {label}
-                </span>
-              ))}
+            {/* Currently Open To Card */}
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 mb-10 relative overflow-hidden group hover:border-white/20 hover:bg-white/[0.04] transition-all duration-500">
+              {/* Highlight accent on left */}
+              <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-400 to-blue-500" />
+              
+              <h4 className="text-sm font-mono text-neutral-300 tracking-wider mb-5 flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-cyan-400 opacity-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+                CURRENTLY OPEN TO
+              </h4>
+              
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                  <div>
+                    <p className="text-sm text-neutral-200 font-medium mb-0.5">DevOps & SRE Positions</p>
+                    <p className="text-xs text-neutral-500 leading-relaxed">Full-time roles building and scaling resilient infrastructure.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0 shadow-[0_0_6px_rgba(251,146,60,0.8)]" />
+                  <div>
+                    <p className="text-sm text-neutral-200 font-medium mb-0.5">Preferred Projects</p>
+                    <p className="text-xs text-neutral-500 leading-relaxed">Platform engineering, Kubernetes migrations, and high-availability systems.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-purple-400 flex-shrink-0 shadow-[0_0_6px_rgba(192,132,252,0.8)]" />
+                  <div>
+                    <p className="text-sm text-neutral-200 font-medium mb-0.5">Open Source Collaboration</p>
+                    <p className="text-xs text-neutral-500 leading-relaxed">GSoC, CNCF LFX mentorships, and core maintainer discussions.</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Expected Reply Time Footer */}
+              <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/5">
+                <div className="flex items-center gap-2 text-neutral-400">
+                  <Zap size={14} className="text-yellow-400" />
+                  <span className="text-xs font-mono tracking-wide">EXPECTED REPLY TIME</span>
+                </div>
+                <span className="text-xs font-mono text-cyan-300 tracking-widest bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-1 rounded-md">&lt; 24 HOURS</span>
+              </div>
             </div>
 
             {/* Separator with circuit glow */}
@@ -276,11 +298,6 @@ const Contact = () => {
                   </a>
                 ))}
 
-                {/* Transmission status */}
-                <div className="ml-auto flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/[0.03] border border-white/[0.07]">
-                  <Zap size={12} className="text-cyan-400" />
-                  <span className="font-mono text-[10px] text-neutral-500">Response &lt; 24h</span>
-                </div>
               </div>
             </div>
           </Reveal>

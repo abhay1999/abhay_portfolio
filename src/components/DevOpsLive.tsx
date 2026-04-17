@@ -197,7 +197,7 @@ const DevOpsLive = () => {
   const heatmapMeta = getStateMeta(heatmapSource)
 
   return (
-    <section id="devops-live" className="relative py-24 overflow-hidden bg-black">
+    <section id="devops-live" className="relative py-24 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 70% 40%, #001a0c 0%, #000d06 45%, #000 100%)' }}>
 
       {/* ── Background ───────────────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">

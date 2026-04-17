@@ -580,7 +580,7 @@ const DevOpsPlayground = () => {
   }
 
   return (
-    <section id="playground" className="relative py-24 overflow-hidden bg-black">
+    <section id="playground" className="relative py-24 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 30% 50%, #001a08 0%, #000f05 45%, #000 100%)' }}>
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
         <div className="hidden sm:block absolute inset-0 opacity-[0.02]" style={{
           backgroundImage: 'linear-gradient(rgba(52,211,153,0.9) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,0.9) 1px,transparent 1px)',

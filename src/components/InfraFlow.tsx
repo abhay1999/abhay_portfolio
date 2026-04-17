@@ -146,7 +146,7 @@ const InfraFlow = () => {
   }
 
   return (
-    <section id="infraflow" className="relative py-20 overflow-hidden bg-black">
+    <section id="infraflow" className="relative py-20 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 40% 55%, #001520 0%, #000b12 45%, #000 100%)' }}>
 
       {/* Background grid */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0">

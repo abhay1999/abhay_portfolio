@@ -119,7 +119,7 @@ const BADGES = [
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const Skills = () => (
-  <section id="skills" className="relative py-20 overflow-hidden bg-black">
+  <section id="skills" className="relative py-20 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 50% 20%, #001a10 0%, #000c07 45%, #000 100%)' }}>
 
     {/* Background */}
     <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">

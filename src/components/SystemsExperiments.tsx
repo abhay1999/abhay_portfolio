@@ -165,7 +165,7 @@ const SystemsExperiments = () => {
   const fmtDuration = (ms: number) => ms >= 60000 ? `${Math.floor(ms / 60000)}m ${Math.floor((ms % 60000) / 1000)}s` : `${(ms / 1000).toFixed(1)}s`
 
   return (
-    <section id="systems" className="relative py-20 overflow-hidden bg-black">
+    <section id="systems" className="relative py-20 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 50% 60%, #080628 0%, #040316 45%, #000 100%)' }}>
 
       {/* Background */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0">

@@ -78,18 +78,19 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{ background: 'radial-gradient(ellipse at 65% 35%, #0e0830 0%, #050218 45%, #000008 100%)' }}
     >
       {/* ── Background ───────────────────────────────────────────────────── */}
 
       {/* Micro circuit grid */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
+      <div aria-hidden="true" className="hidden sm:block absolute inset-0 pointer-events-none" style={{
         backgroundImage: 'linear-gradient(rgba(6,182,212,1) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,1) 1px,transparent 1px)',
         backgroundSize: '50px 50px', opacity: 0.032,
       }} />
 
       {/* 3-D perspective tunnel grid */}
-      <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div aria-hidden="true" className="hidden sm:flex absolute inset-0 items-center justify-center pointer-events-none">
         <div style={{
           width: '130%', height: '130%',
           backgroundImage: 'linear-gradient(to right,rgba(6,182,212,0.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(6,182,212,0.07) 1px,transparent 1px)',
@@ -101,7 +102,7 @@ const Hero = () => {
       </div>
 
       {/* Animated circuit traces — pure CSS, GPU compositor */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div aria-hidden="true" className="hidden sm:block absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent" style={{ top: '22%' }} />
         <div className="trace-x-fwd absolute h-px w-52 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
              style={{ top: '22%', opacity: 0.9, animationDuration: '5.5s' }} />

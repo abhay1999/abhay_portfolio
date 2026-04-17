@@ -44,12 +44,12 @@ const EDU = {
 }
 
 const Experience = () => (
-  <section id="experience" className="relative py-28 overflow-hidden bg-neutral-950">
+  <section id="experience" className="relative py-28 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 75% 50%, #12082a 0%, #07041c 45%, #000 100%)' }}>
 
     {/* Background */}
     <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-cyan-500/4 blur-[160px]" />
-      <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-purple-500/4 blur-[140px]" />
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-cyan-500/10 blur-[160px]" />
+      <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-purple-500/10 blur-[140px]" />
     </div>
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

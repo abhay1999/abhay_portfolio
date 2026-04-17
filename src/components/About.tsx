@@ -123,12 +123,12 @@ const About = () => {
   ]
 
   return (
-    <section id="about" className="relative py-20 overflow-hidden bg-neutral-950">
+    <section id="about" className="relative py-20 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 30% 60%, #031a0f 0%, #011008 45%, #000 100%)' }}>
 
       {/* Ambient orbs */}
-      <div aria-hidden="true" className="absolute top-1/4 left-0 w-[520px] h-[520px] bg-cyan-500/[0.06] rounded-full blur-[160px] pointer-events-none" />
-      <div aria-hidden="true" className="absolute bottom-1/4 right-0 w-[420px] h-[420px] bg-purple-500/[0.06] rounded-full blur-[140px] pointer-events-none" />
-      <div aria-hidden="true" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[250px] bg-emerald-500/[0.04] rounded-full blur-[180px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute top-1/4 left-0 w-[520px] h-[520px] bg-cyan-500/[0.10] rounded-full blur-[160px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute bottom-1/4 right-0 w-[420px] h-[420px] bg-emerald-500/[0.09] rounded-full blur-[140px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[250px] bg-emerald-500/[0.07] rounded-full blur-[180px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 

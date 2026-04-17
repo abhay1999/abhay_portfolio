@@ -404,7 +404,7 @@ const OpenSource = () => {
   ]
 
   return (
-    <section id="opensource" className="relative py-28 overflow-hidden bg-black">
+    <section id="opensource" className="relative py-28 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 60% 30%, #0a0830 0%, #050418 45%, #000 100%)' }}>
 
       {/* Inject marquee keyframes */}
       <style>{`
@@ -426,8 +426,8 @@ const OpenSource = () => {
         </div>
         <div className="absolute top-[20%] left-[15%] w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400 shadow-[0_0_12px_3px_rgba(52,211,153,0.6)]" />
         <div className="absolute top-[20%] right-[15%] w-2 h-2 translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_12px_3px_rgba(34,211,238,0.6)]" />
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-emerald-500/5 blur-[160px]" />
-        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-cyan-500/5 blur-[140px]" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-indigo-500/10 blur-[160px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-purple-500/9 blur-[140px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

@@ -138,7 +138,7 @@ const TechRadar = () => {
   const quadLabelPos = QUAD_START.map(start => svgCoords(start + QUAD_SPAN / 2, 248))
 
   return (
-    <section id="tech-radar" className="relative py-24 overflow-hidden bg-black">
+    <section id="tech-radar" className="relative py-24 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 35% 45%, #002020 0%, #001212 45%, #000 100%)' }}>
 
       {/* ── Background ───────────────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">

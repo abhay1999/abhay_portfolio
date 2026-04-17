@@ -384,12 +384,12 @@ const Projects = () => {
   }, [])
 
   return (
-    <section id="projects" className="relative py-24 overflow-hidden bg-black">
+    <section id="projects" className="relative py-24 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 35% 65%, #001818 0%, #001010 45%, #000 100%)' }}>
 
       {/* Background */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
-        <div className="absolute top-1/4 left-1/3 w-[600px] h-[600px] rounded-full bg-cyan-500/4 blur-[160px]" />
-        <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-purple-500/4 blur-[140px]" />
+        <div className="absolute top-1/4 left-1/3 w-[600px] h-[600px] rounded-full bg-teal-500/10 blur-[160px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-cyan-500/8 blur-[140px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
