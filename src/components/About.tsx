@@ -123,7 +123,7 @@ const About = () => {
   ]
 
   return (
-    <section id="about" className="relative py-20 overflow-hidden bg-black">
+    <section id="about" className="relative py-20 overflow-hidden bg-neutral-950">
 
       {/* Ambient orbs */}
       <div aria-hidden="true" className="absolute top-1/4 left-0 w-[520px] h-[520px] bg-cyan-500/[0.06] rounded-full blur-[160px] pointer-events-none" />
@@ -215,10 +215,10 @@ const About = () => {
           <Reveal from={{ opacity: 0, x: 40 }} delay={0.15} className="lg:col-span-8 space-y-5">
 
             {/* Bio terminal */}
-            <div className="rounded-3xl border border-white/[0.08] bg-gradient-to-br from-neutral-900/60 to-black overflow-hidden backdrop-blur-sm">
+            <div className="rounded-3xl border border-white/[0.12] bg-neutral-900/70 overflow-hidden backdrop-blur-md">
               <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.06] bg-black/30">
                 <Terminal size={12} className="text-cyan-400" />
-                <span className="text-[11px] text-neutral-500 font-mono tracking-wider">~/about/bio.md</span>
+                <span className="text-[11px] text-neutral-500 font-mono tracking-wider"><span className="hidden sm:inline">~/about/</span>bio.md</span>
                 <div className="ml-auto flex items-center gap-2">
                   <span className="text-[10px] text-neutral-600 font-mono">utf-8</span>
                   <span className="h-3 w-px bg-white/10" />
@@ -251,7 +251,7 @@ const About = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {STATS.map(({ value, label, Icon, iconCls, numCls, bg, border }) => (
                 <TiltCard key={label} className="group will-change-transform">
-                  <div className={`relative rounded-2xl border ${border} ${bg} bg-gradient-to-br from-neutral-900/70 to-black p-5 text-center overflow-hidden`}>
+                  <div className={`relative rounded-2xl border ${border} ${bg} p-5 text-center overflow-hidden`}>
                     <div aria-hidden="true" className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${bg} rounded-2xl`} />
                     <Icon size={18} className={`${iconCls} mx-auto mb-2 relative z-10`} />
                     <div className={`text-3xl md:text-4xl font-bold ${numCls} mb-1 relative z-10`}>{value}</div>
@@ -262,7 +262,7 @@ const About = () => {
             </div>
 
             {/* Current focus */}
-            <div className="rounded-3xl border border-white/[0.08] bg-gradient-to-br from-neutral-900/60 to-black overflow-hidden backdrop-blur-sm">
+            <div className="rounded-3xl border border-white/[0.12] bg-neutral-900/70 overflow-hidden backdrop-blur-md">
               <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.06] bg-black/30">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
@@ -294,7 +294,7 @@ const About = () => {
             <div className="grid sm:grid-cols-3 gap-4">
               {CAPS.map(({ Icon, title, desc, iconBg, iconCls, border, hoverGlow }) => (
                 <TiltCard key={title} className="group will-change-transform">
-                  <div className={`rounded-2xl border ${border} ${hoverGlow} bg-gradient-to-br from-neutral-900/70 to-black p-5 transition-all duration-300 h-full`}>
+                  <div className={`rounded-2xl border ${border} ${hoverGlow} bg-neutral-900/35 p-5 transition-all duration-300 h-full`}>
                     <div className={`w-10 h-10 rounded-xl ${iconBg} ${iconCls} flex items-center justify-center mb-4`} style={{ transform: 'translateZ(20px)' }}>
                       <Icon size={20} />
                     </div>
@@ -306,7 +306,7 @@ const About = () => {
             </div>
 
             {/* Competitive Coding Panel */}
-            <div className="rounded-3xl border border-white/[0.08] bg-gradient-to-br from-neutral-900/60 to-black overflow-hidden backdrop-blur-sm">
+            <div className="rounded-3xl border border-white/[0.12] bg-neutral-900/70 overflow-hidden backdrop-blur-md">
               <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.06] bg-black/30">
                 <Zap size={11} className="text-amber-400" />
                 <span className="text-[11px] text-neutral-500 font-mono tracking-wider">competitive_coding.log</span>

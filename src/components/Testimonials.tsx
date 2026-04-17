@@ -61,14 +61,14 @@ const TESTIMONIALS = [
 
 const Testimonials = () => {
   return (
-    <section id="testimonials" className="relative py-32 overflow-hidden bg-black">
+    <section id="testimonials" className="relative py-32 overflow-hidden bg-neutral-950">
 
       {/* ── Background System ───────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
 
         {/* Micro circuit grid */}
         <div
-          className="absolute inset-0 opacity-[0.025]"
+          className="hidden sm:block absolute inset-0 opacity-[0.025]"
           style={{
             backgroundImage: `
               linear-gradient(rgba(139,92,246,0.8) 1px, transparent 1px),
@@ -80,7 +80,7 @@ const Testimonials = () => {
 
         {/* Perspective floor grid */}
         <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[45%] opacity-[0.06]"
+          className="hidden sm:block absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[45%] opacity-[0.06]"
           style={{
             backgroundImage: `
               linear-gradient(to right, rgba(34,211,238,0.9) 1px, transparent 1px),
@@ -93,18 +93,18 @@ const Testimonials = () => {
         />
 
         {/* Horizontal circuit traces */}
-        <div className="absolute top-[35%] left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/15 to-transparent">
+        <div className="hidden sm:block absolute top-[35%] left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/15 to-transparent">
           <div className="trace-x-fwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" style={{ animationDuration: '6s' }} />
         </div>
-        <div className="absolute top-[68%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/12 to-transparent">
+        <div className="hidden sm:block absolute top-[68%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/12 to-transparent">
           <div className="trace-x-bwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '7s' }} />
         </div>
 
         {/* Vertical circuit traces */}
-        <div className="absolute top-0 left-[12%] h-full w-px bg-gradient-to-b from-transparent via-purple-500/10 to-transparent">
+        <div className="hidden sm:block absolute top-0 left-[12%] h-full w-px bg-gradient-to-b from-transparent via-purple-500/10 to-transparent">
           <div className="trace-y-fwd absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-purple-400 to-transparent" style={{ animationDuration: '9s' }} />
         </div>
-        <div className="absolute top-0 right-[12%] h-full w-px bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent">
+        <div className="hidden sm:block absolute top-0 right-[12%] h-full w-px bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent">
           <div className="trace-y-bwd absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '8s' }} />
         </div>
 
@@ -121,7 +121,7 @@ const Testimonials = () => {
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-purple-400">$</span>
             <span className="text-neutral-400">social</span>
-            <span className="text-neutral-600">~/proof</span>
+            <span className="hidden sm:inline text-neutral-600">~/proof</span>
             <span className="text-white">›</span>
             <span className="text-cyan-400">endorsements</span>
             <span className="text-neutral-300">.fetch()</span>
@@ -147,7 +147,7 @@ const Testimonials = () => {
               className="group [perspective:900px]"
             >
               <TiltCard
-                className={`relative flex flex-col h-full rounded-2xl bg-neutral-950/65 backdrop-blur-xl border ${t.borderClass} ${t.hoverBorder} transition-all duration-300 p-7 overflow-hidden`}
+                className={`relative flex flex-col h-full rounded-2xl bg-neutral-900/80 backdrop-blur-xl border ${t.borderClass} ${t.hoverBorder} transition-all duration-300 p-7 overflow-hidden`}
                 style={{ boxShadow: t.boxShadow }}
               >
                 {/* Corner accent lines */}

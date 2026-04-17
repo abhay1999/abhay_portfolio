@@ -399,7 +399,7 @@ const Projects = () => {
           <div className="flex items-center gap-2 mb-4 font-mono text-xs text-neutral-500">
             <span className="text-cyan-400">$</span>
             <span className="text-neutral-400">build</span>
-            <span className="text-neutral-600">~/projects</span>
+            <span className="hidden sm:inline text-neutral-600">~/projects</span>
             <span className="text-white">›</span>
             <span className="text-purple-400">project_manifest</span>
             <span className="text-neutral-300">.load()</span>
@@ -451,7 +451,7 @@ const Projects = () => {
                   />
 
                   {/* ── Architecture diagram strip ── */}
-                  <div className={`relative overflow-hidden border-b ${project.diagBorderClass} ${project.diagBgClass}`} style={{ height: 140 }}>
+                  <div className={`relative overflow-hidden border-b ${project.diagBorderClass} ${project.diagBgClass} h-[110px] sm:h-[140px]`}>
 
                     {/* Scan line */}
                     <div
@@ -549,7 +549,7 @@ const Projects = () => {
                           href={project.github}
                           target="_blank"
                           rel="noreferrer"
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}
+                          className={`inline-flex items-center gap-1.5 px-3 py-2.5 sm:py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}
                         >
                           <GithubIcon size={11} />
                           Repo
@@ -560,7 +560,7 @@ const Projects = () => {
                           href={project.liveDemo}
                           target="_blank"
                           rel="noreferrer"
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}
+                          className={`inline-flex items-center gap-1.5 px-3 py-2.5 sm:py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}
                         >
                           <ExternalLink size={10} />
                           Live ↗

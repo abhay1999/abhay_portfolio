@@ -105,7 +105,7 @@ const Header = () => {
           onClick={() => setIsMenuOpen(v => !v)}
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMenuOpen}
-          className="md:hidden p-2 -mr-2 text-neutral-400 hover:text-white transition-colors"
+          className="md:hidden p-3 -mr-2 text-neutral-400 hover:text-white transition-colors"
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

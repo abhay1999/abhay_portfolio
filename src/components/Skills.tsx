@@ -134,7 +134,7 @@ const Skills = () => (
         <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
           <span className="text-emerald-400">$</span>
           <span className="text-neutral-400">sys</span>
-          <span className="text-neutral-600">~/core</span>
+          <span className="hidden sm:inline text-neutral-600">~/core</span>
           <span className="text-white">›</span>
           <span className="text-cyan-400">skill_matrix</span>
           <span className="text-neutral-300">.init()</span>
@@ -152,7 +152,7 @@ const Skills = () => (
 
       {/* Skill Matrix Core Panel */}
       <Reveal from={{ opacity: 0, y: 40 }} className="mb-8">
-        <div className="relative bg-neutral-950/70 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
+        <div className="relative bg-neutral-900/85 backdrop-blur-xl border border-white/[0.13] rounded-2xl overflow-hidden">
           {/* Scan line */}
           <div aria-hidden="true" className="scan-line absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent pointer-events-none z-20"
                style={{ animationDuration: '4s' }} />
@@ -164,7 +164,7 @@ const Skills = () => (
                 <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
                 <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
               </div>
-              <span className="font-mono text-[10px] text-neutral-400 tracking-wide">skill_matrix.core — NEURAL INTERFACE v2.0</span>
+              <span className="font-mono text-[10px] text-neutral-400 tracking-wide">skill_matrix.core<span className="hidden sm:inline"> — NEURAL INTERFACE v2.0</span></span>
             </div>
             <div className="flex items-center gap-2">
               <div className="opacity-pulse w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
@@ -248,7 +248,7 @@ const Skills = () => (
         {CATEGORIES.map((cat, idx) => (
           <Reveal key={cat.id} from={{ opacity: 0, y: 40, rotateX: 8 }} delay={idx * 0.1} className="group [perspective:900px]">
             <TiltCard
-              className={`relative rounded-2xl bg-neutral-950/65 backdrop-blur-xl border ${cat.borderClass} p-5 h-full flex flex-col overflow-hidden`}
+              className={`relative rounded-2xl bg-neutral-900/50 border ${cat.borderClass} p-5 h-full flex flex-col overflow-hidden`}
               style={{ boxShadow: cat.boxShadow }}
             >
               <span aria-hidden="true" className={`absolute top-2 right-3 font-black text-[5rem] leading-none select-none ${cat.numClass} pointer-events-none`}
@@ -292,7 +292,7 @@ const Skills = () => (
         <div className="flex flex-wrap justify-center gap-2.5 [perspective:1000px]">
           {BADGES.map((badge, i) => (
             <Reveal key={badge.text} from={{ opacity: 0, scale: 0.85 }} delay={i * 0.03}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-neutral-400 border border-white/10 bg-gradient-to-b from-neutral-800/25 to-neutral-900/60 backdrop-blur-xl shadow-lg hover:text-white hover:border-white/25 hover:shadow-[0_0_20px_-5px_rgba(34,211,238,0.3)] cursor-pointer transition-colors duration-200 hover:scale-110"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-neutral-400 border border-white/10 bg-neutral-900/50 shadow-sm hover:text-white hover:border-white/25 hover:bg-neutral-800/60 hover:shadow-[0_0_20px_-5px_rgba(34,211,238,0.3)] cursor-pointer transition-all duration-200 hover:scale-110"
               style={{ transition: 'transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease' } as React.CSSProperties}
             >
               {badge.text}

@@ -582,13 +582,13 @@ const DevOpsPlayground = () => {
   return (
     <section id="playground" className="relative py-24 overflow-hidden bg-black">
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
-        <div className="absolute inset-0 opacity-[0.02]" style={{
+        <div className="hidden sm:block absolute inset-0 opacity-[0.02]" style={{
           backgroundImage: 'linear-gradient(rgba(52,211,153,0.9) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,0.9) 1px,transparent 1px)',
           backgroundSize: '32px 32px',
         }} />
         <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-emerald-600/4 blur-[150px]" />
         <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-cyan-600/4 blur-[130px]" />
-        <div className="absolute top-[40%] left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent">
+        <div className="hidden sm:block absolute top-[40%] left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent">
           <div className="trace-x-fwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent" style={{ animationDuration: '6s' }} />
         </div>
       </div>
@@ -600,7 +600,7 @@ const DevOpsPlayground = () => {
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-emerald-400">$</span>
             <span className="text-neutral-400">kubectl</span>
-            <span className="text-neutral-600">--context=demo</span>
+            <span className="hidden sm:inline text-neutral-600">--context=demo</span>
             <span className="text-white">›</span>
             <span className="text-emerald-400">playground</span>
             <span className="text-neutral-300">.start()</span>
@@ -646,11 +646,11 @@ const DevOpsPlayground = () => {
             <div className="flex items-center gap-1 font-mono text-[10px]">
               <button
                 onClick={() => setMode('k8s')}
-                className={`px-2.5 py-1 rounded-md border transition-all duration-150 ${mode === 'k8s' ? 'border-emerald-500/60 bg-emerald-500/10 text-emerald-400' : 'border-white/[0.07] text-neutral-600 hover:text-neutral-400 hover:border-white/15'}`}
+                className={`px-2.5 py-2 sm:py-1 rounded-md border transition-all duration-150 ${mode === 'k8s' ? 'border-emerald-500/60 bg-emerald-500/10 text-emerald-400' : 'border-white/[0.07] text-neutral-600 hover:text-neutral-400 hover:border-white/15'}`}
               >K8s Platform</button>
               <button
                 onClick={() => setMode('devenv')}
-                className={`px-2.5 py-1 rounded-md border transition-all duration-150 ${mode === 'devenv' ? 'border-orange-500/60 bg-orange-500/10 text-orange-400' : 'border-white/[0.07] text-neutral-600 hover:text-neutral-400 hover:border-white/15'}`}
+                className={`px-2.5 py-2 sm:py-1 rounded-md border transition-all duration-150 ${mode === 'devenv' ? 'border-orange-500/60 bg-orange-500/10 text-orange-400' : 'border-white/[0.07] text-neutral-600 hover:text-neutral-400 hover:border-white/15'}`}
               >DevEnv CLI</button>
             </div>
             <div className="hidden sm:flex items-center gap-5 font-mono text-[10px]">
@@ -691,7 +691,7 @@ const DevOpsPlayground = () => {
           {/* Output area */}
           <div
             ref={outputRef}
-            className="h-[460px] overflow-y-auto px-5 py-4 font-mono text-[12px] leading-relaxed cursor-text"
+            className="h-[300px] sm:h-[460px] overflow-y-auto px-5 py-4 font-mono text-[12px] leading-relaxed cursor-text"
             onClick={() => inputRef.current?.focus()}
             style={{ scrollbarWidth: 'thin', scrollbarColor: '#222 transparent' }}
           >
@@ -827,7 +827,7 @@ const DevOpsPlayground = () => {
                   key={s.cmd}
                   onClick={() => { typeAndExec(s.cmd); inputRef.current?.focus() }}
                   disabled={busy}
-                  className={`group px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.07] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 ${mode === 'k8s' ? 'hover:border-emerald-500/50 hover:bg-emerald-500/5' : 'hover:border-orange-500/50 hover:bg-orange-500/5'}`}
+                  className={`group px-2.5 py-2 sm:py-1 rounded-lg bg-white/[0.03] border border-white/[0.07] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 ${mode === 'k8s' ? 'hover:border-emerald-500/50 hover:bg-emerald-500/5' : 'hover:border-orange-500/50 hover:bg-orange-500/5'}`}
                 >
                   <span className={`font-mono text-[10px] text-neutral-400 transition-colors ${mode === 'k8s' ? 'group-hover:text-emerald-400' : 'group-hover:text-orange-400'}`}>
                     {s.label}
@@ -842,7 +842,7 @@ const DevOpsPlayground = () => {
         <Reveal
           from={{ opacity: 0, y: 10 }}
           delay={0.3}
-          className="mt-4 flex flex-wrap items-center justify-center gap-6 font-mono text-[11px] text-neutral-700"
+          className="mt-4 hidden sm:flex flex-wrap items-center justify-center gap-6 font-mono text-[11px] text-neutral-700"
         >
           <span><span className={mode === 'k8s' ? 'text-emerald-500' : 'text-orange-500'}>●</span> Sandboxed demo environment</span>
           {mode === 'k8s' ? (

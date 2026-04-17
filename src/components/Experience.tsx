@@ -44,7 +44,7 @@ const EDU = {
 }
 
 const Experience = () => (
-  <section id="experience" className="relative py-28 overflow-hidden bg-black">
+  <section id="experience" className="relative py-28 overflow-hidden bg-neutral-950">
 
     {/* Background */}
     <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
@@ -59,7 +59,7 @@ const Experience = () => (
         <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
           <span className="text-purple-400">$</span>
           <span className="text-neutral-400">resume</span>
-          <span className="text-neutral-600">~/career</span>
+          <span className="hidden sm:inline text-neutral-600">~/career</span>
           <span className="text-white">›</span>
           <span className="text-cyan-400">timeline</span>
           <span className="text-neutral-300">.render()</span>
@@ -79,7 +79,7 @@ const Experience = () => (
       <div className="grid lg:grid-cols-2 gap-5 mb-5">
         {WORK.map((job, idx) => (
           <Reveal key={job.id} from={{ opacity: 0, y: 30 }} delay={idx * 0.1}
-            className="group relative rounded-2xl border border-t-2 border-white/[0.07] overflow-hidden bg-white/[0.025] hover:bg-white/[0.04] transition-all duration-300"
+            className="group relative rounded-2xl border border-t-2 border-white/[0.07] overflow-hidden bg-neutral-900/55 hover:bg-neutral-900/70 transition-all duration-300"
             style={{ boxShadow: job.glowStyle } as React.CSSProperties}
           >
             <div className={`absolute top-0 left-0 right-0 h-[2px] ${job.accentBorder.replace('border-t-', 'bg-')}`} />
@@ -132,7 +132,7 @@ const Experience = () => (
 
       {/* Education */}
       <Reveal from={{ opacity: 0, y: 25 }} delay={0.2}
-        className="group relative rounded-2xl border border-white/[0.07] overflow-hidden bg-white/[0.025] hover:bg-white/[0.04] transition-all duration-300"
+        className="group relative rounded-2xl border border-white/[0.07] overflow-hidden bg-neutral-900/55 hover:bg-neutral-900/70 transition-all duration-300"
         style={{ boxShadow: '0 0 60px -15px rgba(245,158,11,0.15)' } as React.CSSProperties}
       >
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-amber-500" />
