@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, CheckCircle, Linkedin, Zap } from 'lucide-react'
 import emailjs from '@emailjs/browser'
+import Reveal from '@/components/Reveal'
 
 const EJS_SERVICE  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID  ?? ''
 const EJS_TEMPLATE = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
@@ -134,36 +134,20 @@ const Contact = () => {
           }}
         />
 
-        {/* Horizontal circuit traces */}
+        {/* Horizontal circuit traces — CSS */}
         <div className="absolute top-[30%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/12 to-transparent">
-          <motion.div
-            animate={{ x: ['-100%', '200%'] }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
-            className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
-          />
+          <div className="trace-x-fwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '5s' }} />
         </div>
         <div className="absolute top-[72%] left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/12 to-transparent">
-          <motion.div
-            animate={{ x: ['200%', '-100%'] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 2 }}
-            className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent"
-          />
+          <div className="trace-x-bwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" style={{ animationDuration: '6s' }} />
         </div>
 
-        {/* Vertical circuit traces */}
+        {/* Vertical circuit traces — CSS */}
         <div className="absolute top-0 left-[15%] h-full w-px bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent">
-          <motion.div
-            animate={{ y: ['-100%', '200%'] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'linear', repeatDelay: 4 }}
-            className="absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-emerald-400 to-transparent"
-          />
+          <div className="trace-y-fwd absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-emerald-400 to-transparent" style={{ animationDuration: '8s' }} />
         </div>
         <div className="absolute top-0 right-[15%] h-full w-px bg-gradient-to-b from-transparent via-orange-500/10 to-transparent">
-          <motion.div
-            animate={{ y: ['200%', '-100%'] }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
-            className="absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-orange-400 to-transparent"
-          />
+          <div className="trace-y-bwd absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-orange-400 to-transparent" style={{ animationDuration: '7s' }} />
         </div>
 
         {/* Intersection glow nodes */}
@@ -181,13 +165,7 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* ── Section Header ───────────────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-14"
-        >
+        <Reveal className="mb-14">
           {/* Terminal prompt */}
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-purple-400">$</span>
@@ -196,11 +174,7 @@ const Contact = () => {
             <span className="text-white">›</span>
             <span className="text-cyan-400">msg_transmit</span>
             <span className="text-neutral-300">.open()</span>
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.7, repeat: Infinity }}
-              className="w-1.5 h-3.5 bg-cyan-400 inline-block ml-0.5"
-            />
+            <span className="cursor-blink w-1.5 h-3.5 bg-cyan-400 inline-block ml-0.5" />
           </div>
 
           <div className="flex items-end gap-5">
@@ -211,25 +185,15 @@ const Contact = () => {
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent mb-2" />
           </div>
-        </motion.div>
+        </Reveal>
 
         <div className="grid lg:grid-cols-2 gap-10 xl:gap-16 items-start">
 
           {/* ── Left: Contact Info Panel ──────────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.85, ease: 'easeOut' }}
-            className="flex flex-col"
-          >
+          <Reveal from={{ opacity: 0, x: -40 }} className="flex flex-col">
             {/* Availability badge */}
             <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/25 w-fit mb-8">
-              <motion.div
-                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.6, 1] }}
-                transition={{ duration: 1.8, repeat: Infinity }}
-                className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"
-              />
+              <div className="opacity-pulse w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
               <span className="font-mono text-xs text-emerald-300 tracking-wider">OPEN TO DEVOPS / GSOC OPPORTUNITIES</span>
             </div>
 
@@ -319,26 +283,18 @@ const Contact = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
 
           {/* ── Right: Terminal Form Window ───────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.85, delay: 0.15, ease: 'easeOut' }}
-            className="relative"
-          >
+          <Reveal from={{ opacity: 0, y: 40 }} delay={0.15} className="relative">
             <div
               className="relative bg-neutral-950/75 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden"
               style={{ boxShadow: '0 0 80px -25px rgba(139,92,246,0.25), 0 0 40px -15px rgba(34,211,238,0.12)' }}
             >
-              {/* Animated scan line */}
-              <motion.div
-                animate={{ y: ['-100%', '2000%'] }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 10 }}
+              {/* Animated scan line — CSS */}
+              <div
                 aria-hidden="true"
-                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/45 to-transparent pointer-events-none z-20"
+                className="scan-line absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/45 to-transparent pointer-events-none z-20"
               />
 
               {/* Corner accent nodes */}
@@ -360,11 +316,7 @@ const Contact = () => {
                   <span className="font-mono text-[11px] text-neutral-400 tracking-wide">msg_transmit.exe — SECURE CHANNEL</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <motion.div
-                    animate={{ opacity: [1, 0.3, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                    className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(34,211,238,0.8)]"
-                  />
+                  <div className="opacity-pulse w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(34,211,238,0.8)]" />
                   <span className="font-mono text-[9px] text-cyan-400 uppercase tracking-widest">ENCRYPTED</span>
                 </div>
               </div>
@@ -372,19 +324,11 @@ const Contact = () => {
               {/* Form body */}
               <div className="p-6 lg:p-8">
                 {isSubmitted ? (
-                  <motion.div
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className="flex flex-col items-center justify-center text-center py-16 min-h-[400px]"
-                  >
+                  <div className="flex flex-col items-center justify-center text-center py-16 min-h-[400px]">
                     {/* Success orb */}
-                    <motion.div
-                      animate={{ scale: [1, 1.1, 1], boxShadow: ['0 0 30px rgba(52,211,153,0.2)', '0 0 60px rgba(52,211,153,0.4)', '0 0 30px rgba(52,211,153,0.2)'] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="w-20 h-20 bg-emerald-500/20 border border-emerald-500/40 rounded-full flex items-center justify-center mb-6"
-                    >
+                    <div className="opacity-pulse w-20 h-20 bg-emerald-500/20 border border-emerald-500/40 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(52,211,153,0.3)]">
                       <CheckCircle size={36} className="text-emerald-400" />
-                    </motion.div>
+                    </div>
                     <h4 className="text-2xl font-bold text-white mb-3">Transmission Complete</h4>
                     <p className="font-mono text-[11px] text-emerald-400 mb-4 tracking-wider">STATUS: MESSAGE_DELIVERED</p>
                     <p className="text-neutral-400 text-sm leading-relaxed max-w-xs">
@@ -396,19 +340,13 @@ const Contact = () => {
                         { prefix: '›', text: 'Payload encrypted...', color: 'text-neutral-600' },
                         { prefix: '›', text: 'Channel established...', color: 'text-neutral-600' },
                         { prefix: '✓', text: 'Message delivered', color: 'text-emerald-400' },
-                      ].map((line, i) => (
-                        <motion.p
-                          key={line.text}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.3 }}
-                          className={`font-mono text-[10px] ${line.color} mb-1`}
-                        >
+                      ].map((line) => (
+                        <p key={line.text} className={`font-mono text-[10px] ${line.color} mb-1`}>
                           {line.prefix} {line.text}
-                        </motion.p>
+                        </p>
                       ))}
                     </div>
-                  </motion.div>
+                  </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
 
@@ -467,12 +405,10 @@ const Contact = () => {
                     </div>
 
                     {/* Submit */}
-                    <motion.button
+                    <button
                       type="submit"
                       disabled={isSubmitting}
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
-                      className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-bold text-sm rounded-xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_0_30px_-8px_rgba(139,92,246,0.5)] hover:shadow-[0_0_45px_-8px_rgba(139,92,246,0.7)]"
+                      className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-bold text-sm rounded-xl hover:opacity-90 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_0_30px_-8px_rgba(139,92,246,0.5)] hover:shadow-[0_0_45px_-8px_rgba(139,92,246,0.7)]"
                     >
                       {isSubmitting ? (
                         <>
@@ -485,7 +421,7 @@ const Contact = () => {
                           <Send size={15} className="group-hover:translate-x-1 transition-transform" />
                         </>
                       )}
-                    </motion.button>
+                    </button>
 
                     {/* Error message */}
                     {submitError && (
@@ -504,7 +440,7 @@ const Contact = () => {
                 )}
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
 
       </div>

@@ -1,21 +1,39 @@
 "use client"
 
-import { motion, useScroll, useSpring } from 'framer-motion'
+import { useRef, useEffect } from 'react'
+import { gsap, ScrollTrigger } from '@/lib/gsap'
 
 const UIOverlays = () => {
-  const { scrollYProgress } = useScroll()
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 20, mass: 0.2 })
+  const barRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const bar = barRef.current
+    if (!bar) return
+
+    // scaleX 0→1 tied to total page scroll progress.
+    // ScrollTrigger is synced to Lenis via SmoothScroll.tsx so this tracks
+    // the virtual scroll position, not the native one.
+    const st = ScrollTrigger.create({
+      trigger: document.documentElement,
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: self => {
+        gsap.set(bar, { scaleX: self.progress })
+      },
+    })
+
+    return () => st.kill()
+  }, [])
 
   return (
     <>
-      {/* Elegant minimalist scroll progress bar */}
-      <motion.div
+      {/* Scroll progress bar */}
+      <div
+        ref={barRef}
         aria-hidden="true"
-        className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px]"
-        style={{ scaleX: progress, transformOrigin: '0% 50%' }}
-      >
-        <div className="w-full h-full bg-gradient-to-r from-transparent via-cyan-500 to-purple-500" />
-      </motion.div>
+        className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-gradient-to-r from-transparent via-cyan-500 to-purple-500"
+        style={{ transform: 'scaleX(0)' }}
+      />
     </>
   )
 }

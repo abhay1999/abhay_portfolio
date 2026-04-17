@@ -1,55 +1,10 @@
 "use client"
 
-import { useRef } from 'react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { Linkedin } from 'lucide-react'
-
-// ─── TiltCard ─────────────────────────────────────────────────────────────────
-
-const TiltCard = ({
-  children,
-  className,
-  style,
-}: {
-  children: React.ReactNode
-  className?: string
-  style?: React.CSSProperties
-}) => {
-  const ref = useRef<HTMLDivElement>(null)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const sx = useSpring(x, { stiffness: 110, damping: 18 })
-  const sy = useSpring(y, { stiffness: 110, damping: 18 })
-  const rotateX = useTransform(sy, [-0.5, 0.5], ['6deg', '-6deg'])
-  const rotateY = useTransform(sx, [-0.5, 0.5], ['-6deg', '6deg'])
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={e => {
-        if (!ref.current) return
-        const r = ref.current.getBoundingClientRect()
-        x.set((e.clientX - r.left) / r.width - 0.5)
-        y.set((e.clientY - r.top) / r.height - 0.5)
-      }}
-      onMouseLeave={() => { x.set(0); y.set(0) }}
-      style={{ rotateX, rotateY, transformStyle: 'preserve-3d', ...style }}
-      className={className}
-    >
-      <div style={{ transform: 'translateZ(20px)', transformStyle: 'preserve-3d' }} className="h-full w-full">
-        {children}
-      </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ transform: 'translateZ(28px)' }}
-      />
-    </motion.div>
-  )
-}
+import Reveal from '@/components/Reveal'
+import TiltCard from '@/components/TiltCard'
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
-// TODO: Replace with real testimonials from your LinkedIn / colleagues
 
 const TESTIMONIALS = [
   {
@@ -139,34 +94,18 @@ const Testimonials = () => {
 
         {/* Horizontal circuit traces */}
         <div className="absolute top-[35%] left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/15 to-transparent">
-          <motion.div
-            animate={{ x: ['-100%', '200%'] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 4 }}
-            className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent"
-          />
+          <div className="trace-x-fwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" style={{ animationDuration: '6s' }} />
         </div>
         <div className="absolute top-[68%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/12 to-transparent">
-          <motion.div
-            animate={{ x: ['200%', '-100%'] }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
-            className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
-          />
+          <div className="trace-x-bwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '7s' }} />
         </div>
 
         {/* Vertical circuit traces */}
         <div className="absolute top-0 left-[12%] h-full w-px bg-gradient-to-b from-transparent via-purple-500/10 to-transparent">
-          <motion.div
-            animate={{ y: ['-100%', '200%'] }}
-            transition={{ duration: 9, repeat: Infinity, ease: 'linear', repeatDelay: 5 }}
-            className="absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-purple-400 to-transparent"
-          />
+          <div className="trace-y-fwd absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-purple-400 to-transparent" style={{ animationDuration: '9s' }} />
         </div>
         <div className="absolute top-0 right-[12%] h-full w-px bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent">
-          <motion.div
-            animate={{ y: ['200%', '-100%'] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
-            className="absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent"
-          />
+          <div className="trace-y-bwd absolute top-0 left-0 h-32 w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '8s' }} />
         </div>
 
         {/* Intersection glow nodes */}
@@ -183,13 +122,7 @@ const Testimonials = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* ── Section Header ───────────────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-14"
-        >
+        <Reveal className="mb-14">
           {/* Terminal prompt */}
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-purple-400">$</span>
@@ -198,11 +131,7 @@ const Testimonials = () => {
             <span className="text-white">›</span>
             <span className="text-cyan-400">endorsements</span>
             <span className="text-neutral-300">.fetch()</span>
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.7, repeat: Infinity }}
-              className="w-1.5 h-3.5 bg-cyan-400 inline-block ml-0.5"
-            />
+            <span className="cursor-blink w-1.5 h-3.5 bg-cyan-400 inline-block ml-0.5" />
           </div>
 
           <div className="flex items-end gap-5">
@@ -212,17 +141,15 @@ const Testimonials = () => {
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent mb-2" />
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* ── Testimonial Cards ────────────────────────────────────────────── */}
         <div className="grid md:grid-cols-3 gap-6 mb-14 [perspective:1200px]">
           {TESTIMONIALS.map((t, idx) => (
-            <motion.div
+            <Reveal
               key={t.id}
-              initial={{ opacity: 0, y: 50, rotateX: 8 }}
-              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.85, delay: idx * 0.12, ease: 'easeOut' }}
+              from={{ opacity: 0, y: 50 }}
+              delay={idx * 0.12}
               className="group [perspective:900px]"
             >
               <TiltCard
@@ -267,16 +194,13 @@ const Testimonials = () => {
                   </div>
                 </div>
               </TiltCard>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
 
         {/* ── LinkedIn Endorsement CTA ─────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+        <Reveal
+          from={{ opacity: 0, y: 20 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <div className="text-center sm:text-left">
@@ -292,7 +216,7 @@ const Testimonials = () => {
             <Linkedin size={15} />
             <span>Endorse on LinkedIn</span>
           </a>
-        </motion.div>
+        </Reveal>
 
       </div>
     </section>

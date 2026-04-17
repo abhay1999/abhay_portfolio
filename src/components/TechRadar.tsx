@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import Reveal from '@/components/Reveal'
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -19,10 +19,10 @@ interface Blip {
 
 const CX = 265
 const CY = 265
-const RING_OUTER = [62, 118, 172, 224]   // outer radius of each ring
-const RING_MID   = [36, 90, 145, 198]    // midpoint radius for blip placement
-const QUAD_START = [5, 95, 185, 275]     // start angle of each quadrant (deg, clockwise from top)
-const QUAD_SPAN  = 80                    // angular span per quadrant
+const RING_OUTER = [62, 118, 172, 224]
+const RING_MID   = [36, 90, 145, 198]
+const QUAD_START = [5, 95, 185, 275]
+const QUAD_SPAN  = 80
 
 const RING_LABELS  = ['ADOPT', 'TRIAL', 'ASSESS', 'HOLD'] as const
 const QUAD_LABELS  = ['Languages', 'Frameworks', 'Databases', 'Infrastructure'] as const
@@ -60,7 +60,7 @@ const BLIPS: Blip[] = [
   { name: 'Tailwind CSS',   quad: 1, ring: 0, desc: 'Utility-first CSS changed how I think about styling. Never going back to BEM or SCSS modules.' },
   { name: 'Node.js',        quad: 1, ring: 1, desc: 'Rapid REST APIs and build tooling. Express/Fastify for lightweight services.' },
   { name: 'Gin (Go)',       quad: 1, ring: 1, desc: 'Lightweight HTTP framework for Go. Minimal and fast — pairs well with Kubernetes microservices.' },
-  { name: 'Framer Motion',  quad: 1, ring: 1, desc: 'Declarative animations in React. The spring physics feel natural and performant.' },
+  { name: 'GSAP',           quad: 1, ring: 1, desc: 'Professional-grade animation library. GPU-composited transforms, ScrollTrigger, and silky smooth performance.' },
   { name: 'LangChain',      quad: 1, ring: 2, desc: 'LLM orchestration framework. Useful for chaining prompts but abstractions sometimes leak.' },
 
   // ── Databases & Storage (Q2 = bottom-left) ─────────────────────────────────
@@ -135,7 +135,6 @@ const TechRadar = () => {
     return false
   }
 
-  // Quadrant label positions — midpoint angle, just outside outermost ring
   const quadLabelPos = QUAD_START.map(start => svgCoords(start + QUAD_SPAN / 2, 248))
 
   return (
@@ -155,7 +154,7 @@ const TechRadar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* ── Section Header ──────────────────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mb-12">
+        <Reveal className="mb-12">
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-violet-400">$</span>
             <span className="text-neutral-400">radar</span>
@@ -163,8 +162,7 @@ const TechRadar = () => {
             <span className="text-white">›</span>
             <span className="text-violet-400">blips</span>
             <span className="text-neutral-300">.plot()</span>
-            <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.7, repeat: Infinity }}
-              className="w-1.5 h-3.5 bg-violet-400 inline-block ml-0.5" />
+            <span className="cursor-blink w-1.5 h-3.5 bg-violet-400 inline-block ml-0.5" />
           </div>
           <div className="flex items-end gap-5">
             <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">08.</span>
@@ -177,17 +175,14 @@ const TechRadar = () => {
           <p className="text-sm text-neutral-600 mt-3 font-mono">
             Inspired by <span className="text-violet-400">ThoughtWorks</span> · hover blips to read my take · {BLIPS.length} tools mapped
           </p>
-        </motion.div>
+        </Reveal>
 
         {/* ── Main layout ─────────────────────────────────────────────────── */}
         <div className="grid lg:grid-cols-[1fr_300px] gap-6 items-start">
 
           {/* ── Radar SVG ─────────────────────────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
+          <Reveal
+            from={{ opacity: 0, scale: 0.95 }}
             className="bg-neutral-950/70 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl"
           >
             {/* Title bar */}
@@ -242,7 +237,7 @@ const TechRadar = () => {
                 <circle cx={CX} cy={CY} r="3" fill="rgba(255,255,255,0.2)" />
 
                 {/* ── Blips ───────────────────────────────────────────────── */}
-                {BLIPS.map((blip, i) => {
+                {BLIPS.map((blip) => {
                   const pos = positions[blip.name]
                   if (!pos) return null
                   const isHov  = hovered === blip.name
@@ -257,107 +252,87 @@ const TechRadar = () => {
                     >
                       {/* Glow halo on hover */}
                       {isHov && (
-                        <motion.circle cx={pos.x} cy={pos.y} r={14}
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          animate={{ opacity: 0.25, scale: 1 }}
-                          fill={col} />
+                        <circle cx={pos.x} cy={pos.y} r={14} fill={col} opacity={0.25} />
                       )}
                       {/* Pulse ring */}
                       {isHov && (
-                        <motion.circle cx={pos.x} cy={pos.y} r={10}
-                          fill="none" stroke={col} strokeWidth="1"
-                          initial={{ opacity: 0.8, scale: 0.8 }}
-                          animate={{ opacity: 0, scale: 2 }}
-                          transition={{ duration: 0.8, repeat: Infinity }}
-                        />
+                        <g transform={`translate(${pos.x}, ${pos.y})`}>
+                          <circle r={10} fill="none" stroke={col} strokeWidth="1">
+                            <animate attributeName="opacity" values="0.8;0" dur="0.8s" repeatCount="indefinite" />
+                            <animateTransform attributeName="transform" type="scale" from="0.8" to="2" dur="0.8s" repeatCount="indefinite" />
+                          </circle>
+                        </g>
                       )}
                       {/* Main dot */}
-                      <motion.circle
+                      <circle
                         cx={pos.x} cy={pos.y}
                         r={isHov ? 7 : 5}
                         fill={col}
                         opacity={dimmed ? 0.12 : isHov ? 1 : 0.85}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: dimmed ? 0.12 : isHov ? 1 : 0.85 }}
-                        transition={{ duration: 0.4, delay: i * 0.025, type: 'spring', stiffness: 200 }}
-                        filter={isHov ? `drop-shadow(0 0 6px ${QUAD_CLR[blip.quad].glow})` : undefined}
+                        style={{ filter: isHov ? `drop-shadow(0 0 6px ${QUAD_CLR[blip.quad].glow})` : undefined }}
                       />
                       {/* Label on hover */}
                       {isHov && (
-                        <motion.text x={pos.x} y={pos.y - 11}
+                        <text x={pos.x} y={pos.y - 11}
                           textAnchor="middle" fontSize="9" fontFamily="monospace" fontWeight="700"
-                          fill={col} initial={{ opacity: 0, y: pos.y - 8 }} animate={{ opacity: 1, y: pos.y - 11 }}
-                        >
+                          fill={col}>
                           {blip.name}
-                        </motion.text>
+                        </text>
                       )}
                     </g>
                   )
                 })}
               </svg>
             </div>
-          </motion.div>
+          </Reveal>
 
           {/* ── Right panel ───────────────────────────────────────────────── */}
           <div className="space-y-4">
 
             {/* Info card */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
+            <Reveal
+              from={{ opacity: 0, x: 30 }}
               className="bg-neutral-950/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl"
             >
               <div className="px-4 py-2.5 bg-black/30 border-b border-white/[0.06] font-mono text-[10px] text-neutral-500 flex items-center justify-between">
                 <span>blip_info.log</span>
-                <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }}
-                  className="w-1.5 h-1.5 rounded-full bg-violet-400 shadow-[0_0_6px_rgba(167,139,250,0.9)]" />
+                <div className="opacity-pulse w-1.5 h-1.5 rounded-full bg-violet-400 shadow-[0_0_6px_rgba(167,139,250,0.9)]" />
               </div>
 
               <div className="p-4 min-h-[160px] flex flex-col justify-center">
-                <AnimatePresence mode="wait">
-                  {hoveredBlip ? (
-                    <motion.div key={hoveredBlip.name}
-                      initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <div className="flex items-start justify-between gap-2 mb-3">
-                        <span className={`text-base font-bold ${QUAD_CLR[hoveredBlip.quad].label}`}>
-                          {hoveredBlip.name}
-                        </span>
-                        <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border ${RING_CLR[hoveredBlip.ring].badge}`}>
-                          {RING_LABELS[hoveredBlip.ring]}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1.5 mb-3">
-                        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: QUAD_CLR[hoveredBlip.quad].dot }} />
-                        <span className={`font-mono text-[10px] ${QUAD_CLR[hoveredBlip.quad].label}`}>
-                          {QUAD_LABELS[hoveredBlip.quad]}
-                        </span>
-                      </div>
-                      <p className="text-[12px] text-neutral-400 leading-relaxed">{hoveredBlip.desc}</p>
-                    </motion.div>
-                  ) : (
-                    <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                      className="text-center"
-                    >
-                      <div className="w-10 h-10 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mx-auto mb-3">
-                        <div className="w-2 h-2 rounded-full bg-violet-400" />
-                      </div>
-                      <p className="font-mono text-[11px] text-neutral-600">Hover a blip to see details</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {hoveredBlip ? (
+                  <div key={hoveredBlip.name}>
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <span className={`text-base font-bold ${QUAD_CLR[hoveredBlip.quad].label}`}>
+                        {hoveredBlip.name}
+                      </span>
+                      <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border ${RING_CLR[hoveredBlip.ring].badge}`}>
+                        {RING_LABELS[hoveredBlip.ring]}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: QUAD_CLR[hoveredBlip.quad].dot }} />
+                      <span className={`font-mono text-[10px] ${QUAD_CLR[hoveredBlip.quad].label}`}>
+                        {QUAD_LABELS[hoveredBlip.quad]}
+                      </span>
+                    </div>
+                    <p className="text-[12px] text-neutral-400 leading-relaxed">{hoveredBlip.desc}</p>
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <div className="w-10 h-10 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mx-auto mb-3">
+                      <div className="w-2 h-2 rounded-full bg-violet-400" />
+                    </div>
+                    <p className="font-mono text-[11px] text-neutral-600">Hover a blip to see details</p>
+                  </div>
+                )}
               </div>
-            </motion.div>
+            </Reveal>
 
             {/* Ring filter */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1 }}
+            <Reveal
+              from={{ opacity: 0, x: 30 }}
+              delay={0.1}
               className="bg-neutral-950/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl"
             >
               <div className="px-4 py-2.5 bg-black/30 border-b border-white/[0.06] font-mono text-[10px] text-neutral-500">
@@ -381,14 +356,12 @@ const TechRadar = () => {
                   </button>
                 ))}
               </div>
-            </motion.div>
+            </Reveal>
 
             {/* Quadrant filter */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.15 }}
+            <Reveal
+              from={{ opacity: 0, x: 30 }}
+              delay={0.15}
               className="bg-neutral-950/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl"
             >
               <div className="px-4 py-2.5 bg-black/30 border-b border-white/[0.06] font-mono text-[10px] text-neutral-500">
@@ -414,16 +387,14 @@ const TechRadar = () => {
                   </button>
                 ))}
               </div>
-            </motion.div>
+            </Reveal>
           </div>
         </div>
 
         {/* ── Blip list ─────────────────────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+        <Reveal
+          from={{ opacity: 0, y: 20 }}
+          delay={0.2}
           className="mt-6 bg-neutral-950/70 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl"
         >
           <div className="px-5 py-3 bg-black/30 border-b border-white/[0.06] flex items-center justify-between">
@@ -457,7 +428,7 @@ const TechRadar = () => {
               </div>
             ))}
           </div>
-        </motion.div>
+        </Reveal>
 
       </div>
     </section>

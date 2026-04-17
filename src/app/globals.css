@@ -4,44 +4,31 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%; /* Pure black */
+    --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-    
     --card: 0 0% 3%;
     --card-foreground: 0 0% 100%;
-    
     --popover: 0 0% 4%;
     --popover-foreground: 0 0% 100%;
-    
     --primary: 0 0% 100%;
     --primary-foreground: 0 0% 0%;
-    
     --secondary: 0 0% 10%;
     --secondary-foreground: 0 0% 100%;
-    
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 65%;
-    
     --accent: 0 0% 12%;
     --accent-foreground: 0 0% 100%;
-    
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-
     --border: 0 0% 12%;
     --input: 0 0% 12%;
     --ring: 0 0% 100%;
-
     --radius: 0.75rem;
   }
 
-  * {
-    @apply border-white/10;
-  }
-  
-  html {
-    scroll-behavior: auto; /* Lenis handles smooth scroll */
-  }
+  * { @apply border-white/10; }
+
+  html { scroll-behavior: auto; /* Lenis handles smooth scroll */ }
 
   body {
     @apply bg-black text-white antialiased;
@@ -53,50 +40,84 @@
   .glass-panel {
     @apply bg-white/[0.02] border border-white/[0.05] backdrop-blur-xl shadow-2xl;
   }
-  
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-neutral-100 via-neutral-400 to-neutral-600;
   }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
-/* Custom Selection */
-::selection {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
+::selection { background-color: rgba(255,255,255,0.1); color: white; }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CSS ANIMATIONS — all run on the GPU compositor, zero JS-thread cost
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Circuit traces ──────────────────────────────────────────────────────────
+   Usage: <div class="trace-x-fwd" style="animationDuration:6s;animationDelay:1s" />
+   ──────────────────────────────────────────────────────────────────────────── */
+@keyframes trace-x-fwd { from { transform: translateX(-110%); } to { transform: translateX(210%); } }
+@keyframes trace-x-bwd { from { transform: translateX(210%);  } to { transform: translateX(-110%); } }
+@keyframes trace-y-fwd { from { transform: translateY(-110%); } to { transform: translateY(210%); } }
+@keyframes trace-y-bwd { from { transform: translateY(210%);  } to { transform: translateY(-110%); } }
+
+.trace-x-fwd { animation: trace-x-fwd 8s linear infinite; will-change: transform; }
+.trace-x-bwd { animation: trace-x-bwd 8s linear infinite; will-change: transform; }
+.trace-y-fwd { animation: trace-y-fwd 8s linear infinite; will-change: transform; }
+.trace-y-bwd { animation: trace-y-bwd 8s linear infinite; will-change: transform; }
+
+/* ─── Rotation orbits ─────────────────────────────────────────────────────── */
+@keyframes spin-cw  { to { transform: rotate(360deg);  } }
+@keyframes spin-ccw { to { transform: rotate(-360deg); } }
+
+.spin-cw  { animation: spin-cw  10s linear infinite; will-change: transform; }
+.spin-ccw { animation: spin-ccw 10s linear infinite; will-change: transform; }
+
+/* ─── Floating panels (Hero tech cards) ─────────────────────────────────────
+   float-a: -9→9, float-b: 9→-9, float-c: -7→7, float-d: 7→-7
+   ──────────────────────────────────────────────────────────────────────────── */
+@keyframes float-a { 0%,100% { transform: translateY(-9px); } 50% { transform: translateY(9px);  } }
+@keyframes float-b { 0%,100% { transform: translateY(9px);  } 50% { transform: translateY(-9px); } }
+@keyframes float-c { 0%,100% { transform: translateY(-7px); } 50% { transform: translateY(7px);  } }
+@keyframes float-d { 0%,100% { transform: translateY(7px);  } 50% { transform: translateY(-7px); } }
+
+.float-a { animation: float-a 4.2s ease-in-out infinite; will-change: transform; }
+.float-b { animation: float-b 4.8s ease-in-out infinite; will-change: transform; }
+.float-c { animation: float-c 5.0s ease-in-out infinite; will-change: transform; }
+.float-d { animation: float-d 5.5s ease-in-out infinite; will-change: transform; }
+
+/* ─── Terminal cursor blink ───────────────────────────────────────────────── */
+@keyframes cursor-blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+.cursor-blink { animation: cursor-blink 1s step-end infinite; }
+
+/* ─── Scan line (moves top→bottom through a container) ───────────────────── */
+@keyframes scan-line { from { transform: translateY(-10%); } to { transform: translateY(115%); } }
+.scan-line { animation: scan-line 3.5s linear infinite; will-change: transform; }
+
+/* ─── Opacity pulse (status dots, system indicators) ─────────────────────── */
+@keyframes opacity-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.opacity-pulse { animation: opacity-pulse 1.5s ease-in-out infinite; }
+
+/* ─── Scroll indicator (drip down line in Hero) ──────────────────────────── */
+@keyframes scroll-drip {
+  0%   { transform: translateY(0);    opacity: 1; }
+  100% { transform: translateY(44px); opacity: 0; }
+}
+.scroll-drip {
+  animation: scroll-drip 2.2s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
-/* Base Animations that we might need */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
+/* ─── Float (generic vertical bob, legacy) ───────────────────────────────── */
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.animate-float { animation: float 6s ease-in-out infinite; }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
+@keyframes pulse-slow { 0%,100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+.animate-pulse-slow { animation: pulse-slow 8s ease-in-out infinite; }
 
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 8s ease-in-out infinite;
+/* ─── GSAP reveal baseline — elements start invisible; GSAP sets final state ─ */
+[data-gsap="reveal"],
+[data-gsap="reveal-left"],
+[data-gsap="reveal-right"] {
+  opacity: 0;
 }

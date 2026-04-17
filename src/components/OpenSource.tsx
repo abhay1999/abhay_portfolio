@@ -1,9 +1,9 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import { GitMerge, GitPullRequest, ArrowUpRight, Star, ExternalLink, Zap, Shield, GitBranch, BarChart3 } from 'lucide-react'
 import { fetchJsonWithTimeout, readCachedValue, writeCachedValue, type DataSourceState } from '@/lib/client-data'
+import Reveal from '@/components/Reveal'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type MergedPR = {
@@ -400,11 +400,12 @@ const OpenSource = () => {
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
         <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: `linear-gradient(rgba(52,211,153,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(52,211,153,0.8) 1px, transparent 1px)`, backgroundSize: '30px 30px' }} />
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[45%] opacity-[0.06]" style={{ backgroundImage: `linear-gradient(to right, rgba(52,211,153,0.9) 1px, transparent 1px), linear-gradient(to bottom, rgba(52,211,153,0.9) 1px, transparent 1px)`, backgroundSize: '60px 60px', transform: 'perspective(700px) rotateX(58deg) translateY(20%)', maskImage: 'radial-gradient(ellipse at 50% 0%, black 20%, transparent 75%)' }} />
+        {/* Circuit traces — CSS */}
         <div className="absolute top-[20%] left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/12 to-transparent">
-          <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 5, repeat: Infinity, ease: 'linear', repeatDelay: 3 }} className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent" />
+          <div className="trace-x-fwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent" style={{ animationDuration: '5s' }} />
         </div>
         <div className="absolute top-[72%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/12 to-transparent">
-          <motion.div animate={{ x: ['200%', '-100%'] }} transition={{ duration: 7, repeat: Infinity, ease: 'linear', repeatDelay: 2 }} className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+          <div className="trace-x-bwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '7s' }} />
         </div>
         <div className="absolute top-[20%] left-[15%] w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400 shadow-[0_0_12px_3px_rgba(52,211,153,0.6)]" />
         <div className="absolute top-[20%] right-[15%] w-2 h-2 translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_12px_3px_rgba(34,211,238,0.6)]" />
@@ -415,7 +416,7 @@ const OpenSource = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* ── Section Header ──────────────────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mb-12">
+        <Reveal className="mb-12">
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-emerald-400">$</span>
             <span className="text-neutral-400">git</span>
@@ -425,7 +426,7 @@ const OpenSource = () => {
             <span className="text-neutral-300">.scan()</span>
             {dataSource === 'live' ? (
               <span className="flex items-center gap-1 ml-1">
-                <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                <span className="opacity-pulse w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
                 <span className="text-emerald-500 text-[10px]">live</span>
               </span>
             ) : (
@@ -443,12 +444,12 @@ const OpenSource = () => {
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent mb-2" />
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* ── Stats Bar ───────────────────────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-14">
-          {STATS.map((s, i) => (
-            <motion.div key={s.label} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.07 }}
+        <Reveal from={{ opacity: 0, y: 20 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-14">
+          {STATS.map((s) => (
+            <div key={s.label}
               className={`flex items-center gap-3 px-5 py-4 rounded-2xl border ${s.bg} ${s.border} ${s.glow} backdrop-blur-sm`}>
               <div className={`w-9 h-9 rounded-xl ${s.bg} border ${s.border} flex items-center justify-center shrink-0`}>
                 <s.icon size={16} className={s.accent} />
@@ -457,13 +458,13 @@ const OpenSource = () => {
                 <div className={`text-2xl font-black font-mono ${s.accent} leading-none`}>{s.value}</div>
                 <div className="text-[11px] text-neutral-500 font-medium mt-0.5 leading-none">{s.label}</div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </Reveal>
 
-        {/* ── Featured: Jaeger Spotlight ──────────────────────────────────── */}
+        {/* ── Featured: Deep Dive Spotlight ───────────────────────────────── */}
         {FEATURED_PROJECTS.map((project) => (
-          <motion.div key={project.org} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mb-12">
+          <Reveal key={project.org} className="mb-12">
             {/* Section label */}
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center gap-2.5">
@@ -474,7 +475,7 @@ const OpenSource = () => {
               <span className="text-xs font-mono text-neutral-600">{project.mergedCount} merged PRs · CNCF ecosystem</span>
             </div>
 
-            {/* Jaeger hero card */}
+            {/* Hero card */}
             <div
               className={`relative rounded-3xl border ${project.borderClass} bg-gradient-to-br ${project.headerBg} overflow-hidden mb-4`}
               style={{ boxShadow: `0 0 60px -20px ${project.glowColor}` }}
@@ -510,17 +511,12 @@ const OpenSource = () => {
               {/* PR cards grid */}
               <div className="p-4 grid sm:grid-cols-2 gap-3">
                 {project.prs.map((pr) => (
-                  <motion.a
+                  <a
                     key={pr.number}
                     href={pr.url}
                     target="_blank"
                     rel="noreferrer"
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    whileHover={{ y: -2 }}
-                    transition={{ duration: 0.3 }}
-                    className="group/pr relative flex flex-col gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-cyan-500/30 hover:bg-white/[0.05] transition-all duration-200"
+                    className="group/pr relative flex flex-col gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-cyan-500/30 hover:bg-white/[0.05] hover:-translate-y-0.5 transition-all duration-200"
                   >
                     {/* PR header */}
                     <div className="flex items-start justify-between gap-2">
@@ -570,15 +566,15 @@ const OpenSource = () => {
                         <ArrowUpRight size={11} className="group-hover/pr:translate-x-0.5 group-hover/pr:-translate-y-0.5 transition-transform" />
                       </div>
                     </div>
-                  </motion.a>
+                  </a>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         ))}
 
         {/* ── Other Featured Contributions ────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="mb-12">
+        <Reveal from={{ opacity: 0, y: 20 }} className="mb-12">
           <div className="flex items-center gap-4 mb-5">
             <div className="flex items-center gap-2.5">
               <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
@@ -588,17 +584,12 @@ const OpenSource = () => {
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             {OTHER_FEATURED.map((pr) => (
-              <motion.a
+              <a
                 key={pr.number}
                 href={pr.url}
                 target="_blank"
                 rel="noreferrer"
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -2 }}
-                transition={{ duration: 0.3 }}
-                className={`group/card flex flex-col gap-3 p-5 rounded-2xl border ${pr.borderClass} bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-200`}
+                className={`group/card flex flex-col gap-3 p-5 rounded-2xl border ${pr.borderClass} bg-white/[0.02] hover:bg-white/[0.04] hover:-translate-y-0.5 transition-all duration-200`}
                 style={{ boxShadow: `0 0 30px -12px ${pr.glowColor}` }}
               >
                 <div className="flex items-start justify-between gap-2">
@@ -633,13 +624,13 @@ const OpenSource = () => {
                     <ArrowUpRight size={11} />
                   </div>
                 </div>
-              </motion.a>
+              </a>
             ))}
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* ── All Merged PRs — Infinite Marquee ───────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-4">
+        <Reveal from={{ opacity: 0, y: 20 }} className="mb-4">
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-2.5">
               <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
@@ -648,10 +639,10 @@ const OpenSource = () => {
             <div className="h-px flex-1 bg-gradient-to-r from-emerald-500/30 to-transparent" />
             <span className="text-xs font-mono text-neutral-600">{mergedCount} merged · hover to pause</span>
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* Marquee — full bleed overflow */}
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.1 }} className="relative mb-14">
+        <Reveal from={{ opacity: 0 }} delay={0.1} className="relative mb-14">
           {/* Edge fades */}
           <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
@@ -719,24 +710,25 @@ const OpenSource = () => {
               ))}
             </div>
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* ── Open PRs — Compact 3-column grid ────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+        <Reveal from={{ opacity: 0, y: 20 }}>
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-2.5">
-              <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.4, repeat: Infinity }} className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
+              <div className="opacity-pulse w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
               <span className="text-xs font-bold tracking-widest uppercase text-cyan-400 font-mono">Active Contributions</span>
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/30 to-transparent" />
             <span className="text-xs font-mono text-neutral-600">{openCount} open</span>
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* Terminal shell header */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
+        <Reveal from={{ opacity: 0, y: 20 }} delay={0.1}
           className="relative rounded-3xl border border-cyan-500/15 bg-gradient-to-br from-slate-950/80 via-black/90 to-cyan-950/20 overflow-hidden mb-10"
-          style={{ boxShadow: '0 0 60px -20px rgba(34,211,238,0.1)' }}>
+          style={{ boxShadow: '0 0 60px -20px rgba(34,211,238,0.1)' } as React.CSSProperties}
+        >
           <div aria-hidden="true" className="absolute inset-0 pointer-events-none opacity-[0.03]"
             style={{ backgroundImage: 'linear-gradient(to right,rgba(34,211,238,0.8) 1px,transparent 1px),linear-gradient(to bottom,rgba(34,211,238,0.8) 1px,transparent 1px)', backgroundSize: '24px 24px' }} />
 
@@ -749,8 +741,7 @@ const OpenSource = () => {
             </div>
             <span className="flex-1 text-center text-[11px] font-mono text-neutral-600">gh pr list --author abhay1999 --state open</span>
             <div className="flex items-center gap-1.5">
-              <motion.div animate={{ opacity: dataSource === 'live' ? [1, 0.4, 1] : 1 }} transition={{ duration: 1.4, repeat: Infinity }}
-                className={`w-1.5 h-1.5 rounded-full ${sourceMeta.dotClass}`} />
+              <div className={`w-1.5 h-1.5 rounded-full ${sourceMeta.dotClass} ${dataSource === 'live' ? 'opacity-pulse' : ''}`} />
               <span className={`text-[9px] font-mono ${sourceMeta.textClass}`}>{sourceMeta.badgeLabel}</span>
             </div>
           </div>
@@ -758,9 +749,7 @@ const OpenSource = () => {
           {/* 3-column compact grid */}
           <div className="p-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {openPRs.map((pr, idx) => (
-              <motion.a key={pr.number} href={pr.url} target="_blank" rel="noreferrer"
-                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: idx * 0.04 }}
+              <a key={pr.number} href={pr.url} target="_blank" rel="noreferrer"
                 className={`group/pr flex items-center gap-3 p-3 rounded-xl border-l-2 ${pr.borderClass} ${pr.bgClass} border border-white/[0.04] hover:border-white/10 transition-all duration-200 cursor-pointer`}
               >
                 <div className={`w-7 h-7 rounded-lg border text-[10px] font-black font-mono flex items-center justify-center shrink-0 ${pr.orgClass}`}>
@@ -776,17 +765,16 @@ const OpenSource = () => {
                   </p>
                 </div>
                 <div className="flex flex-col items-end gap-1.5 shrink-0">
-                  <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.6, repeat: Infinity, delay: idx * 0.15 }}
-                    className={`w-1.5 h-1.5 rounded-full ${pr.dotClass}`} />
+                  <div className={`opacity-pulse w-1.5 h-1.5 rounded-full ${pr.dotClass}`} style={{ animationDelay: `${idx * 0.15}s` }} />
                   <ExternalLink size={9} className="text-neutral-700 group-hover/pr:text-neutral-400 transition-colors" />
                 </div>
-              </motion.a>
+              </a>
             ))}
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* ── GitHub CTA ──────────────────────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}
+        <Reveal from={{ opacity: 0, y: 20 }} delay={0.2}
           className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="https://github.com/abhay1999" target="_blank" rel="noreferrer"
             className="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-emerald-500/15 to-cyan-500/15 border border-emerald-500/25 text-white rounded-2xl hover:border-emerald-400/50 hover:from-emerald-500/25 hover:to-cyan-500/25 transition-all duration-300 font-medium"
@@ -801,7 +789,7 @@ const OpenSource = () => {
             <GitPullRequest size={12} className="text-cyan-500/50" />
             <span>{totalCount}+ total contributions · {sourceMeta.label}</span>
           </div>
-        </motion.div>
+        </Reveal>
 
       </div>
     </section>

@@ -1,40 +1,9 @@
 "use client"
 
-import { useRef, useState, useEffect } from 'react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import { ExternalLink, ArrowUpRight, Star, GitFork } from 'lucide-react'
-
-// ─── TiltCard ─────────────────────────────────────────────────────────────────
-const TiltCard = ({
-  children, className, style,
-}: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) => {
-  const ref = useRef<HTMLDivElement>(null)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const sx = useSpring(x, { stiffness: 110, damping: 18 })
-  const sy = useSpring(y, { stiffness: 110, damping: 18 })
-  const rotateX = useTransform(sy, [-0.5, 0.5], ['6deg', '-6deg'])
-  const rotateY = useTransform(sx, [-0.5, 0.5], ['-6deg', '6deg'])
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={e => {
-        if (!ref.current) return
-        const r = ref.current.getBoundingClientRect()
-        x.set((e.clientX - r.left) / r.width - 0.5)
-        y.set((e.clientY - r.top) / r.height - 0.5)
-      }}
-      onMouseLeave={() => { x.set(0); y.set(0) }}
-      style={{ rotateX, rotateY, transformStyle: 'preserve-3d', ...style }}
-      className={className}
-    >
-      <div style={{ transform: 'translateZ(22px)', transformStyle: 'preserve-3d' }} className="h-full w-full">
-        {children}
-      </div>
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ transform: 'translateZ(30px)' }} />
-    </motion.div>
-  )
-}
+import Reveal from '@/components/Reveal'
+import TiltCard from '@/components/TiltCard'
 
 // ─── GitHub SVG icon ──────────────────────────────────────────────────────────
 const GithubIcon = ({ size = 13 }: { size?: number }) => (
@@ -143,7 +112,7 @@ const FEATURED = [
       { value: 'A+',    label: 'Lighthouse Score'      },
     ],
     arch: 'Next.js static export · Docker + Nginx · Vercel · GitHub REST API',
-    techStack: ['Next.js', 'TypeScript', 'Framer Motion', 'Tailwind', 'Docker'],
+    techStack: ['Next.js', 'TypeScript', 'GSAP', 'Tailwind', 'Docker'],
     github: 'https://github.com/abhay1999/abhay_portfolio',
     liveDemo: '',
     category: 'Full-Stack',
@@ -302,13 +271,12 @@ const Projects = () => {
           transform: 'perspective(700px) rotateX(58deg) translateY(20%)',
           maskImage: 'radial-gradient(ellipse at 50% 0%, black 20%, transparent 75%)',
         }} />
+        {/* Circuit traces — CSS animations */}
         <div className="absolute top-[22%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/12 to-transparent">
-          <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 5, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
-            className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+          <div className="trace-x-fwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '5s' }} />
         </div>
         <div className="absolute top-[70%] left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/12 to-transparent">
-          <motion.div animate={{ x: ['200%', '-100%'] }} transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 2 }}
-            className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" />
+          <div className="trace-x-bwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" style={{ animationDuration: '6s' }} />
         </div>
         <div className="absolute top-1/4 left-1/3 w-[600px] h-[600px] rounded-full bg-cyan-500/4 blur-[160px]" />
         <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-purple-500/4 blur-[140px]" />
@@ -317,13 +285,7 @@ const Projects = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* ── Section Header ───────────────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-12"
-        >
+        <Reveal className="mb-12">
           <div className="flex items-center gap-2 mb-4 font-mono text-xs text-neutral-500">
             <span className="text-cyan-400">$</span>
             <span className="text-neutral-400">build</span>
@@ -331,8 +293,7 @@ const Projects = () => {
             <span className="text-white">›</span>
             <span className="text-purple-400">project_manifest</span>
             <span className="text-neutral-300">.load()</span>
-            <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.7, repeat: Infinity }}
-              className="w-1.5 h-3.5 bg-cyan-400 inline-block ml-0.5" />
+            <span className="cursor-blink w-1.5 h-3.5 bg-cyan-400 inline-block ml-0.5" />
           </div>
 
           <div className="flex items-end gap-5">
@@ -347,19 +308,17 @@ const Projects = () => {
             <span className="text-neutral-500">5 handpicked projects</span> · more on{' '}
             <a href="https://github.com/abhay1999" target="_blank" rel="noreferrer" className="text-cyan-500 hover:text-cyan-400 transition-colors">GitHub</a>
           </p>
-        </motion.div>
+        </Reveal>
 
         {/* ── Project Grid ─────────────────────────────────────────────────── */}
         <div className="grid sm:grid-cols-2 gap-5 mb-10">
           {FEATURED.map((project, idx) => {
             const repoStats = project.repo ? stats[project.repo] : undefined
             return (
-              <motion.div
+              <Reveal
                 key={project.id}
-                initial={{ opacity: 0, y: 40, rotateX: 6 }}
-                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.75, delay: idx * 0.09, ease: 'easeOut' }}
+                from={{ opacity: 0, y: 40 }}
+                delay={idx * 0.09}
                 className="group [perspective:900px]"
               >
                 <TiltCard
@@ -375,12 +334,10 @@ const Projects = () => {
                       backgroundSize: '20px 20px',
                     }} />
 
-                    {/* Scan line */}
-                    <motion.div
+                    {/* Scan line — CSS animation */}
+                    <div
                       aria-hidden="true"
-                      animate={{ y: ['-200%', '600%'] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: 'linear', repeatDelay: 3 + idx }}
-                      className={`absolute left-0 right-0 h-px bg-gradient-to-r from-transparent ${project.scanClass} to-transparent opacity-60 pointer-events-none z-10`}
+                      className={`scan-line absolute left-0 right-0 h-px bg-gradient-to-r from-transparent ${project.scanClass} to-transparent opacity-60 pointer-events-none z-10`}
                     />
 
                     {/* macOS title bar */}
@@ -451,7 +408,7 @@ const Projects = () => {
                     {/* Impact metrics */}
                     <div className="grid grid-cols-3 gap-1.5 mb-3">
                       {project.metrics.map(m => (
-                        <div key={m.label} className={`flex flex-col items-center py-1.5 px-1 rounded-lg bg-white/[0.03] border border-white/[0.06]`}>
+                        <div key={m.label} className="flex flex-col items-center py-1.5 px-1 rounded-lg bg-white/[0.03] border border-white/[0.06]">
                           <span className={`font-mono text-sm font-black leading-none ${project.accentText}`}>{m.value}</span>
                           <span className="font-mono text-[8px] text-neutral-600 mt-0.5 text-center leading-tight">{m.label}</span>
                         </div>
@@ -527,19 +484,13 @@ const Projects = () => {
                   </div>
 
                 </TiltCard>
-              </motion.div>
+              </Reveal>
             )
           })}
         </div>
 
         {/* ── Footer CTA ───────────────────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex items-center justify-center"
-        >
+        <Reveal from={{ opacity: 0, y: 20 }} delay={0.3} className="flex items-center justify-center">
           <a
             href="https://github.com/abhay1999"
             target="_blank"
@@ -550,7 +501,7 @@ const Projects = () => {
             <span>View All Projects on GitHub</span>
             <ArrowUpRight size={15} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
-        </motion.div>
+        </Reveal>
 
       </div>
     </section>

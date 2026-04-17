@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { Terminal, Cpu, Layers } from 'lucide-react'
+import Reveal from '@/components/Reveal'
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -284,17 +284,17 @@ const O = (t: string): Seg => ({ t, c: 'text-orange-400' })
 const Am = (t: string): Seg => ({ t, c: 'text-amber-400' })
 
 const DEVENV_META: Record<string, { delay: number; msg: string }> = {
-  'help':                              { delay: 80,  msg: 'loading help...'                },
-  'devenv --help':                     { delay: 80,  msg: 'loading help...'                },
-  'devenv stacks':                     { delay: 200, msg: 'fetching stack templates...'    },
-  'devenv list':                       { delay: 380, msg: 'querying running environments...' },
-  'devenv status dev-go-001':          { delay: 420, msg: 'fetching environment status...' },
-  'devenv logs dev-go-001':            { delay: 550, msg: 'streaming logs...'              },
-  'devenv spin up --stack=go-postgres':{ delay: 1100, msg: 'provisioning environment...'  },
-  'devenv spin up --stack=mern':       { delay: 1300, msg: 'provisioning environment...'  },
-  'devenv spin up --stack=react':      { delay: 800,  msg: 'provisioning environment...'  },
-  'devenv teardown dev-go-001':        { delay: 700,  msg: 'tearing down environment...'  },
-  'devenv version':                    { delay: 100,  msg: 'reading version...'            },
+  'help':                                    { delay: 80,  msg: 'loading help...'                },
+  'devenv --help':                           { delay: 80,  msg: 'loading help...'                },
+  'devenv stacks':                           { delay: 200, msg: 'fetching stack templates...'    },
+  'devenv list':                             { delay: 380, msg: 'querying running environments...' },
+  'devenv status dev-go-001':                { delay: 420, msg: 'fetching environment status...' },
+  'devenv logs dev-go-001':                  { delay: 550, msg: 'streaming logs...'              },
+  'devenv spin up --stack=go-postgres':      { delay: 1100, msg: 'provisioning environment...'  },
+  'devenv spin up --stack=mern':             { delay: 1300, msg: 'provisioning environment...'  },
+  'devenv spin up --stack=react':            { delay: 800,  msg: 'provisioning environment...'  },
+  'devenv teardown dev-go-001':              { delay: 700,  msg: 'tearing down environment...'  },
+  'devenv version':                          { delay: 100,  msg: 'reading version...'            },
 }
 
 const DEVENV_CMDS: Record<string, Line[]> = {
@@ -477,19 +477,17 @@ const DevOpsPlayground = () => {
   const [hist,       setHist]       = useState<string[]>([])
   const [histIdx,    setHistIdx]    = useState(-1)
   const [focused,    setFocused]    = useState(false)
-  const [busy,       setBusy]       = useState(false)   // typing or processing
+  const [busy,       setBusy]       = useState(false)
   const [spinFrame,  setSpinFrame]  = useState(0)
   const outputRef  = useRef<HTMLDivElement>(null)
   const inputRef   = useRef<HTMLInputElement>(null)
   const idRef      = useRef(0)
-  const busyRef    = useRef(false)  // sync ref for timeout callbacks
+  const busyRef    = useRef(false)
 
-  // Derived command sets based on active mode
   const activeCmds = mode === 'k8s' ? CMDS : DEVENV_CMDS
   const activeMeta = mode === 'k8s' ? CMD_META : DEVENV_META
   const activeSuggestions = mode === 'k8s' ? SUGGESTIONS : DEVENV_SUGGESTIONS
 
-  // Clear terminal when switching modes
   useEffect(() => {
     setEntries([])
     setVisLines({})
@@ -500,7 +498,6 @@ const DevOpsPlayground = () => {
     setBusy(false)
   }, [mode])
 
-  // Spinner tick — only when any entry is processing
   const anyProcessing = entries.some(e => e.processing)
   useEffect(() => {
     if (!anyProcessing) return
@@ -508,19 +505,16 @@ const DevOpsPlayground = () => {
     return () => clearInterval(t)
   }, [anyProcessing])
 
-  // Auto-scroll output container only
   useEffect(() => {
     if (outputRef.current) outputRef.current.scrollTop = outputRef.current.scrollHeight
   }, [entries, visLines])
 
-  // Stream lines into an entry one by one
   const streamLines = useCallback((entryId: number, lines: Line[]) => {
     lines.forEach((_, i) => {
       setTimeout(() => {
         setVisLines(prev => ({ ...prev, [entryId]: i + 1 }))
       }, i * 28)
     })
-    // Release busy after all lines streamed
     setTimeout(() => {
       busyRef.current = false
       setBusy(false)
@@ -548,7 +542,6 @@ const DevOpsPlayground = () => {
     }, meta.delay)
   }, [streamLines, activeMeta, activeCmds])
 
-  // Typewriter animation for suggestion pills
   const typeAndExec = useCallback((cmd: string) => {
     if (busyRef.current) return
     busyRef.current = true
@@ -596,15 +589,14 @@ const DevOpsPlayground = () => {
         <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-emerald-600/4 blur-[150px]" />
         <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-cyan-600/4 blur-[130px]" />
         <div className="absolute top-[40%] left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent">
-          <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 4 }}
-            className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent" />
+          <div className="trace-x-fwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent" style={{ animationDuration: '6s' }} />
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mb-10">
+        <Reveal className="mb-10">
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-emerald-400">$</span>
             <span className="text-neutral-400">kubectl</span>
@@ -612,7 +604,7 @@ const DevOpsPlayground = () => {
             <span className="text-white">›</span>
             <span className="text-emerald-400">playground</span>
             <span className="text-neutral-300">.start()</span>
-            <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.7, repeat: Infinity }} className="w-1.5 h-3.5 bg-emerald-400 inline-block ml-0.5" />
+            <span className="cursor-blink w-1.5 h-3.5 bg-emerald-400 inline-block ml-0.5" />
           </div>
           <div className="flex items-end gap-5">
             <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">07.</span>
@@ -629,11 +621,12 @@ const DevOpsPlayground = () => {
             <span className="text-blue-400">docker</span>{' '}
             · click suggestions to watch commands run
           </p>
-        </motion.div>
+        </Reveal>
 
         {/* Terminal */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.1 }}
+        <Reveal
+          from={{ opacity: 0, y: 30 }}
+          delay={0.1}
           className="rounded-2xl border border-white/10 overflow-hidden bg-[#0a0a0a] shadow-[0_0_80px_-20px_rgba(52,211,153,0.2)]"
         >
           {/* Title bar */}
@@ -689,8 +682,7 @@ const DevOpsPlayground = () => {
                 </>
               )}
               <div className="flex items-center gap-1.5">
-                <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }}
-                  className={`w-1.5 h-1.5 rounded-full shadow-[0_0_6px_rgba(52,211,153,0.9)] ${mode === 'k8s' ? 'bg-emerald-400' : 'bg-orange-400'}`} />
+                <div className={`opacity-pulse w-1.5 h-1.5 rounded-full ${mode === 'k8s' ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]' : 'bg-orange-400 shadow-[0_0_6px_rgba(251,146,60,0.9)]'}`} />
                 <span className={mode === 'k8s' ? 'text-emerald-400' : 'text-orange-400'}>CONNECTED</span>
               </div>
             </div>
@@ -705,7 +697,7 @@ const DevOpsPlayground = () => {
           >
             {/* Welcome */}
             {entries.length === 0 && (
-              <motion.div key={mode} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="mb-5">
+              <div className="mb-5">
                 {mode === 'k8s' ? (
                   <>
                     <div className="text-emerald-400/60 text-[11px]">╔══════════════════════════════════════════════════════════════════╗</div>
@@ -743,7 +735,7 @@ const DevOpsPlayground = () => {
                     <div className="text-neutral-700 text-[11px] mt-0.5">↑ ↓ history  ·  ctrl+l clear  ·  10+ commands supported</div>
                   </>
                 )}
-              </motion.div>
+              </div>
             )}
 
             {/* Entries */}
@@ -774,18 +766,12 @@ const DevOpsPlayground = () => {
                   {!entry.processing && (
                     <>
                       {entry.lines.slice(0, visible).map((line, li) => (
-                        <motion.div
-                          key={li}
-                          initial={{ opacity: 0, x: -3 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.06 }}
-                          className="whitespace-pre leading-[1.65]"
-                        >
+                        <div key={li} className="whitespace-pre leading-[1.65]">
                           {line.length === 0
                             ? <span>&nbsp;</span>
                             : line.map((seg, si) => <span key={si} className={seg.c}>{seg.t}</span>)
                           }
-                        </motion.div>
+                        </div>
                       ))}
                       {/* Elapsed time */}
                       {visible >= entry.lines.length && entry.elapsedMs > 0 && (
@@ -824,11 +810,7 @@ const DevOpsPlayground = () => {
                   aria-label="Terminal input"
                 />
                 {focused && input.length === 0 && !busy && (
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ duration: 0.55, repeat: Infinity }}
-                    className={`absolute left-0 top-0.5 w-[7px] h-[14px] pointer-events-none ${mode === 'k8s' ? 'bg-emerald-400' : 'bg-orange-400'}`}
-                  />
+                  <span className={`cursor-blink absolute left-0 top-0.5 w-[7px] h-[14px] pointer-events-none ${mode === 'k8s' ? 'bg-emerald-400' : 'bg-orange-400'}`} />
                 )}
               </div>
             </div>
@@ -854,11 +836,12 @@ const DevOpsPlayground = () => {
               ))}
             </div>
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* Info strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
+        <Reveal
+          from={{ opacity: 0, y: 10 }}
+          delay={0.3}
           className="mt-4 flex flex-wrap items-center justify-center gap-6 font-mono text-[11px] text-neutral-700"
         >
           <span><span className={mode === 'k8s' ? 'text-emerald-500' : 'text-orange-500'}>●</span> Sandboxed demo environment</span>
@@ -873,7 +856,7 @@ const DevOpsPlayground = () => {
               <span><span className="text-purple-500">●</span> 10+ commands · devenv spin up · list · teardown</span>
             </>
           )}
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   )

@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { GitCommit, Package, FlaskConical, Shield, Rocket, CheckCircle2, Loader2, Circle, Play, RefreshCw } from 'lucide-react'
+import Reveal from '@/components/Reveal'
 
 // ─── Pipeline stages ──────────────────────────────────────────────────────────
 type StageStatus = 'idle' | 'running' | 'passed' | 'failed'
@@ -129,14 +129,12 @@ const SystemsExperiments = () => {
       setActive(stage.id)
       setStatuses(prev => ({ ...prev, [stage.id]: 'running' }))
 
-      // Stream logs with delays
       for (const entry of stage.logs) {
         if (!runRef.current) break
         await new Promise(r => setTimeout(r, entry.t === 0 ? 0 : entry.t - (stage.logs[stage.logs.indexOf(entry) - 1]?.t ?? 0)))
         appendLog(entry.line.replace('142', String(num)), stage.id)
       }
 
-      // Remaining stage time after last log
       const elapsed = stage.logs[stage.logs.length - 1]?.t ?? 0
       await new Promise(r => setTimeout(r, stage.durationMs - elapsed))
 
@@ -150,13 +148,11 @@ const SystemsExperiments = () => {
     runRef.current = false
   }, [buildNum, appendLog])
 
-  // Auto-start on mount
   useEffect(() => {
     const t = setTimeout(() => runPipeline(), 800)
     return () => { clearTimeout(t); runRef.current = false }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Scroll logs to bottom
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight
   }, [logs])
@@ -182,7 +178,7 @@ const SystemsExperiments = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* ── Header ──────────────────────────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mb-10">
+        <Reveal className="mb-10">
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-blue-400">$</span>
             <span className="text-neutral-400">experiments</span>
@@ -190,8 +186,7 @@ const SystemsExperiments = () => {
             <span className="text-white">›</span>
             <span className="text-blue-400">pipeline</span>
             <span className="text-neutral-300">.trigger()</span>
-            <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.7, repeat: Infinity }}
-              className="w-1.5 h-3.5 bg-blue-400 inline-block ml-0.5" />
+            <span className="cursor-blink w-1.5 h-3.5 bg-blue-400 inline-block ml-0.5" />
           </div>
           <div className="flex items-end gap-5">
             <div>
@@ -203,18 +198,16 @@ const SystemsExperiments = () => {
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent mb-4" />
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* ── CI/CD Pipeline Demo ──────────────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }}>
+        <Reveal from={{ opacity: 0, y: 40 }}>
           <div className="relative rounded-3xl border border-blue-500/15 bg-gradient-to-br from-neutral-950/90 via-black/95 to-blue-950/10 overflow-hidden"
             style={{ boxShadow: '0 0 80px -30px rgba(96,165,250,0.12)' }}>
 
             {/* Scanline */}
-            <motion.div aria-hidden="true"
-              animate={{ y: ['-100%', '500%'] }}
-              transition={{ duration: 7, repeat: Infinity, ease: 'linear', repeatDelay: 10 }}
-              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent pointer-events-none z-20" />
+            <div aria-hidden="true"
+              className="scan-line absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent pointer-events-none z-20" />
 
             {/* Title bar */}
             <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06] bg-black/40">
@@ -229,23 +222,20 @@ const SystemsExperiments = () => {
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[10px] text-neutral-600">Build #{buildNum}</span>
                 {isDone && totalMs > 0 && (
-                  <motion.span key={buildNum} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    className="font-mono text-[10px] text-emerald-400">
+                  <span className="font-mono text-[10px] text-emerald-400">
                     ✓ {fmtDuration(totalMs)}
-                  </motion.span>
+                  </span>
                 )}
-                <motion.button
+                <button
                   onClick={handleTrigger}
                   disabled={isRunning}
-                  whileHover={{ scale: isRunning ? 1 : 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-mono font-bold border transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400/50"
+                  className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-mono font-bold border transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400/50 hover:scale-[1.03] active:scale-[0.97]"
                 >
                   {isRunning
                     ? <><Loader2 size={10} className="animate-spin" /> Running</>
                     : <><Play size={10} /> Trigger Build</>
                   }
-                </motion.button>
+                </button>
               </div>
             </div>
 
@@ -265,8 +255,7 @@ const SystemsExperiments = () => {
                       }`}>
                         {/* Glow on active */}
                         {isActive && (
-                          <motion.div animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 1, repeat: Infinity }}
-                            className="absolute inset-0 rounded-2xl border pointer-events-none"
+                          <div className="opacity-pulse absolute inset-0 rounded-2xl border pointer-events-none"
                             style={{ borderColor: stage.glowColor, boxShadow: `0 0 20px -5px ${stage.glowColor}` }} />
                         )}
                         <StageIcon stage={stage} status={status} />
@@ -275,12 +264,10 @@ const SystemsExperiments = () => {
                           isActive ? stage.accentClass : 'text-neutral-600'
                         }`}>{stage.name}</span>
                         {status === 'passed' && (
-                          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                            className="font-mono text-[8px] text-emerald-500/70">PASSED</motion.span>
+                          <span className="font-mono text-[8px] text-emerald-500/70">PASSED</span>
                         )}
                         {isActive && (
-                          <motion.span animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 0.8, repeat: Infinity }}
-                            className={`font-mono text-[8px] ${stage.accentClass}`}>RUNNING</motion.span>
+                          <span className={`opacity-pulse font-mono text-[8px] ${stage.accentClass}`}>RUNNING</span>
                         )}
                         {status === 'idle' && !isActive && (
                           <span className="font-mono text-[8px] text-neutral-800">QUEUED</span>
@@ -312,33 +299,27 @@ const SystemsExperiments = () => {
               <div className="flex flex-col">
                 <div className="flex items-center justify-between px-4 py-2 border-b border-white/[0.04] bg-black/20">
                   <div className="flex items-center gap-2">
-                    <motion.div animate={{ opacity: isRunning ? [1, 0.3, 1] : 1 }} transition={{ duration: 1, repeat: Infinity }}
-                      className={`w-1.5 h-1.5 rounded-full ${isRunning ? 'bg-blue-400' : isDone ? 'bg-emerald-400' : 'bg-neutral-700'}`} />
+                    <div className={`${isRunning ? 'opacity-pulse' : ''} w-1.5 h-1.5 rounded-full ${isRunning ? 'bg-blue-400' : isDone ? 'bg-emerald-400' : 'bg-neutral-700'}`} />
                     <span className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest">Pipeline Logs</span>
                   </div>
                   <span className="font-mono text-[9px] text-neutral-700">{logs.length} lines</span>
                 </div>
                 <div ref={logRef} className="p-4 font-mono text-[11px] space-y-1 overflow-y-auto bg-black/30"
                   style={{ minHeight: '220px', maxHeight: '220px', scrollbarWidth: 'none' }}>
-                  <AnimatePresence initial={false}>
-                    {logs.map(entry => {
-                      const stage = STAGES.find(s => s.id === entry.stageId)
-                      const isSuccess = entry.line.startsWith('✓')
-                      return (
-                        <motion.div key={entry.id}
-                          initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}
-                          className="flex gap-2 leading-relaxed">
-                          <span className={`shrink-0 ${stage?.accentClass ?? 'text-neutral-600'} opacity-60`}>›</span>
-                          <span className={isSuccess ? 'text-emerald-300' : 'text-neutral-400'}>{entry.line}</span>
-                        </motion.div>
-                      )
-                    })}
-                  </AnimatePresence>
+                  {logs.map(entry => {
+                    const stage = STAGES.find(s => s.id === entry.stageId)
+                    const isSuccess = entry.line.startsWith('✓')
+                    return (
+                      <div key={entry.id} className="flex gap-2 leading-relaxed">
+                        <span className={`shrink-0 ${stage?.accentClass ?? 'text-neutral-600'} opacity-60`}>›</span>
+                        <span className={isSuccess ? 'text-emerald-300' : 'text-neutral-400'}>{entry.line}</span>
+                      </div>
+                    )
+                  })}
                   {isRunning && (
                     <div className="flex gap-2">
                       <span className="text-neutral-600">›</span>
-                      <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.5, repeat: Infinity }}
-                        className="text-blue-400">█</motion.span>
+                      <span className="cursor-blink text-blue-400">█</span>
                     </div>
                   )}
                   {!isRunning && !isDone && logs.length === 0 && (
@@ -403,7 +384,7 @@ const SystemsExperiments = () => {
             </div>
 
           </div>
-        </motion.div>
+        </Reveal>
 
       </div>
     </section>

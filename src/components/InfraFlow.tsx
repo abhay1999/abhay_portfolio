@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { AlertTriangle, CheckCircle2, RefreshCw, Zap, Shield, Activity, GitMerge } from 'lucide-react'
+import Reveal from '@/components/Reveal'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Phase = 0 | 1 | 2 | 3 | 4 | 5 | 6
@@ -43,19 +43,16 @@ function podState(idx: number, phase: Phase): PodState {
 }
 
 // ─── SVG diagram constants ────────────────────────────────────────────────────
-// All coordinates are in the 560×280 viewBox
 const VB = { w: 560, h: 280 }
 
-// Node centres
 const C = {
-  cluster: { x: 200, y: 75 },                       // centre of cluster box
+  cluster: { x: 200, y: 75 },
   pod:     [{ x: 110, y: 75 }, { x: 200, y: 75 }, { x: 290, y: 75 }],
   prom:    { x: 100, y: 210 },
   alert:   { x: 280, y: 210 },
   op:      { x: 460, y: 210 },
 }
 
-// Connection paths (as SVG d strings)
 const PATHS = {
   clusterToProm:  `M ${C.pod[1].x} 108 L ${C.prom.x} 185`,
   promToAlert:    `M ${C.prom.x + 42} ${C.prom.y} L ${C.alert.x - 42} ${C.alert.y}`,
@@ -63,7 +60,6 @@ const PATHS = {
   opToPod:        `M ${C.op.x} 185 L ${C.pod[2].x} 108`,
 }
 
-// Which path is active on each phase
 const ACTIVE_PATHS: Partial<Record<Phase, keyof typeof PATHS>> = {
   2: 'clusterToProm',
   3: 'promToAlert',
@@ -77,6 +73,20 @@ const LOG_STYLE: Record<LogLevel, { label: string; labelClass: string; msgClass:
   WARN:  { label: 'WARN ', labelClass: 'text-amber-500',   msgClass: 'text-amber-200/80' },
   ERROR: { label: 'ERROR', labelClass: 'text-red-500',     msgClass: 'text-red-300'      },
   HEAL:  { label: 'HEAL ', labelClass: 'text-emerald-400', msgClass: 'text-emerald-300'  },
+}
+
+// ─── Status dot accent helpers ────────────────────────────────────────────────
+function statusDotClass(accent: string) {
+  if (accent === 'emerald') return 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]'
+  if (accent === 'red')     return 'bg-red-400 shadow-[0_0_6px_rgba(248,113,113,0.9)]'
+  if (accent === 'amber')   return 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.9)]'
+  return 'bg-blue-400 shadow-[0_0_6px_rgba(96,165,250,0.9)]'
+}
+function statusTextClass(accent: string) {
+  if (accent === 'emerald') return 'text-emerald-400'
+  if (accent === 'red')     return 'text-red-400'
+  if (accent === 'amber')   return 'text-amber-400'
+  return 'text-blue-400'
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -116,12 +126,10 @@ const InfraFlow = () => {
     return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Scroll log to bottom
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight
   }, [log])
 
-  // Elapsed counter
   useEffect(() => {
     const iv = setInterval(() => setElapsed(e => e + 100), 100)
     return () => clearInterval(iv)
@@ -130,7 +138,6 @@ const InfraFlow = () => {
   const status = PHASE_STATUS[phase]
   const activePath = ACTIVE_PATHS[phase]
 
-  // Node glow state
   const nodeActive = (node: 'prom' | 'alert' | 'op') => {
     if (node === 'prom')  return phase >= 2 && phase <= 3
     if (node === 'alert') return phase >= 3 && phase <= 4
@@ -152,7 +159,7 @@ const InfraFlow = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* ── Header ──────────────────────────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mb-10">
+        <Reveal className="mb-10">
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-emerald-400">$</span>
             <span className="text-neutral-400">kubectl</span>
@@ -160,8 +167,7 @@ const InfraFlow = () => {
             <span className="text-white">›</span>
             <span className="text-emerald-400">watch</span>
             <span className="text-neutral-300">--self-healing</span>
-            <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.7, repeat: Infinity }}
-              className="w-1.5 h-3.5 bg-emerald-400 inline-block ml-0.5" />
+            <span className="cursor-blink w-1.5 h-3.5 bg-emerald-400 inline-block ml-0.5" />
           </div>
           <div className="flex items-end gap-5">
             <div>
@@ -176,18 +182,16 @@ const InfraFlow = () => {
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent mb-4" />
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* ── Main Demo Panel ──────────────────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }}>
+        <Reveal from={{ opacity: 0, y: 40 }}>
           <div className="relative rounded-3xl border border-emerald-500/15 bg-gradient-to-br from-neutral-950/90 via-black/95 to-emerald-950/10 overflow-hidden"
             style={{ boxShadow: '0 0 80px -30px rgba(16,185,129,0.15)' }}>
 
             {/* Scanline overlay */}
-            <motion.div aria-hidden="true"
-              animate={{ y: ['-100%', '400%'] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 8 }}
-              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/30 to-transparent pointer-events-none z-20" />
+            <div aria-hidden="true"
+              className="scan-line absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/30 to-transparent pointer-events-none z-20" />
 
             {/* Title bar */}
             <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06] bg-black/40">
@@ -201,20 +205,10 @@ const InfraFlow = () => {
               </div>
               <div className="flex items-center gap-3">
                 {/* Phase status */}
-                <motion.div key={phase} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex items-center gap-1.5">
-                  <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 0.8, repeat: Infinity }}
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      status.accent === 'emerald' ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]' :
-                      status.accent === 'red'     ? 'bg-red-400 shadow-[0_0_6px_rgba(248,113,113,0.9)]' :
-                      status.accent === 'amber'   ? 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.9)]' :
-                                                    'bg-blue-400 shadow-[0_0_6px_rgba(96,165,250,0.9)]'
-                    }`} />
-                  <span className={`font-mono text-[10px] font-bold ${
-                    status.accent === 'emerald' ? 'text-emerald-400' :
-                    status.accent === 'red'     ? 'text-red-400'     :
-                    status.accent === 'amber'   ? 'text-amber-400'   : 'text-blue-400'
-                  }`}>{status.label}</span>
-                </motion.div>
+                <div className="flex items-center gap-1.5">
+                  <div className={`opacity-pulse w-1.5 h-1.5 rounded-full ${statusDotClass(status.accent)}`} />
+                  <span className={`font-mono text-[10px] font-bold ${statusTextClass(status.accent)}`}>{status.label}</span>
+                </div>
                 <div className="w-px h-3.5 bg-white/10" />
                 <span className="font-mono text-[10px] text-neutral-600">{(elapsed / 1000).toFixed(1)}s</span>
               </div>
@@ -230,7 +224,7 @@ const InfraFlow = () => {
                   className="w-full max-w-[560px]"
                   style={{ overflow: 'visible' }}
                 >
-                  {/* Defs: animated particle gradient */}
+                  {/* Defs */}
                   <defs>
                     <marker id="arrowEmerald" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
                       <path d="M0,0 L6,3 L0,6 Z" fill="rgba(52,211,153,0.6)" />
@@ -271,20 +265,24 @@ const InfraFlow = () => {
 
                     return (
                       <g key={i}>
-                        <motion.rect
+                        <rect
                           x={cx - 36} y={cy - 22} width={72} height={44} rx={8}
                           fill={fill} stroke={stroke} strokeWidth={isIncident ? 1.5 : 1}
-                          animate={isIncident ? { opacity: [1, 0.6, 1] } : isNew ? { opacity: [0.4, 1] } : { opacity: 1 }}
-                          transition={isIncident ? { duration: 0.7, repeat: Infinity } : { duration: 0.6 }}
-                        />
+                        >
+                          {isIncident && <animate attributeName="opacity" values="1;0.6;1" dur="0.7s" repeatCount="indefinite" />}
+                          {isNew && <animate attributeName="opacity" values="0.4;1" dur="0.6s" repeatCount="1" />}
+                        </rect>
                         {/* Dot */}
-                        <motion.circle
+                        <circle
                           cx={cx - 20} cy={cy - 8} r={3}
                           fill={dot}
-                          animate={{ opacity: isIncident ? [1, 0.2, 1] : [0.7, 1, 0.7] }}
-                          transition={{ duration: isIncident ? 0.6 : 2, repeat: Infinity }}
                           style={{ filter: `drop-shadow(0 0 4px ${dot})` }}
-                        />
+                        >
+                          {isIncident
+                            ? <animate attributeName="opacity" values="1;0.2;1" dur="0.6s" repeatCount="indefinite" />
+                            : <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" />
+                          }
+                        </circle>
                         <text x={cx - 10} y={cy - 4} fontFamily="monospace" fontSize="7.5" fill="rgba(255,255,255,0.7)" fontWeight="600">
                           pod-{i}
                         </text>
@@ -293,25 +291,28 @@ const InfraFlow = () => {
                         </text>
                         {/* Crash icon */}
                         {isIncident && (
-                          <motion.text x={cx + 12} y={cy - 6} fontSize="11"
-                            animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 0.5, repeat: Infinity }}>
+                          <text x={cx + 12} y={cy - 6} fontSize="11">
+                            <animate attributeName="opacity" values="1;0.3;1" dur="0.5s" repeatCount="indefinite" />
                             ⚠
-                          </motion.text>
+                          </text>
                         )}
                         {/* Heal check */}
                         {isNew && (
-                          <motion.text x={cx + 14} y={cy - 6} fontSize="11"
-                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                            ✓
-                          </motion.text>
+                          <text x={cx + 14} y={cy - 6} fontSize="11">✓</text>
                         )}
                         {/* Spinning refresh on healing */}
                         {isHealing && (
-                          <motion.text x={cx + 12} y={cy - 6} fontSize="10"
-                            animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                            style={{ transformOrigin: `${cx + 17}px ${cy - 11}px` }}>
+                          <text x={cx + 12} y={cy - 6} fontSize="10">
+                            <animateTransform
+                              attributeName="transform"
+                              type="rotate"
+                              from={`0 ${cx + 17} ${cy - 11}`}
+                              to={`360 ${cx + 17} ${cy - 11}`}
+                              dur="1s"
+                              repeatCount="indefinite"
+                            />
                             ↻
-                          </motion.text>
+                          </text>
                         )}
                       </g>
                     )
@@ -324,20 +325,21 @@ const InfraFlow = () => {
                     { key: 'op',    cx: C.op.x,    label: 'Operator',     sub: 'go ctrl', active: nodeActive('op'),    fill: 'rgba(96,165,250,',  stroke: 'rgba(96,165,250,' },
                   ].map(({ key, cx, label, sub, active, fill, stroke }) => (
                     <g key={key}>
-                      <motion.rect
+                      <rect
                         x={cx - 42} y={C.prom.y - 24} width={84} height={48} rx={10}
                         fill={`${fill}${active ? '0.12' : '0.05'})`}
                         stroke={`${stroke}${active ? '0.6' : '0.2'})`}
                         strokeWidth={active ? 1.5 : 1}
-                        animate={active ? { opacity: [0.8, 1, 0.8] } : { opacity: 1 }}
-                        transition={{ duration: 0.8, repeat: Infinity }}
-                      />
+                      >
+                        {active && <animate attributeName="opacity" values="0.8;1;0.8" dur="0.8s" repeatCount="indefinite" />}
+                      </rect>
                       {/* Active glow */}
                       {active && (
-                        <motion.rect x={cx - 42} y={C.prom.y - 24} width={84} height={48} rx={10}
+                        <rect x={cx - 42} y={C.prom.y - 24} width={84} height={48} rx={10}
                           fill="none" stroke={`${stroke}0.4)`} strokeWidth={8}
-                          animate={{ opacity: [0.3, 0, 0.3] }} transition={{ duration: 0.9, repeat: Infinity }}
-                          style={{ filter: 'blur(4px)' }} />
+                          style={{ filter: 'blur(4px)' }}>
+                          <animate attributeName="opacity" values="0.3;0;0.3" dur="0.9s" repeatCount="indefinite" />
+                        </rect>
                       )}
                       {/* Icon area */}
                       <circle cx={cx - 22} cy={C.prom.y - 6} r={9}
@@ -368,13 +370,12 @@ const InfraFlow = () => {
                           strokeDasharray={isActive ? 'none' : '4 4'} markerEnd={isActive ? markerEnd : undefined} />
                         {/* Animated particle */}
                         {isActive && (
-                          <motion.circle r={3} fill={color}
+                          <circle r={3} fill={color}
                             style={{ filter: `drop-shadow(0 0 4px ${color})` }}
-                            animate={{ offsetDistance: ['0%', '100%'] }}
-                            transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
-                            // @ts-ignore
-                            offsetPath={`path("${d}")`}
-                          />
+                          >
+                            {/* @ts-ignore */}
+                            <animateMotion dur="1.2s" repeatCount="indefinite" path={d} />
+                          </circle>
                         )}
                       </g>
                     )
@@ -402,25 +403,20 @@ const InfraFlow = () => {
                 </div>
                 <div ref={logRef} className="flex-1 overflow-y-auto p-3 space-y-1.5 font-mono text-[10px]"
                   style={{ maxHeight: '280px', scrollbarWidth: 'none' }}>
-                  <AnimatePresence initial={false}>
-                    {log.map((entry) => {
-                      const s = LOG_STYLE[entry.level]
-                      return (
-                        <motion.div key={entry.id}
-                          initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }}
-                          className="flex gap-2 leading-relaxed">
-                          <span className="text-neutral-700 shrink-0">{entry.ts}</span>
-                          <span className={`shrink-0 ${s.labelClass}`}>{s.label}</span>
-                          <span className={s.msgClass}>{entry.msg}</span>
-                        </motion.div>
-                      )
-                    })}
-                  </AnimatePresence>
+                  {log.map((entry) => {
+                    const s = LOG_STYLE[entry.level]
+                    return (
+                      <div key={entry.id} className="flex gap-2 leading-relaxed">
+                        <span className="text-neutral-700 shrink-0">{entry.ts}</span>
+                        <span className={`shrink-0 ${s.labelClass}`}>{s.label}</span>
+                        <span className={s.msgClass}>{entry.msg}</span>
+                      </div>
+                    )
+                  })}
                   {/* Blinking cursor */}
                   <div className="flex gap-2">
                     <span className="text-neutral-700">{now()}</span>
-                    <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.6, repeat: Infinity }}
-                      className="text-emerald-500">█</motion.span>
+                    <span className="cursor-blink text-emerald-500">█</span>
                   </div>
                 </div>
               </div>
@@ -429,22 +425,17 @@ const InfraFlow = () => {
             {/* ── Stats bar ────────────────────────────────────────────── */}
             <div className="border-t border-white/[0.06] bg-black/30 px-5 py-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { label: 'INCIDENTS HEALED',  value: healCount,  suffix: '',    accent: 'text-emerald-400', glow: 'rgba(52,211,153,0.8)' },
-                { label: 'AVG HEAL TIME',      value: '11.4',     suffix: 's',   accent: 'text-blue-400',   glow: 'rgba(96,165,250,0.8)' },
-                { label: 'SUCCESS RATE',       value: '100',      suffix: '%',   accent: 'text-cyan-400',   glow: 'rgba(34,211,238,0.8)' },
-                { label: 'OPERATORS',          value: '3',        suffix: ' Go', accent: 'text-purple-400', glow: 'rgba(192,132,252,0.8)' },
+                { label: 'INCIDENTS HEALED',  value: healCount,  suffix: '',    accent: 'text-emerald-400', glow: 'rgba(52,211,153,0.8)',   barColor: '#34d399' },
+                { label: 'AVG HEAL TIME',      value: '11.4',     suffix: 's',   accent: 'text-blue-400',   glow: 'rgba(96,165,250,0.8)',   barColor: '#60a5fa' },
+                { label: 'SUCCESS RATE',       value: '100',      suffix: '%',   accent: 'text-cyan-400',   glow: 'rgba(34,211,238,0.8)',   barColor: '#22d3ee' },
+                { label: 'OPERATORS',          value: '3',        suffix: ' Go', accent: 'text-purple-400', glow: 'rgba(192,132,252,0.8)',  barColor: '#c084fc' },
               ].map(stat => (
                 <div key={stat.label} className="flex items-center gap-2">
-                  <motion.div className="w-1 h-6 rounded-full"
-                    style={{ background: stat.accent.replace('text-', 'rgb(').replace('-400', ')') }}
-                    animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 2, repeat: Infinity }} />
+                  <div className="opacity-pulse w-1 h-6 rounded-full shrink-0" style={{ background: stat.barColor }} />
                   <div>
                     <div className={`font-mono text-lg font-black leading-none ${stat.accent}`}
                       style={{ textShadow: `0 0 12px ${stat.glow}` }}>
-                      <motion.span key={stat.value}>
-                        {stat.value}
-                      </motion.span>
-                      {stat.suffix}
+                      {stat.value}{stat.suffix}
                     </div>
                     <div className="font-mono text-[8px] text-neutral-600 uppercase tracking-wider mt-0.5">{stat.label}</div>
                   </div>
@@ -453,11 +444,14 @@ const InfraFlow = () => {
             </div>
 
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* ── Bottom CTA ───────────────────────────────────────────────────── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+        <Reveal
+          from={{ opacity: 0, y: 20 }}
+          delay={0.3}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8"
+        >
           <a href="https://github.com/abhay1999/self-healing-k8s-platform" target="_blank" rel="noreferrer"
             className="group inline-flex items-center gap-2.5 px-6 py-3 bg-gradient-to-r from-emerald-500/15 to-blue-500/15 border border-emerald-500/25 text-white rounded-2xl hover:border-emerald-400/50 transition-all duration-300 font-medium text-sm"
             style={{ boxShadow: '0 0 30px -10px rgba(16,185,129,0.2)' }}>
@@ -470,7 +464,7 @@ const InfraFlow = () => {
           <p className="text-xs font-mono text-neutral-600">
             3 custom Go operators · K8s controller-runtime · Helm chart deployed
           </p>
-        </motion.div>
+        </Reveal>
 
       </div>
     </section>

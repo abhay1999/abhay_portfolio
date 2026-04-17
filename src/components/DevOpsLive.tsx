@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { Server, GitBranch, Activity } from 'lucide-react'
 import { fetchJsonWithTimeout, readCachedValue, writeCachedValue, type DataSourceState } from '@/lib/client-data'
+import Reveal from '@/components/Reveal'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -66,7 +66,7 @@ const CELL_CLS = [
 ] as const
 
 const VITALS = [
-  { label: 'PORTFOLIO', value: 'LIVE',  color: 'text-emerald-400', dot: 'bg-emerald-400', glow: 'shadow-[0_0_6px_rgba(52,211,153,0.8)]', pulse: true  },
+  { label: 'PORTFOLIO', value: 'LIVE',  color: 'text-emerald-400', dot: 'bg-emerald-400', glow: 'shadow-[0_0_6px_rgba(52,211,153,0.8)]',  pulse: true  },
   { label: 'UPTIME',    value: '99.9%', color: 'text-cyan-400',    dot: 'bg-cyan-400',    glow: 'shadow-[0_0_6px_rgba(34,211,238,0.8)]',  pulse: false },
   { label: 'BUILD',     value: 'PASS',  color: 'text-emerald-400', dot: 'bg-emerald-400', glow: 'shadow-[0_0_6px_rgba(52,211,153,0.8)]',  pulse: false },
   { label: 'RUNTIME',   value: 'NGINX', color: 'text-purple-400',  dot: 'bg-purple-400',  glow: 'shadow-[0_0_6px_rgba(192,132,252,0.8)]', pulse: false },
@@ -102,8 +102,6 @@ function timeAgo(iso: string): string {
   return `${Math.floor(h / 24)}d ago`
 }
 
-// ─── Month label helper ────────────────────────────────────────────────────────
-
 function getMonthLabels(weeks: ContribDay[][]): { label: string; col: number }[] {
   const labels: { label: string; col: number }[] = []
   let lastMonth = -1
@@ -119,15 +117,9 @@ function getMonthLabels(weeks: ContribDay[][]): { label: string; col: number }[]
 }
 
 function getStateMeta(state: DataSourceState) {
-  if (state === 'live') {
-    return { label: 'LIVE', dotClass: 'bg-emerald-400', textClass: 'text-emerald-400' }
-  }
-
-  if (state === 'cached') {
-    return { label: 'CACHED', dotClass: 'bg-amber-400', textClass: 'text-amber-400' }
-  }
-
-  return { label: 'STATIC DATA', dotClass: 'bg-neutral-600', textClass: 'text-neutral-500' }
+  if (state === 'live')   return { label: 'LIVE',        dotClass: 'bg-emerald-400', textClass: 'text-emerald-400' }
+  if (state === 'cached') return { label: 'CACHED',      dotClass: 'bg-amber-400',   textClass: 'text-amber-400'   }
+  return                         { label: 'STATIC DATA', dotClass: 'bg-neutral-600', textClass: 'text-neutral-500' }
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -154,12 +146,9 @@ const DevOpsLive = () => {
       SERVICES.map(async (svc) => {
         const data = await fetchJsonWithTimeout<{ workflow_runs?: WorkflowRun[] }>(
           `https://api.github.com/repos/${svc.repo}/actions/runs?per_page=1`,
-          {
-            headers: { Accept: 'application/vnd.github.v3+json' },
-          },
+          { headers: { Accept: 'application/vnd.github.v3+json' } },
           5000
         )
-
         return [svc.repo, data.workflow_runs?.[0] ?? null] as const
       })
     )
@@ -194,7 +183,6 @@ const DevOpsLive = () => {
       })
   }, [])
 
-  // Build week grid from flat contribution array
   const weeks: ContribDay[][] = []
   if (contribs.length > 0) {
     let week: ContribDay[] = []
@@ -217,25 +205,21 @@ const DevOpsLive = () => {
           backgroundImage: 'linear-gradient(rgba(52,211,153,0.9) 1px, transparent 1px),linear-gradient(90deg, rgba(52,211,153,0.9) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
         }} />
-        {/* Perspective floor */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[40%] opacity-[0.06]" style={{
           backgroundImage: 'linear-gradient(to right, rgba(52,211,153,0.9) 1px, transparent 1px),linear-gradient(to bottom, rgba(52,211,153,0.9) 1px, transparent 1px)',
           backgroundSize: '60px 60px',
           transform: 'perspective(700px) rotateX(58deg) translateY(20%)',
           maskImage: 'radial-gradient(ellipse at 50% 0%, black 20%, transparent 75%)',
         }} />
-        {/* Circuit traces */}
+        {/* Circuit traces — CSS */}
         <div className="absolute top-[30%] left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/12 to-transparent">
-          <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 5, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
-            className="absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent" />
+          <div className="trace-x-fwd absolute top-0 left-0 w-40 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent" style={{ animationDuration: '5s' }} />
         </div>
         <div className="absolute top-[70%] left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent">
-          <motion.div animate={{ x: ['200%', '-100%'] }} transition={{ duration: 6, repeat: Infinity, ease: 'linear', repeatDelay: 2 }}
-            className="absolute top-0 left-0 w-36 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+          <div className="trace-x-bwd absolute top-0 left-0 w-36 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" style={{ animationDuration: '6s' }} />
         </div>
         <div className="absolute top-0 left-[22%] h-full w-px bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent">
-          <motion.div animate={{ y: ['-100%', '200%'] }} transition={{ duration: 8, repeat: Infinity, ease: 'linear', repeatDelay: 4 }}
-            className="absolute top-0 left-0 h-28 w-px bg-gradient-to-b from-transparent via-emerald-400 to-transparent" />
+          <div className="trace-y-fwd absolute top-0 left-0 h-28 w-px bg-gradient-to-b from-transparent via-emerald-400 to-transparent" style={{ animationDuration: '8s' }} />
         </div>
         {/* Ambient orbs */}
         <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full bg-emerald-600/5 blur-[150px]" />
@@ -248,13 +232,7 @@ const DevOpsLive = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* ── Section Header ──────────────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-12"
-        >
+        <Reveal className="mb-12">
           <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
             <span className="text-emerald-400">$</span>
             <span className="text-neutral-400">ops</span>
@@ -262,8 +240,7 @@ const DevOpsLive = () => {
             <span className="text-white">›</span>
             <span className="text-emerald-400">monitor</span>
             <span className="text-neutral-300">.watch()</span>
-            <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.7, repeat: Infinity }}
-              className="w-1.5 h-3.5 bg-emerald-400 inline-block ml-0.5" />
+            <span className="cursor-blink w-1.5 h-3.5 bg-emerald-400 inline-block ml-0.5" />
           </div>
           <div className="flex items-end gap-5">
             <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">06.</span>
@@ -276,7 +253,7 @@ const DevOpsLive = () => {
           <p className="text-sm text-neutral-600 mt-3 font-mono">
             Real-time CI/CD status · GitHub activity · system health — <span className="text-emerald-500">all live</span>
           </p>
-        </motion.div>
+        </Reveal>
 
         {/* ── Main Grid ───────────────────────────────────────────────────── */}
         <div className="grid lg:grid-cols-[360px_1fr] gap-5 items-start">
@@ -285,13 +262,8 @@ const DevOpsLive = () => {
           <div className="space-y-4">
 
             {/* CI/CD Monitor */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="bg-neutral-950/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl"
-            >
+            <Reveal from={{ opacity: 0, x: -30 }}
+              className="bg-neutral-950/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
               {/* Title bar */}
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06] bg-black/40">
                 <div className="flex items-center gap-2.5">
@@ -303,8 +275,7 @@ const DevOpsLive = () => {
                   <span className="font-mono text-[10px] text-neutral-500 tracking-wide">ci_cd_monitor.sh</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <motion.div animate={{ opacity: runsSource === 'live' ? [1, 0.3, 1] : 1 }} transition={{ duration: 1.5, repeat: Infinity }}
-                    className={`w-1.5 h-1.5 rounded-full ${runsMeta.dotClass} shadow-[0_0_6px_rgba(52,211,153,0.9)]`} />
+                  <div className={`w-1.5 h-1.5 rounded-full ${runsMeta.dotClass} shadow-[0_0_6px_rgba(52,211,153,0.9)] ${runsSource === 'live' ? 'opacity-pulse' : ''}`} />
                   <span className={`font-mono text-[10px] ${runsMeta.textClass}`}>{runsMeta.label}</span>
                 </div>
               </div>
@@ -318,15 +289,11 @@ const DevOpsLive = () => {
               <div className="px-4 pb-4 space-y-2.5 mt-1">
                 {SERVICES.map(svc => {
                   const run = runs[svc.repo]
-                  const st = resolveStatus(runs.hasOwnProperty(svc.repo) ? run : undefined)
+                  const st = resolveStatus(Object.prototype.hasOwnProperty.call(runs, svc.repo) ? run : undefined)
                   return (
                     <div key={svc.repo} className="group flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:border-white/10 transition-all duration-200">
                       {/* Status dot */}
-                      <motion.div
-                        animate={st.pulse ? { opacity: [1, 0.3, 1] } : {}}
-                        transition={{ duration: 0.8, repeat: Infinity }}
-                        className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${st.dotCls} ${st.glowCls}`}
-                      />
+                      <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${st.dotCls} ${st.glowCls} ${st.pulse ? 'opacity-pulse' : ''}`} />
                       {/* Label + repo */}
                       <div className="flex-1 min-w-0">
                         <p className={`font-mono text-[11px] font-bold ${svc.accentCls}`}>{svc.label}</p>
@@ -353,16 +320,11 @@ const DevOpsLive = () => {
               <div className="px-4 py-2.5 border-t border-white/[0.04] bg-black/20 font-mono text-[9px] text-neutral-700">
                 <span className="text-emerald-500/70">✓</span> polling github actions api · auto-refresh on load
               </div>
-            </motion.div>
+            </Reveal>
 
             {/* System Vitals */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="bg-neutral-950/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl"
-            >
+            <Reveal from={{ opacity: 0, x: -30 }} delay={0.15}
+              className="bg-neutral-950/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06] bg-black/40">
                 <div className="flex items-center gap-2">
                   <Server size={10} className="text-cyan-400" />
@@ -379,28 +341,18 @@ const DevOpsLive = () => {
                   <div key={v.label} className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/8 transition-colors">
                     <p className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest mb-1.5">{v.label}</p>
                     <div className="flex items-center gap-2">
-                      {v.pulse ? (
-                        <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }}
-                          className={`w-2 h-2 rounded-full flex-shrink-0 ${v.dot} ${v.glow}`} />
-                      ) : (
-                        <div className={`w-2 h-2 rounded-full flex-shrink-0 ${v.dot} ${v.glow}`} />
-                      )}
+                      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${v.dot} ${v.glow} ${v.pulse ? 'opacity-pulse' : ''}`} />
                       <p className={`font-mono text-sm font-black ${v.color}`}>{v.value}</p>
                     </div>
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </Reveal>
           </div>
 
           {/* ── RIGHT: Contribution Heatmap ──────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="bg-neutral-950/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl h-full"
-          >
+          <Reveal from={{ opacity: 0, x: 30 }} delay={0.1}
+            className="bg-neutral-950/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl h-full">
             {/* Title bar */}
             <div className="flex items-center justify-between px-5 py-2.5 border-b border-white/[0.06] bg-black/40">
               <div className="flex items-center gap-2.5">
@@ -418,8 +370,7 @@ const DevOpsLive = () => {
                   </span>
                 )}
                 <div className="flex items-center gap-1.5">
-                  <motion.div animate={{ opacity: heatmapSource === 'live' ? [1, 0.3, 1] : 1 }} transition={{ duration: 1.5, repeat: Infinity }}
-                    className={`w-1.5 h-1.5 rounded-full ${heatmapMeta.dotClass} shadow-[0_0_6px_rgba(52,211,153,0.8)]`} />
+                  <div className={`w-1.5 h-1.5 rounded-full ${heatmapMeta.dotClass} shadow-[0_0_6px_rgba(52,211,153,0.8)] ${heatmapSource === 'live' ? 'opacity-pulse' : ''}`} />
                   <span className={`font-mono text-[10px] ${heatmapMeta.textClass}`}>{heatmapMeta.label}</span>
                 </div>
               </div>
@@ -429,8 +380,7 @@ const DevOpsLive = () => {
               {heatmapLoading && (
                 <div className="flex items-center justify-center h-48">
                   <div className="flex items-center gap-3">
-                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                      className="w-4 h-4 border-2 border-emerald-400/60 border-t-emerald-400 rounded-full" />
+                    <div className="w-4 h-4 border-2 border-emerald-400/60 border-t-emerald-400 rounded-full animate-spin" />
                     <span className="font-mono text-xs text-neutral-500">fetching github activity...</span>
                   </div>
                 </div>
@@ -447,21 +397,15 @@ const DevOpsLive = () => {
                   {/* Month labels */}
                   <div className="relative flex gap-[3px] mb-1 pl-[18px]">
                     {monthLabels.map(({ label, col }) => (
-                      <div
-                        key={`${label}-${col}`}
-                        className="absolute font-mono text-[9px] text-neutral-600"
-                        style={{ left: `${18 + col * 13}px` }}
-                      >
+                      <div key={`${label}-${col}`} className="absolute font-mono text-[9px] text-neutral-600" style={{ left: `${18 + col * 13}px` }}>
                         {label}
                       </div>
                     ))}
-                    {/* spacer so labels have room */}
                     <div className="h-3" />
                   </div>
 
                   {/* Day labels + grid */}
                   <div className="flex gap-[3px]">
-                    {/* Day of week labels */}
                     <div className="flex flex-col gap-[3px] mr-1 flex-shrink-0">
                       {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
                         <div key={i} className="w-3 h-[10px] font-mono text-[8px] text-neutral-700 flex items-center justify-center">
@@ -469,14 +413,11 @@ const DevOpsLive = () => {
                         </div>
                       ))}
                     </div>
-
-                    {/* Heatmap grid */}
                     <div className="flex gap-[3px]">
                       {weeks.map((week, wi) => (
                         <div key={wi} className="flex flex-col gap-[3px]">
                           {week.map((day, di) => (
-                            <div
-                              key={di}
+                            <div key={di}
                               title={`${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`}
                               className={`w-[10px] h-[10px] rounded-[2px] ${CELL_CLS[day.level]} hover:scale-125 transition-transform cursor-default`}
                             />
@@ -503,8 +444,8 @@ const DevOpsLive = () => {
                   {/* Bottom stats bar */}
                   <div className="mt-4 grid grid-cols-3 gap-3 pt-4 border-t border-white/[0.05]">
                     {[
-                      { label: 'TOTAL COMMITS', value: totalContribs?.toLocaleString() ?? '—', color: 'text-emerald-400' },
-                      { label: 'ACTIVE WEEKS',  value: `${weeks.filter(w => w.some(d => d.count > 0)).length}`, color: 'text-cyan-400'    },
+                      { label: 'TOTAL COMMITS',  value: totalContribs?.toLocaleString() ?? '—', color: 'text-emerald-400' },
+                      { label: 'ACTIVE WEEKS',   value: `${weeks.filter(w => w.some(d => d.count > 0)).length}`, color: 'text-cyan-400' },
                       { label: 'LONGEST STREAK', value: (() => {
                           let max = 0, cur = 0
                           for (const d of contribs) { cur = d.count > 0 ? cur + 1 : 0; if (cur > max) max = cur }
@@ -520,7 +461,7 @@ const DevOpsLive = () => {
                 </div>
               )}
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

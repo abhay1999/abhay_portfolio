@@ -1,74 +1,91 @@
 "use client"
 
-import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import { gsap } from '@/lib/gsap'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled]     = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
+  const mobileRef = useRef<HTMLDivElement>(null)
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Projects', href: '#projects' },
+    { name: 'Home',        href: '#home'       },
+    { name: 'About',       href: '#about'      },
+    { name: 'Experience',  href: '#experience' },
+    { name: 'Projects',    href: '#projects'   },
     { name: 'Open Source', href: '#opensource' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Skills',      href: '#skills'     },
+    { name: 'Contact',     href: '#contact'    },
   ]
 
+  // Slide-down entrance on mount
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll, { passive: true } as EventListenerOptions)
+    gsap.fromTo(
+      headerRef.current,
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.1 },
+    )
   }, [])
+
+  // Scroll detection
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Animate mobile menu in/out
+  useEffect(() => {
+    const el = mobileRef.current
+    if (!el) return
+    if (isMenuOpen) {
+      gsap.fromTo(el, { opacity: 0, y: -10, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: 'power2.out' })
+    } else {
+      gsap.to(el, { opacity: 0, scale: 0.97, duration: 0.15, ease: 'power2.in' })
+    }
+  }, [isMenuOpen])
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
     setIsMenuOpen(false)
-    const element = document.querySelector(href)
-    if (element) {
-      const top = element.getBoundingClientRect().top + window.scrollY
-      window.scrollTo({
-        top: top - 80, // offset for header
-        behavior: 'smooth'
-      })
+    const el = document.querySelector(href)
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY
+      window.scrollTo({ top: top - 80, behavior: 'smooth' })
     }
   }
 
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    <header
+      ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50 flex justify-center mt-4 px-4 sm:px-6 pointer-events-none"
+      style={{ opacity: 0 }} // GSAP sets to 1 on mount
     >
-      <div 
+      <div
         className={`pointer-events-auto flex items-center justify-between w-full max-w-5xl px-6 py-3 rounded-2xl transition-all duration-500
-          ${scrolled 
-            ? 'bg-neutral-900/40 backdrop-blur-xl border border-white/10 shadow-2xl' 
+          ${scrolled
+            ? 'bg-neutral-900/40 backdrop-blur-xl border border-white/10 shadow-2xl'
             : 'bg-transparent border border-transparent'
           }`}
       >
         {/* Logo */}
-        <a 
+        <a
           href="#home"
-          onClick={(e) => scrollToSection(e, '#home')}
+          onClick={e => scrollToSection(e, '#home')}
           className="text-xl font-bold tracking-tighter text-white"
         >
           Abhay.
         </a>
 
-        {/* Desktop Navigation */}
+        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
+          {navItems.map(item => (
             <a
               key={item.name}
               href={item.href}
-              onClick={(e) => scrollToSection(e, item.href)}
+              onClick={e => scrollToSection(e, item.href)}
               className="text-sm font-medium text-neutral-400 hover:text-white transition-colors"
             >
               {item.name}
@@ -76,16 +93,16 @@ const Header = () => {
           ))}
           <a
             href="#contact"
-            onClick={(e) => scrollToSection(e, '#contact')}
+            onClick={e => scrollToSection(e, '#contact')}
             className="px-4 py-2 text-sm font-medium text-black bg-white rounded-lg hover:bg-neutral-200 transition-colors"
           >
             Hire Me
           </a>
         </nav>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile toggle */}
         <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => setIsMenuOpen(v => !v)}
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMenuOpen}
           className="md:hidden p-2 -mr-2 text-neutral-400 hover:text-white transition-colors"
@@ -94,39 +111,33 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-20 left-4 right-4 pointer-events-auto bg-neutral-900/90 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl md:hidden"
+      {/* Mobile drawer */}
+      <div
+        ref={mobileRef}
+        className={`absolute top-20 left-4 right-4 pointer-events-auto bg-neutral-900/90 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}
+        style={{ opacity: 0 }}
+      >
+        <nav className="flex flex-col p-4">
+          {navItems.map(item => (
+            <a
+              key={item.name}
+              href={item.href}
+              onClick={e => scrollToSection(e, item.href)}
+              className="px-4 py-3 text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors"
+            >
+              {item.name}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            onClick={e => scrollToSection(e, '#contact')}
+            className="mt-2 px-4 py-3 text-sm font-medium text-black bg-white rounded-xl text-center hover:bg-neutral-200 transition-colors"
           >
-            <nav className="flex flex-col p-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => scrollToSection(e, item.href)}
-                  className="px-4 py-3 text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors"
-                >
-                  {item.name}
-                </a>
-              ))}
-              <a
-                href="#contact"
-                onClick={(e) => scrollToSection(e, '#contact')}
-                className="mt-2 px-4 py-3 text-sm font-medium text-black bg-white rounded-xl text-center hover:bg-neutral-200 transition-colors"
-              >
-                Hire Me
-              </a>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+            Hire Me
+          </a>
+        </nav>
+      </div>
+    </header>
   )
 }
 
