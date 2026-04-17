@@ -86,6 +86,7 @@ function inferTags(title: string, repo: string): string[] {
   if (t.includes('database') || t.includes('n+1')) tags.push('Database')
   if (t.includes('android'))                        tags.push('Android')
   if (t.includes('observab') || t.includes('spm')) tags.push('Observability')
+  if (t.includes('golang/website') || t.includes('gomod') || t.includes('gomod-ref')) tags.push('Docs')
   return tags.length > 0 ? tags.slice(0, 3) : ['Open Source']
 }
 
@@ -220,6 +221,21 @@ const FEATURED_PROJECTS = [
 
 const OTHER_FEATURED = [
   {
+    number: 357,
+    org: 'golang/website',
+    orgDisplay: 'Go Website',
+    badge: 'go.dev · Official Go Docs',
+    badgeClass: 'bg-sky-500/15 border-sky-500/30 text-sky-300',
+    title: 'doc/modules/gomod-ref: document the ignore directive',
+    description: 'The go.mod reference page at go.dev was missing the ignore directive entirely, even though it is documented in the Go Modules Reference. Added a full section — syntax, examples (relative path, named directory, block form), and usage notes — following the structure of exclude and retract.',
+    impact: 'Fixes an official documentation gap (golang/go#78460) for every Go developer referencing the go.mod guide on go.dev.',
+    tags: ['Go', 'Docs', 'go.dev'],
+    url: 'https://github.com/golang/website/pull/357',
+    accentClass: 'text-sky-400',
+    borderClass: 'border-sky-500/25',
+    glowColor: 'rgba(56,189,248,0.1)',
+  },
+  {
     number: 31931,
     org: 'helm/helm',
     orgDisplay: 'Helm',
@@ -253,6 +269,7 @@ const OTHER_FEATURED = [
 
 // ─── Static Fallback ──────────────────────────────────────────────────────────
 const STATIC_MERGED: MergedPR[] = [
+  { number: 357,   repo: 'golang/website',        orgInitial: 'G', title: 'doc/modules/gomod-ref: document the ignore directive',                description: 'Added the missing ignore directive to the official go.mod reference on go.dev — syntax, examples (relative path, named dir, block form), and usage notes. Fixes golang/go#78460.', tags: ['Go','Docs','go.dev'],               mergedAt: 'Apr 17, 2026', repoStars: '',     url: 'https://github.com/golang/website/pull/357',        ...MERGED_THEMES[5] },
   { number: 629,   repo: 'golang/tools',          orgInitial: 'G', title: 'modernize/stringscut: simplify Split/SplitN[0] to strings.Cut',       description: 'New analyzer replacing strings.Split/SplitN[0] patterns with strings.Cut (Go 1.18). 267-line AST pass. Reviewed by Alan Donovan & Madeline Kalil (Google). Ships in gopls.', tags: ['Go','AST','gopls','Go Toolchain'],  mergedAt: 'Apr 15, 2026', repoStars: '10k+', url: 'https://github.com/golang/tools/pull/629',           ...MERGED_THEMES[4] },
   { number: 627,   repo: 'golang/tools',          orgInitial: 'G', title: 'go/analysis/passes/modernize: add slicesbackward analyzer',          description: 'New static analysis pass detecting backward for-loops and suggesting slices.Backward (Go 1.23). Ships in gopls. Reviewed by Alan Donovan (Go core team).',                tags: ['Go','AST','gopls','Go Toolchain'],  mergedAt: 'Apr 3, 2026',  repoStars: '10k+', url: 'https://github.com/golang/tools/pull/627',           ...MERGED_THEMES[4] },
   { number: 31931, repo: 'helm/helm',            orgInitial: 'H', title: 'pkg/kube: remove legacy import comments',                            description: 'Fixed legacy Kythe static analysis failures by migrating pre-Go modules import path comments to modern go.mod conventions.',  tags: ['Go','Kubernetes','CNCF'],           mergedAt: 'Mar 12, 2026', repoStars: '29k+', url: 'https://github.com/helm/helm/pull/31931',            ...MERGED_THEMES[0] },
@@ -382,7 +399,7 @@ const OpenSource = () => {
   const STATS = [
     { value: String(mergedCount), label: 'Merged PRs',  icon: GitMerge,      accent: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/25', glow: 'shadow-[0_0_20px_rgba(52,211,153,0.2)]'  },
     { value: String(openCount),   label: 'Open PRs',    icon: GitPullRequest, accent: 'text-cyan-400',   bg: 'bg-cyan-500/10',    border: 'border-cyan-500/25',    glow: 'shadow-[0_0_20px_rgba(34,211,238,0.2)]'  },
-    { value: '9+',                label: 'Orgs',        icon: Star,           accent: 'text-purple-400', bg: 'bg-purple-500/10',  border: 'border-purple-500/25',  glow: 'shadow-[0_0_20px_rgba(192,132,252,0.2)]' },
+    { value: '10+',               label: 'Orgs',        icon: Star,           accent: 'text-purple-400', bg: 'bg-purple-500/10',  border: 'border-purple-500/25',  glow: 'shadow-[0_0_20px_rgba(192,132,252,0.2)]' },
     { value: '70k+',              label: 'Repo Stars',  icon: Star,           accent: 'text-amber-400',  bg: 'bg-amber-500/10',   border: 'border-amber-500/25',   glow: 'shadow-[0_0_20px_rgba(251,191,36,0.2)]'  },
   ]
 
