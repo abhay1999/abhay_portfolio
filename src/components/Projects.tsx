@@ -346,8 +346,6 @@ const Projects = () => {
     const mm = gsap.matchMedia()
 
     mm.add('(min-width: 768px)', () => {
-      ScrollTrigger.refresh()
-
       const getScrollDist = () => track.scrollWidth - window.innerWidth
 
       const tween = gsap.to(track, {
@@ -357,7 +355,7 @@ const Projects = () => {
           trigger: section,
           start: 'top top',
           end: () => `+=${getScrollDist()}`,
-          scrub: 1.2,
+          scrub: 0.6,
           pin: true,
           pinType: 'transform',
           anticipatePin: 1,
