@@ -104,7 +104,7 @@ const STATS = [
   { to: 20, suffix: '+',  label: 'Skills',      color: '#22d3ee' },
   { to: 4,  suffix: '',   label: 'Domains',      color: '#c084fc' },
   { to: 9,  suffix: '+',  label: 'CNCF PRs',    color: '#34d399' },
-  { to: 5,  suffix: 'yr', label: 'Experience',   color: '#fb923c' },
+  { to: 2,  suffix: 'yr', label: 'Experience',   color: '#fb923c' },
 ]
 
 // All skills flat, with category hex, for the marquee
