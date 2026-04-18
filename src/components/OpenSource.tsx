@@ -267,6 +267,13 @@ const OTHER_FEATURED = [
   },
 ]
 
+// ─── Reviewer lookup (by PR/CL number) ───────────────────────────────────────
+const PR_REVIEWERS: Record<number, string[]> = {
+  627:    ['Alan Donovan'],
+  629:    ['Alan Donovan', 'Madeline Kalil'],
+  762540: ['Alan Donovan', 'Dmitri Shuralyov'],
+}
+
 // ─── Static Fallback ──────────────────────────────────────────────────────────
 const STATIC_MERGED: MergedPR[] = [
   { number: 357,   repo: 'golang/website',        orgInitial: 'G', title: 'doc/modules/gomod-ref: document the ignore directive',                description: 'Added the missing ignore directive to the official go.mod reference on go.dev — syntax, examples (relative path, named dir, block form), and usage notes. Fixes golang/go#78460.', tags: ['Go','Docs','go.dev'],               mergedAt: 'Apr 17, 2026', repoStars: '',     url: 'https://github.com/golang/website/pull/357',        ...MERGED_THEMES[5] },
@@ -479,6 +486,125 @@ const OpenSource = () => {
           ))}
         </Reveal>
 
+        {/* ── Reviewer Spotlight ──────────────────────────────────────────── */}
+        <Reveal from={{ opacity: 0, y: 24 }} className="mb-8">
+          <div className="relative rounded-3xl border border-sky-500/20 overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, rgba(8,12,50,0.85) 0%, rgba(0,0,0,0.92) 50%, rgba(14,8,46,0.85) 100%)', boxShadow: '0 0 70px -20px rgba(56,189,248,0.18)' }}>
+            {/* Top accent line */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
+
+            <div className="p-6 sm:p-8">
+              <div className="flex flex-col lg:flex-row gap-8 items-start">
+
+                {/* Left — headline */}
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center shrink-0">
+                      <Star size={14} className="text-sky-400 fill-sky-400/30" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-mono uppercase tracking-widest text-sky-400/80">Code Review · golang/tools</p>
+                      <p className="text-[10px] text-neutral-600 font-mono">Google · Go Core Team</p>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white leading-tight mb-3">
+                    All 3 CLs reviewed by{' '}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">Alan Donovan</span>
+                  </h3>
+                  <p className="text-sm text-neutral-400 leading-relaxed max-w-md">
+                    Alan Donovan is a member of Google&apos;s Go core team and co-author of{' '}
+                    <em className="text-neutral-300">The Go Programming Language</em>. He directly reviewed and merged all three contributions to the official Go toolchain.
+                  </p>
+
+                  {/* PR pills */}
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {[
+                      { label: 'PR #627 · slicesbackward',   url: 'https://github.com/golang/tools/pull/627' },
+                      { label: 'PR #629 · stringscut',        url: 'https://github.com/golang/tools/pull/629' },
+                      { label: 'CL #762540 · gopls completion', url: 'https://go-review.googlesource.com/c/tools/+/762540' },
+                    ].map(pill => (
+                      <a key={pill.label} href={pill.url} target="_blank" rel="noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.07] hover:border-sky-500/35 hover:bg-sky-950/30 transition-all duration-200 group/pill">
+                        <GitMerge size={9} className="text-emerald-400" />
+                        <span className="text-[10px] font-mono text-neutral-400 group-hover/pill:text-sky-300 transition-colors">{pill.label}</span>
+                        <span className="text-[8px] font-bold text-emerald-300 font-mono bg-emerald-900/40 border border-emerald-500/25 px-1.5 py-0.5 rounded-full">MERGED</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right — reviewer chips */}
+                <div className="flex flex-col gap-2.5 lg:min-w-[270px] w-full lg:w-auto">
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-600 mb-1">Reviewers</p>
+                  {[
+                    { name: 'Alan Donovan',     role: 'Go Core Team · Google',  prs: 'All 3 CLs', dotCls: 'bg-sky-400',    chipCls: 'bg-sky-950/40 border-sky-500/25',    nameCls: 'text-sky-200',    badgeCls: 'bg-sky-900/50 border-sky-500/25 text-sky-300',    initial: 'AD' },
+                    { name: 'Madeline Kalil',   role: 'Google Engineer',         prs: 'PR #629',   dotCls: 'bg-indigo-400', chipCls: 'bg-indigo-950/40 border-indigo-500/25', nameCls: 'text-indigo-200', badgeCls: 'bg-indigo-900/50 border-indigo-500/25 text-indigo-300', initial: 'MK' },
+                    { name: 'Dmitri Shuralyov', role: 'Go Team · Google',        prs: 'CL #762540',dotCls: 'bg-violet-400', chipCls: 'bg-violet-950/40 border-violet-500/25', nameCls: 'text-violet-200', badgeCls: 'bg-violet-900/50 border-violet-500/25 text-violet-300', initial: 'DS' },
+                  ].map(r => (
+                    <div key={r.name} className={`flex items-center gap-3 px-4 py-3 rounded-2xl border ${r.chipCls}`}>
+                      <div className={`w-9 h-9 rounded-xl border flex items-center justify-center text-[11px] font-black font-mono shrink-0 ${r.chipCls} ${r.nameCls}`}>{r.initial}</div>
+                      <div className="flex-1 min-w-0">
+                        <p className={`text-sm font-bold ${r.nameCls} leading-tight`}>{r.name}</p>
+                        <p className="text-[10px] text-neutral-500 font-mono truncate">{r.role}</p>
+                      </div>
+                      <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full border ${r.badgeCls} shrink-0`}>{r.prs}</span>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* ── Ecosystem Reach ─────────────────────────────────────────────── */}
+        <Reveal from={{ opacity: 0, y: 20 }} className="mb-12">
+          <div className="flex items-center gap-4 mb-5">
+            <div className="flex items-center gap-2.5">
+              <div className="w-2 h-2 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.9)]" />
+              <span className="text-xs font-bold tracking-widest uppercase text-indigo-400 font-mono">Ecosystem Reach</span>
+            </div>
+            <div className="h-px flex-1 bg-gradient-to-r from-indigo-500/30 to-transparent" />
+            <span className="text-xs font-mono text-neutral-600">contributed across these projects</span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {([
+              { name: 'golang/tools',           display: 'golang/tools',   sub: 'Official · gopls',     stars: '10k+', accent: '#38bdf8', badge: 'Official SDK',     badgeBg: 'rgba(56,189,248,0.12)', badgeBorder: 'rgba(56,189,248,0.3)' },
+              { name: 'jaegertracing/jaeger',    display: 'jaeger',         sub: 'CNCF Incubating',      stars: '20k+', accent: '#22d3ee', badge: 'CNCF',             badgeBg: 'rgba(34,211,238,0.12)', badgeBorder: 'rgba(34,211,238,0.3)' },
+              { name: 'helm/helm',               display: 'helm',           sub: 'CNCF Graduated',       stars: '29k+', accent: '#818cf8', badge: 'CNCF Graduated',   badgeBg: 'rgba(129,140,248,0.12)', badgeBorder: 'rgba(129,140,248,0.3)' },
+              { name: 'goreleaser/goreleaser',   display: 'goreleaser',     sub: 'Go CI/CD tooling',     stars: '14k+', accent: '#c084fc', badge: null,               badgeBg: '',                     badgeBorder: '' },
+              { name: 'golang/website',          display: 'golang/website', sub: 'go.dev · Official Docs', stars: '',   accent: '#38bdf8', badge: 'go.dev',           badgeBg: 'rgba(56,189,248,0.12)', badgeBorder: 'rgba(56,189,248,0.3)' },
+            ] as const).map(r => (
+              <div key={r.name}
+                className="flex flex-col gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-white/[0.14] hover:bg-white/[0.05] transition-all duration-200 group/eco">
+                {/* Icon */}
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black font-mono shrink-0"
+                  style={{ background: r.accent + '1a', border: `1px solid ${r.accent}40`, color: r.accent }}>
+                  {r.display[0].toUpperCase()}
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs font-bold text-neutral-200 leading-tight truncate group-hover/eco:text-white transition-colors">{r.display}</p>
+                  <p className="text-[10px] text-neutral-600 font-mono mt-0.5">{r.sub}</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  {r.stars ? (
+                    <div className="flex items-center gap-0.5">
+                      <Star size={9} className="text-yellow-500 fill-yellow-500" />
+                      <span className="text-[9px] font-mono text-neutral-600">{r.stars}</span>
+                    </div>
+                  ) : <span />}
+                  {r.badge && (
+                    <span className="text-[8px] font-mono px-1.5 py-0.5 rounded-full border"
+                      style={{ background: r.badgeBg, borderColor: r.badgeBorder, color: r.accent }}>
+                      {r.badge}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
         {/* ── Featured: Deep Dive Spotlight ───────────────────────────────── */}
         {FEATURED_PROJECTS.map((project) => (
           <Reveal key={project.org} className="mb-12">
@@ -572,15 +698,28 @@ const OpenSource = () => {
                     </div>
 
                     {/* Footer */}
-                    <div className="flex items-center justify-between pt-1 border-t border-white/[0.05]">
+                    <div className="flex flex-col gap-2 pt-1 border-t border-white/[0.05]">
                       <div className="flex flex-wrap gap-1">
                         {pr.tags.map(t => (
                           <span key={t} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/[0.08] text-neutral-500">{t}</span>
                         ))}
                       </div>
-                      <div className="flex items-center gap-1 text-neutral-600 group-hover/pr:text-cyan-400 transition-colors">
-                        <span className="text-[10px] font-mono">View PR</span>
-                        <ArrowUpRight size={11} className="group-hover/pr:translate-x-0.5 group-hover/pr:-translate-y-0.5 transition-transform" />
+                      {PR_REVIEWERS[pr.number] && (
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span className="text-[8px] font-mono text-neutral-600 uppercase tracking-wider">Reviewed by</span>
+                          {PR_REVIEWERS[pr.number].map(r => (
+                            <span key={r} className="flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-sky-950/50 border border-sky-500/25 text-sky-300">
+                              <span className="w-1 h-1 rounded-full bg-sky-400 inline-block shrink-0" />
+                              {r}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex items-center justify-end">
+                        <div className="flex items-center gap-1 text-neutral-600 group-hover/pr:text-cyan-400 transition-colors">
+                          <span className="text-[10px] font-mono">View PR</span>
+                          <ArrowUpRight size={11} className="group-hover/pr:translate-x-0.5 group-hover/pr:-translate-y-0.5 transition-transform" />
+                        </div>
                       </div>
                     </div>
                   </a>
