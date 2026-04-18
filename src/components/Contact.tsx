@@ -179,7 +179,7 @@ const Contact = () => {
 
           <div className="flex items-end gap-5">
             <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">09.</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Get In</span>{' '}
               <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Touch</span>
             </h2>
@@ -208,7 +208,7 @@ const Contact = () => {
               {/* Highlight accent on left */}
               <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-400 to-blue-500" />
               
-              <h4 className="text-sm font-mono text-neutral-300 tracking-wider mb-5 flex items-center gap-2">
+              <h4 className="text-sm font-medium text-neutral-300 mb-5 flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-cyan-400 opacity-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
                 CURRENTLY OPEN TO
               </h4>
@@ -270,7 +270,7 @@ const Contact = () => {
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
                         <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${contact.dotClass}`} />
-                        <p className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest">{contact.label}</p>
+                        <p className="text-[10px] text-neutral-500 uppercase tracking-wide">{contact.label}</p>
                       </div>
                       <p className={`text-sm font-medium text-neutral-200 ${contact.hoverTextClass} transition-colors duration-300 truncate`}>
                         {contact.value}
@@ -283,7 +283,7 @@ const Contact = () => {
 
             {/* Social links */}
             <div>
-              <p className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest mb-4">Connect Online</p>
+              <p className="text-xs text-neutral-500 mb-4">Connect</p>
               <div className="flex items-center gap-3">
                 {SOCIALS.map(s => (
                   <a
@@ -430,11 +430,11 @@ const Contact = () => {
                       {isSubmitting ? (
                         <>
                           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          <span className="font-mono tracking-widest text-xs">TRANSMITTING...</span>
+                          <span className="text-sm font-semibold">Sending...</span>
                         </>
                       ) : (
                         <>
-                          <span className="font-mono tracking-widest text-xs">TRANSMIT MESSAGE</span>
+                          <span className="text-sm font-semibold">Send Message</span>
                           <Send size={15} className="group-hover:translate-x-1 transition-transform" />
                         </>
                       )}

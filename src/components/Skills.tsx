@@ -69,7 +69,7 @@ function SkillRing({ level, hex, name }: { level: number; hex: string; name: str
           {level}
         </span>
       </div>
-      <span className="text-[9px] font-mono text-neutral-500 text-center leading-tight w-[60px] truncate">{name}</span>
+      <span className="text-[9px] text-neutral-500 text-center leading-tight w-[60px] truncate">{name}</span>
     </div>
   )
 }
@@ -202,7 +202,7 @@ const Skills = () => (
         </div>
         <div className="flex items-end gap-5">
           <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">02.</span>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
+          <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
             <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Technical</span>{' '}
             <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Arsenal</span>
           </h2>

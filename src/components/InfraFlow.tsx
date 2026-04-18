@@ -172,7 +172,7 @@ const InfraFlow = () => {
           <div className="flex items-end gap-5">
             <div>
               <span className="text-sm font-medium uppercase tracking-widest text-neutral-500">Live Demo</span>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-1">
+              <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight mt-1">
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Self-Healing</span>{' '}
                 <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-400">Infrastructure</span>
               </h2>

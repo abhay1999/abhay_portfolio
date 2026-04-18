@@ -244,7 +244,7 @@ const DevOpsLive = () => {
           </div>
           <div className="flex items-end gap-5">
             <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">06.</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">DevOps</span>{' '}
               <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Live</span>
             </h2>

@@ -67,7 +67,7 @@ const Experience = () => (
         </div>
         <div className="flex items-end gap-5">
           <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">03.</span>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
+          <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
             <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Experience</span>{' '}
             <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">&amp; Education</span>
           </h2>
@@ -93,7 +93,7 @@ const Experience = () => (
                     <div className="w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center">
                       <Briefcase size={13} className={job.accentText} />
                     </div>
-                    <span className={`text-[10px] font-bold tracking-widest uppercase font-mono px-2 py-0.5 rounded-full border ${job.badgeBg}`}>{job.type}</span>
+                    <span className={`text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 rounded-full border ${job.badgeBg}`}>{job.type}</span>
                   </div>
                   <h3 className={`text-lg font-bold text-white group-hover:${job.accentText} transition-colors leading-tight mt-2`}>{job.role}</h3>
                   <div className="flex items-center gap-1.5 mt-1">
@@ -102,14 +102,14 @@ const Experience = () => (
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="flex items-center gap-1 justify-end text-neutral-500 text-[11px] font-mono mb-1"><Calendar size={10} />{job.period}</div>
-                  <div className="flex items-center gap-1 justify-end text-neutral-600 text-[11px] font-mono"><MapPin size={10} />{job.location}</div>
+                  <div className="flex items-center gap-1 justify-end text-neutral-500 text-[11px] mb-1"><Calendar size={10} />{job.period}</div>
+                  <div className="flex items-center gap-1 justify-end text-neutral-600 text-[11px]"><MapPin size={10} />{job.location}</div>
                 </div>
               </div>
 
               <div className="h-px bg-white/[0.05] mb-4" />
 
-              <ul className="space-y-2 mb-4">
+              <ul className="space-y-2.5 mb-4">
                 {job.highlights.map((pt, i) => (
                   <Reveal key={i} from={{ opacity: 0, x: -8 }} delay={idx * 0.1 + i * 0.07}
                     className="flex items-start gap-2 text-[13px] text-neutral-400 leading-snug"
@@ -145,7 +145,7 @@ const Experience = () => (
                 <GraduationCap size={18} className="text-amber-300" />
               </div>
               <div>
-                <span className="text-[10px] font-bold tracking-widest uppercase font-mono px-2 py-0.5 rounded-full border bg-amber-500/10 text-amber-300 border-amber-500/25">Education</span>
+                <span className="text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 rounded-full border bg-amber-500/10 text-amber-300 border-amber-500/25">Education</span>
                 <h3 className="text-base font-bold text-white leading-snug group-hover:text-amber-300 transition-colors mt-1">{EDU.degree}</h3>
                 <p className="text-sm text-neutral-400 mt-0.5">{EDU.institution}</p>
               </div>

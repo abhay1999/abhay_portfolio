@@ -191,7 +191,7 @@ const SystemsExperiments = () => {
           <div className="flex items-end gap-5">
             <div>
               <span className="text-sm font-medium uppercase tracking-widest text-neutral-500">Systems</span>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-1">
+              <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight mt-1">
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Systems &</span>{' '}
                 <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Experiments</span>
               </h2>

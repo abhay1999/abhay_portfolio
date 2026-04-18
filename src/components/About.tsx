@@ -135,7 +135,7 @@ const About = () => {
         {/* Section Header */}
         <Reveal className="flex items-center gap-4 mb-14">
           <span className="text-sm font-medium uppercase tracking-widest text-neutral-500">01.</span>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
+          <h2 className="text-5xl md:text-7xl font-bold tracking-tight">
             <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">About</span>{' '}
             <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Me</span>
           </h2>
@@ -212,7 +212,7 @@ const About = () => {
           </Reveal>
 
           {/* RIGHT: Content panels */}
-          <Reveal from={{ opacity: 0, x: 40 }} delay={0.15} className="lg:col-span-8 space-y-5">
+          <Reveal from={{ opacity: 0, x: 40 }} delay={0.15} className="lg:col-span-8 space-y-6">
 
             {/* Bio terminal */}
             <div className="rounded-3xl border border-white/[0.12] bg-neutral-900/70 overflow-hidden backdrop-blur-md">
@@ -228,19 +228,19 @@ const About = () => {
               <div className="p-6 space-y-4">
                 <div className="flex items-start gap-3">
                   <span className="text-cyan-400 font-mono text-sm mt-0.5 shrink-0">›</span>
-                  <p className="text-[15px] text-neutral-300 leading-relaxed">
+                  <p className="text-[15px] text-neutral-300 leading-relaxed max-w-[62ch]">
                     I&apos;m <span className="text-white font-semibold">Abhay Chaurasiya</span> — a DevOps-focused engineer who builds infrastructure that heals itself, pipelines that ship without friction, and CLI tools that make developers faster.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-purple-400 font-mono text-sm mt-0.5 shrink-0">›</span>
-                  <p className="text-[15px] text-neutral-300 leading-relaxed">
+                  <p className="text-[15px] text-neutral-300 leading-relaxed max-w-[62ch]">
                     <strong className="text-white">3 CLs merged into the official Go toolchain</strong> (<span className="text-cyan-400 font-medium">golang/tools</span>): <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">slicesbackward</code> analyzer, <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">stringscut</code> analyzer, and a gopls completion fix — reviewed by Alan Donovan and shipping in <span className="text-cyan-400 font-medium">gopls</span>. Also 6 merged PRs across <span className="text-cyan-400 font-medium">Jaeger</span>, <span className="text-cyan-400 font-medium">Helm</span> &amp; <span className="text-cyan-400 font-medium">GoReleaser</span> — <strong className="text-white">9 total</strong>.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-emerald-400 font-mono text-sm mt-0.5 shrink-0">›</span>
-                  <p className="text-[15px] text-neutral-300 leading-relaxed">
+                  <p className="text-[15px] text-neutral-300 leading-relaxed max-w-[62ch]">
                     Goal: go deeper into the <span className="text-white font-semibold">CNCF ecosystem</span> — targeting <span className="text-emerald-400 font-medium">GSoC / LFX Mentorship</span> with Jaeger or Argo CD.
                   </p>
                 </div>
@@ -248,14 +248,14 @@ const About = () => {
             </div>
 
             {/* Stats row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
               {STATS.map(({ value, label, Icon, iconCls, numCls, bg, border }) => (
                 <TiltCard key={label} className="group will-change-transform">
                   <div className={`relative rounded-2xl border ${border} ${bg} p-5 text-center overflow-hidden`}>
                     <div aria-hidden="true" className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${bg} rounded-2xl`} />
                     <Icon size={18} className={`${iconCls} mx-auto mb-2 relative z-10`} />
                     <div className={`text-3xl md:text-4xl font-bold ${numCls} mb-1 relative z-10`}>{value}</div>
-                    <div className="text-[11px] text-neutral-500 font-mono uppercase tracking-widest relative z-10">{label}</div>
+                    <div className="text-xs text-neutral-500 relative z-10">{label}</div>
                   </div>
                 </TiltCard>
               ))}
@@ -282,7 +282,7 @@ const About = () => {
                 ].map(({ Icon, color, border, label, labelCls, text }) => (
                   <div key={label} className={`flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border ${border} transition-colors`}>
                     <Icon size={15} className={`${color} shrink-0 mt-0.5`} />
-                    <p className="text-[13px] font-mono text-neutral-400 leading-relaxed">
+                    <p className="text-[13px] text-neutral-400 leading-relaxed">
                       <span className={`${labelCls} font-semibold`}>{label}</span>{' '}{text}
                     </p>
                   </div>

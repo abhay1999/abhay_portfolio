@@ -462,7 +462,7 @@ const OpenSource = () => {
           </div>
           <div className="flex items-end gap-5">
             <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">04.</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Open Source</span>{' '}
               <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Contributions</span>
             </h2>
@@ -471,7 +471,7 @@ const OpenSource = () => {
         </Reveal>
 
         {/* ── Stats Bar ───────────────────────────────────────────────────── */}
-        <Reveal from={{ opacity: 0, y: 20 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-14">
+        <Reveal from={{ opacity: 0, y: 20 }} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
           {STATS.map((s) => (
             <div key={s.label}
               className={`flex items-center gap-3 px-5 py-4 rounded-2xl border ${s.bg} ${s.border} ${s.glow} backdrop-blur-sm`}>
@@ -562,7 +562,7 @@ const OpenSource = () => {
           <div className="flex items-center gap-4 mb-5">
             <div className="flex items-center gap-2.5">
               <div className="w-2 h-2 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.9)]" />
-              <span className="text-xs font-bold tracking-widest uppercase text-indigo-400 font-mono">Ecosystem Reach</span>
+              <span className="text-xs font-semibold tracking-wide uppercase text-indigo-400">Ecosystem Reach</span>
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-indigo-500/30 to-transparent" />
             <span className="text-xs font-mono text-neutral-600">contributed across these projects</span>
@@ -612,7 +612,7 @@ const OpenSource = () => {
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center gap-2.5">
                 <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
-                <span className="text-xs font-bold tracking-widest uppercase text-cyan-400 font-mono">Featured Project · Deep Dive</span>
+                <span className="text-xs font-semibold tracking-wide uppercase text-cyan-400">Featured Project · Deep Dive</span>
               </div>
               <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/30 to-transparent" />
               <span className="text-xs font-mono text-neutral-600">{project.mergedCount} merged PRs · CNCF ecosystem</span>
@@ -734,7 +734,7 @@ const OpenSource = () => {
           <div className="flex items-center gap-4 mb-5">
             <div className="flex items-center gap-2.5">
               <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
-              <span className="text-xs font-bold tracking-widest uppercase text-emerald-400 font-mono">Other Merged PRs</span>
+              <span className="text-xs font-semibold tracking-wide uppercase text-emerald-400">Other Merged PRs</span>
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-emerald-500/30 to-transparent" />
           </div>
@@ -790,7 +790,7 @@ const OpenSource = () => {
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-2.5">
               <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
-              <span className="text-xs font-bold tracking-widest uppercase text-emerald-400 font-mono">All Merged Pull Requests</span>
+              <span className="text-xs font-semibold tracking-wide uppercase text-emerald-400">All Merged Pull Requests</span>
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-emerald-500/30 to-transparent" />
             <span className="text-xs font-mono text-neutral-600">{mergedCount} merged · hover to pause</span>
@@ -873,7 +873,7 @@ const OpenSource = () => {
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-2.5">
               <div className="opacity-pulse w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
-              <span className="text-xs font-bold tracking-widest uppercase text-cyan-400 font-mono">Active Contributions</span>
+              <span className="text-xs font-semibold tracking-wide uppercase text-cyan-400">Active Contributions</span>
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/30 to-transparent" />
             <span className="text-xs font-mono text-neutral-600">{openCount} open</span>

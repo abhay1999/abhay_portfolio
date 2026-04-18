@@ -129,7 +129,7 @@ const Testimonials = () => {
           </div>
 
           <div className="flex items-end gap-5">
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">What They</span>{' '}
               <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Say</span>
             </h2>
