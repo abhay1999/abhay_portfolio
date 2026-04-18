@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useEffect } from 'react'
-import { Cloud, Server, Globe, Activity, Box } from 'lucide-react'
+import { Cloud, Server, Box } from 'lucide-react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import Reveal from '@/components/Reveal'
 
@@ -273,10 +273,9 @@ function SkillRing() {
                   top: '50%', left: '50%',
                   transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${OUTER_RADIUS}px)`,
                   backfaceVisibility: 'visible',
-                  background: 'rgba(8,8,8,0.85)',
+                  background: '#0a0a0a',
                   border: '1px solid rgba(255,255,255,0.1)',
-                  backdropFilter: 'blur(8px)',
-                  boxShadow: `0 0 0 1px rgba(255,255,255,0.03), 0 4px 20px rgba(0,0,0,0.5)`,
+                  boxShadow: `0 4px 20px rgba(0,0,0,0.6)`,
                 }}
               >
                 <span className="w-2 h-2 rounded-full shrink-0 flex-none"
@@ -298,10 +297,9 @@ function SkillRing() {
                   top: '50%', left: '50%',
                   transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${INNER_RADIUS}px)`,
                   backfaceVisibility: 'visible',
-                  background: 'rgba(6,6,6,0.8)',
+                  background: '#080808',
                   border: '1px solid rgba(255,255,255,0.07)',
-                  backdropFilter: 'blur(6px)',
-                  boxShadow: `0 0 0 1px rgba(255,255,255,0.02), 0 2px 12px rgba(0,0,0,0.4)`,
+                  boxShadow: `0 2px 12px rgba(0,0,0,0.5)`,
                 }}
               >
                 <span className="w-1.5 h-1.5 rounded-full shrink-0 flex-none"
