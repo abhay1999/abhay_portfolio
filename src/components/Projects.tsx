@@ -379,7 +379,7 @@ const Projects = () => {
     <section
       ref={sectionRef}
       id="projects"
-      className="relative overflow-hidden"
+      className="relative [overflow:clip]"
       style={{ background: 'radial-gradient(ellipse at 35% 65%, #001818 0%, #001010 45%, #000 100%)' }}
     >
       {/* Background */}
