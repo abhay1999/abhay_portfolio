@@ -63,6 +63,40 @@ const OPEN_THEMES = [
 ]
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Org logos (GitHub avatar URLs) ──────────────────────────────────────────
+const ORG_LOGOS: Record<string, string> = {
+  'golang/tools':             'golang',
+  'golang/website':           'golang',
+  'jaegertracing/jaeger':     'jaegertracing',
+  'helm/helm':                'helm',
+  'goreleaser/goreleaser':    'goreleaser',
+  'argoproj/argo-cd':         'argoproj',
+  'meshery/meshery':          'layer5io',
+  'docker/cli':               'docker',
+  'grafana/grafana':          'grafana',
+  'jenkinsci/jenkins':        'jenkinsci',
+  'NVIDIA/NeMo-Retriever':    'NVIDIA',
+  'openvinotoolkit/openvino': 'openvinotoolkit',
+  'Rancheroo/r8s':            'Rancheroo',
+}
+
+// eslint-disable-next-line @next/next/no-img-element
+function OrgLogo({ repo, orgInitial, size = 32, className = '' }: { repo: string; orgInitial: string; size?: number; className?: string }) {
+  const slug = ORG_LOGOS[repo]
+  if (slug) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={`https://github.com/${slug}.png?size=${size * 2}`} alt={slug} width={size} height={size} className={`rounded-full object-cover ${className}`} />
+  }
+  return <span className="font-black font-mono">{orgInitial}</span>
+}
+
+const SPECIAL_BADGE_STYLES: Record<string, string> = {
+  'Ships in gopls': 'bg-sky-950/70 border-sky-500/40 text-sky-300',
+  'Reviewed':       'bg-indigo-950/70 border-indigo-500/40 text-indigo-300',
+  'CNCF':           'bg-cyan-950/70 border-cyan-500/40 text-cyan-300',
+  'go.dev':         'bg-sky-950/70 border-sky-400/40 text-sky-300',
+}
+
 function getOpenTheme(repo: string) {
   const code = (repo.charCodeAt(0) ?? 0) + (repo.charCodeAt(1) ?? 0)
   return OPEN_THEMES[code % OPEN_THEMES.length]
@@ -119,6 +153,7 @@ const FEATURED_PROJECTS = [
         impact: 'Ships in gopls to every Go developer worldwide. Fixes golang/go#78484. Reviewed & merged by Alan Donovan (Google).',
         url: 'https://github.com/golang/tools/pull/627',
         tags: ['Go', 'AST', 'gopls', 'Go 1.23'],
+        badges: ['Ships in gopls', 'Reviewed'],
       },
       {
         number: 629,
@@ -132,6 +167,7 @@ const FEATURED_PROJECTS = [
         impact: 'Ships in gopls to all Go developers globally. Reviewed by Alan Donovan & Madeline Kalil (Google). Modernizes every Go 1.18+ codebase automatically.',
         url: 'https://github.com/golang/tools/pull/629',
         tags: ['Go', 'AST', 'gopls', 'Go 1.18'],
+        badges: ['Ships in gopls', 'Reviewed'],
       },
       {
         number: 762540,
@@ -145,6 +181,7 @@ const FEATURED_PROJECTS = [
         impact: 'Eliminates malformed comment output for all Go developers. Reviewed by Alan Donovan & Dmitri Shuralyov (Google). Ships via gopls auto-update.',
         url: 'https://go-review.googlesource.com/c/tools/+/762540',
         tags: ['Go', 'gopls', 'IDE', 'Completion'],
+        badges: ['Ships in gopls', 'Reviewed'],
       },
     ],
   },
@@ -175,6 +212,7 @@ const FEATURED_PROJECTS = [
         impact: 'Dynamic metric config across entire monitoring pipeline. Foundation for Jaeger\'s next-gen observability stack.',
         url: 'https://github.com/jaegertracing/jaeger/pull/8216',
         tags: ['Go', 'Grafana', 'SDK', 'Observability'],
+        badges: ['CNCF'],
       },
       {
         number: 8240,
@@ -188,6 +226,7 @@ const FEATURED_PROJECTS = [
         impact: 'Prevents silent dashboard drift in CI/CD. Enforces consistency across the entire observability pipeline.',
         url: 'https://github.com/jaegertracing/jaeger/pull/8240',
         tags: ['Go', 'GitHub Actions', 'CI/CD'],
+        badges: ['CNCF'],
       },
       {
         number: 8242,
@@ -201,6 +240,7 @@ const FEATURED_PROJECTS = [
         impact: 'Improved reliability of Jaeger\'s MCP integration. Prevents resource exhaustion in tool response pipelines.',
         url: 'https://github.com/jaegertracing/jaeger/pull/8242',
         tags: ['Go', 'MCP', 'Reliability'],
+        badges: ['CNCF'],
       },
       {
         number: 8215,
@@ -214,6 +254,7 @@ const FEATURED_PROJECTS = [
         impact: 'Unblocked every developer trying to run the full Jaeger monitoring stack locally. First PR in the ADR-007 chain.',
         url: 'https://github.com/jaegertracing/jaeger/pull/8215',
         tags: ['Docker', 'Grafana', 'Observability'],
+        badges: ['CNCF'],
       },
     ],
   },
@@ -230,6 +271,7 @@ const OTHER_FEATURED = [
     description: 'The go.mod reference page at go.dev was missing the ignore directive entirely, even though it is documented in the Go Modules Reference. Added a full section — syntax, examples (relative path, named directory, block form), and usage notes — following the structure of exclude and retract.',
     impact: 'Fixes an official documentation gap (golang/go#78460) for every Go developer referencing the go.mod guide on go.dev.',
     tags: ['Go', 'Docs', 'go.dev'],
+    badges: ['go.dev'],
     url: 'https://github.com/golang/website/pull/357',
     accentClass: 'text-sky-400',
     borderClass: 'border-sky-500/25',
@@ -245,6 +287,7 @@ const OTHER_FEATURED = [
     description: 'Cleaned up pre-Go-modules Kythe import path comments from pkg/kube — Go module-based projects no longer require these annotations.',
     impact: 'Keeps the most widely used Kubernetes package manager\'s codebase idiomatic and free of legacy noise.',
     tags: ['Go', 'CNCF', 'Kubernetes'],
+    badges: ['CNCF'],
     url: 'https://github.com/helm/helm/pull/31931',
     accentClass: 'text-amber-400',
     borderClass: 'border-amber-500/25',
@@ -577,9 +620,9 @@ const OpenSource = () => {
               <div key={r.name}
                 className="flex flex-col gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-white/[0.14] hover:bg-white/[0.05] transition-all duration-200 group/eco">
                 {/* Icon */}
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black font-mono shrink-0"
-                  style={{ background: r.accent + '1a', border: `1px solid ${r.accent}40`, color: r.accent }}>
-                  {r.display[0].toUpperCase()}
+                <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shrink-0"
+                  style={{ background: r.accent + '1a', border: `1px solid ${r.accent}40` }}>
+                  <OrgLogo repo={r.name} orgInitial={r.display[0].toUpperCase()} size={36} className="w-9 h-9" />
                 </div>
                 <div className="flex-1">
                   <p className="text-xs font-bold text-neutral-200 leading-tight truncate group-hover/eco:text-white transition-colors">{r.display}</p>
@@ -629,7 +672,9 @@ const OpenSource = () => {
               {/* Header */}
               <div className={`relative px-6 py-5 border-b ${project.borderClass} flex flex-col sm:flex-row sm:items-center gap-3 justify-between`}>
                 <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center font-black text-lg font-mono ${project.accentClass}`} style={{ background: project.glowColor, borderColor: project.glowColor }}>{project.orgInitial}</div>
+                  <div className="w-12 h-12 rounded-2xl border overflow-hidden flex items-center justify-center shrink-0" style={{ background: project.glowColor, borderColor: project.glowColor }}>
+                    <OrgLogo repo={project.org} orgInitial={project.orgInitial} size={40} className="w-10 h-10" />
+                  </div>
                   <div>
                     <div className="flex items-center gap-2.5 flex-wrap">
                       <h3 className={`text-xl font-bold ${project.accentClass}`}>{project.orgDisplay}</h3>
@@ -702,6 +747,9 @@ const OpenSource = () => {
                         {pr.tags.map(t => (
                           <span key={t} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/[0.08] text-neutral-500">{t}</span>
                         ))}
+                        {(pr as { badges?: string[] }).badges?.map(b => (
+                          <span key={b} className={`text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded-full border ${SPECIAL_BADGE_STYLES[b] ?? 'bg-white/5 border-white/10 text-neutral-400'}`}>{b}</span>
+                        ))}
                       </div>
                       {PR_REVIEWERS[pr.number] && (
                         <div className="flex flex-wrap items-center gap-1.5">
@@ -750,6 +798,9 @@ const OpenSource = () => {
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <div className="w-5 h-5 rounded-full overflow-hidden border border-white/10 shrink-0">
+                        <OrgLogo repo={pr.org} orgInitial={pr.orgDisplay[0]} size={20} className="w-5 h-5" />
+                      </div>
                       <span className={`text-sm font-bold ${pr.accentClass}`}>{pr.orgDisplay}</span>
                       <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded-full border ${pr.badgeClass}`}>{pr.badge}</span>
                     </div>
@@ -772,6 +823,9 @@ const OpenSource = () => {
                   <div className="flex flex-wrap gap-1">
                     {pr.tags.map(t => (
                       <span key={t} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/[0.08] text-neutral-500">{t}</span>
+                    ))}
+                    {(pr as { badges?: string[] }).badges?.map(b => (
+                      <span key={b} className={`text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded-full border ${SPECIAL_BADGE_STYLES[b] ?? 'bg-white/5 border-white/10 text-neutral-400'}`}>{b}</span>
                     ))}
                   </div>
                   <div className={`flex items-center gap-1 ${pr.accentClass} opacity-60 group-hover/card:opacity-100 transition-opacity`}>
@@ -821,8 +875,8 @@ const OpenSource = () => {
                     {/* Top row */}
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div className={`w-8 h-8 rounded-xl border text-[11px] font-black font-mono flex items-center justify-center shrink-0 ${pr.orgBgClass} ${pr.orgTextClass}`}>
-                          {pr.orgInitial}
+                        <div className={`w-8 h-8 rounded-xl border overflow-hidden flex items-center justify-center shrink-0 ${pr.orgBgClass}`}>
+                          <OrgLogo repo={pr.repo} orgInitial={pr.orgInitial} size={28} className="w-7 h-7" />
                         </div>
                         <div>
                           <div className={`text-[10px] font-mono ${pr.accentClass} leading-none`}>{pr.repo}</div>
@@ -907,8 +961,8 @@ const OpenSource = () => {
               <a key={pr.number} href={pr.url} target="_blank" rel="noreferrer"
                 className={`group/pr flex items-center gap-3 p-3 rounded-xl border-l-2 ${pr.borderClass} ${pr.bgClass} border border-white/[0.04] hover:border-white/10 transition-all duration-200 cursor-pointer`}
               >
-                <div className={`w-7 h-7 rounded-lg border text-[10px] font-black font-mono flex items-center justify-center shrink-0 ${pr.orgClass}`}>
-                  {pr.orgInitial}
+                <div className={`w-7 h-7 rounded-lg border overflow-hidden flex items-center justify-center shrink-0 ${pr.orgClass}`}>
+                  <OrgLogo repo={pr.repo} orgInitial={pr.orgInitial} size={24} className="w-6 h-6" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
