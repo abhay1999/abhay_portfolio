@@ -18,10 +18,10 @@ const SKILL_BARS = [
 ]
 
 const BASE_STATS = [
-  { key: 'exp',      value: '2+',   label: 'Years Exp',  Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.02]',    border: 'border-cyan-500/20'    },
-  { key: 'projects', value: '15+',  label: 'Projects',   Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.02]',  border: 'border-purple-500/20'  },
-  { key: 'leetcode', value: '600+', label: 'LeetCode',   Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.02]', border: 'border-emerald-500/20' },
-  { key: 'prs',      value: '8+',   label: 'Merged PRs', Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.02]',   border: 'border-amber-500/20'   },
+  { key: 'exp',      value: '2+',   label: 'Years Exp',  Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.02]',    border: 'border-cyan-500/20', span: 'col-span-1 md:col-span-1', isWide: false },
+  { key: 'projects', value: '15+',  label: 'Projects',   Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.02]',  border: 'border-purple-500/20', span: 'col-span-2 md:col-span-2', isWide: true  },
+  { key: 'leetcode', value: '600+', label: 'LeetCode',   Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.02]', border: 'border-emerald-500/20', span: 'col-span-2 md:col-span-2', isWide: true  },
+  { key: 'prs',      value: '8+',   label: 'Merged PRs', Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.02]',   border: 'border-amber-500/20', span: 'col-span-1 md:col-span-1', isWide: false },
 ]
 
 const CODING = {
@@ -247,15 +247,22 @@ const About = () => {
               </div>
             </div>
 
-            {/* Stats row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
-              {STATS.map(({ value, label, Icon, iconCls, numCls, bg, border }) => (
-                <TiltCard key={label} className="group will-change-transform">
-                  <div className={`relative rounded-2xl border ${border} ${bg} p-5 text-center overflow-hidden`}>
-                    <div aria-hidden="true" className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${bg} rounded-2xl`} />
-                    <Icon size={18} className={`${iconCls} mx-auto mb-2 relative z-10`} />
-                    <div className={`text-3xl md:text-4xl font-bold ${numCls} mb-1 relative z-10`}>{value}</div>
-                    <div className="text-xs text-neutral-500 relative z-10">{label}</div>
+            {/* Stats asymmetric bento grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 xl:gap-5 grid-flow-dense">
+              {STATS.map(({ value, label, Icon, iconCls, numCls, bg, border, span, isWide }) => (
+                <TiltCard key={label} className={`group will-change-transform ${span}`}>
+                  <div className={`relative h-full rounded-[1.25rem] border ${border} ${bg} p-5 lg:p-7 flex flex-col justify-center overflow-hidden`}>
+                    <div aria-hidden="true" className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${bg} rounded-[1.25rem]`} />
+                    
+                    <div className={`flex relative z-10 transition-transform duration-500 group-hover:scale-[1.02] ${isWide ? 'flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-left origin-left' : 'flex-col items-center text-center gap-3 origin-center'}`}>
+                      <div className={`flex items-center justify-center rounded-xl bg-black/40 border border-white/[0.08] ${isWide ? 'w-14 h-14 shrink-0' : 'w-12 h-12 mx-auto'}`}>
+                        <Icon size={isWide ? 24 : 20} className={iconCls} />
+                      </div>
+                      <div className={isWide ? 'pt-1' : ''}>
+                        <div className={`text-3xl md:text-4xl lg:text-5xl font-black ${numCls} tracking-tighter leading-none mb-1.5`}>{value}</div>
+                        <div className="text-[10px] md:text-[11px] font-mono uppercase tracking-[0.2em] text-neutral-500">{label}</div>
+                      </div>
+                    </div>
                   </div>
                 </TiltCard>
               ))}

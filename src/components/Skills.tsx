@@ -44,13 +44,31 @@ function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
 
 function CapabilityCard({ cap, delay }: { cap: any, delay: number }) {
   return (
-    <Reveal from={{ opacity: 0, y: 20 }} delay={delay} className="group relative h-full flex">
-      <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" style={{ backgroundImage: `linear-gradient(to bottom right, ${cap.hex}15, transparent)` }} />
-      <div className="relative h-full w-full flex flex-col p-6 md:p-7 rounded-2xl border border-white/[0.08] bg-black/20 group-hover:bg-black/40 group-hover:border-white/[0.15] transition-all duration-500">
+    <Reveal from={{ opacity: 0, y: 20 }} delay={delay} className="group relative h-full flex rounded-2xl p-[1px] overflow-hidden">
+      
+      {/* Glowing rotating border background (revealed on hover) */}
+      <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 overflow-hidden rounded-2xl">
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250%] h-[250%] animate-spin"
+          style={{ 
+            animationDuration: '4s', 
+            backgroundImage: `conic-gradient(from 0deg, transparent 0%, transparent 60%, ${cap.hex} 100%)` 
+          }} 
+        />
+      </div>
+
+      {/* Default static border */}
+      <div className="absolute inset-0 z-0 border border-white/10 rounded-2xl group-hover:opacity-0 transition-opacity duration-500 pointer-events-none" />
+
+      {/* Inner Card */}
+      <div className="relative z-10 w-full h-full flex flex-col p-6 md:p-7 rounded-[15px] bg-[#050505] transition-colors duration-500">
         
+        {/* Soft background glow on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[15px] pointer-events-none" style={{ backgroundImage: `linear-gradient(to bottom right, ${cap.hex}15, transparent)` }} />
+
         {/* Header */}
         <div className="flex items-center gap-4 mb-5">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center border transition-colors duration-500" style={{ background: `${cap.hex}10`, borderColor: `${cap.hex}25` }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center border transition-colors duration-500 relative z-10" style={{ background: `${cap.hex}10`, borderColor: `${cap.hex}25` }}>
             <cap.icon size={20} style={{ color: cap.hex }} />
           </div>
           <h3 
@@ -70,12 +88,12 @@ function CapabilityCard({ cap, delay }: { cap: any, delay: number }) {
         </div>
 
         {/* Content */}
-        <p className="text-sm text-neutral-400 leading-relaxed mb-6 flex-1">
+        <p className="text-sm text-neutral-400 leading-relaxed mb-6 flex-1 relative z-10">
           {cap.description}
         </p>
 
         {/* Tools */}
-        <div className="flex flex-wrap gap-2 mt-auto">
+        <div className="flex flex-wrap gap-2 mt-auto relative z-10">
           {cap.tools.map((tool: string) => (
             <span key={tool} className="px-2.5 py-1 text-[11px] font-mono rounded-md bg-white/[0.03] border border-white/[0.05] text-neutral-300">
               {tool}
@@ -153,19 +171,70 @@ const EXPERTISE = [
   { text: 'WebSockets / Realtime',cls: 'text-cyan-300 border-cyan-500/30 bg-cyan-500/8 hover:bg-cyan-500/18 hover:border-cyan-400/60' },
 ]
 
+// ─── 3D Skill Ring ────────────────────────────────────────────────────────────
+
+function SkillRing() {
+  const ringRef = useRef<HTMLDivElement>(null)
+  
+  useEffect(() => {
+    if (!ringRef.current) return
+    const tween = gsap.to(ringRef.current, {
+      rotationY: -360,
+      duration: 40,
+      repeat: -1,
+      ease: 'none'
+    })
+    return () => { tween.kill() }
+  }, [])
+
+  const items = [...MARQUEE_ROW_A, ...MARQUEE_ROW_B]
+  const radius = 340 // Pixels to push items outwards
+
+  return (
+    <div className="relative w-full h-[160px] md:h-[200px] flex items-center justify-center overflow-hidden mb-12 rounded-[2rem] border border-white/[0.05] bg-black/20 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]" style={{ perspective: '1200px' }}>
+      
+      {/* 3D ambient glows inside the box */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[150px] bg-emerald-500/[0.06] rounded-full blur-[60px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[80px] bg-cyan-500/[0.06] rounded-full blur-[50px] pointer-events-none" />
+
+      {/* Fade masks for depth masking the edges */}
+      <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#000b06] via-[#000b06]/60 to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#000b06] via-[#000b06]/60 to-transparent z-10 pointer-events-none" />
+
+      <div 
+        className="w-full h-full flex items-center justify-center" 
+        style={{ transformStyle: 'preserve-3d', transform: 'rotateX(-8deg)' }} 
+      >
+        <div ref={ringRef} className="relative w-0 h-0 will-change-transform" style={{ transformStyle: 'preserve-3d' }}>
+          {items.map((item, i) => {
+            const angle = (i / items.length) * 360
+            return (
+              <div 
+                key={i}
+                className="absolute top-1/2 left-1/2 flex items-center gap-2.5 px-5 py-3 rounded-xl border border-white/[0.12] bg-neutral-900/80 backdrop-blur-md shadow-[0_0_30px_-5px_rgba(0,0,0,0.5)] transition-colors hover:bg-black hover:border-white/[0.2] group cursor-default"
+                style={{
+                  transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${radius}px)`,
+                  backfaceVisibility: 'visible'
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl" style={{ backgroundImage: `linear-gradient(to bottom right, ${item.hex}, transparent)` }} />
+                <span className="w-2 h-2 rounded-full relative z-10" style={{ background: item.hex, boxShadow: `0 0 12px ${item.hex}` }} />
+                <span className="font-mono text-[13px] text-neutral-300 font-bold whitespace-nowrap relative z-10 group-hover:text-white transition-colors">{item.text}</span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const Skills = () => (
   <section id="skills" className="relative py-32 md:py-48 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 50% 20%, #001a10 0%, #000c07 45%, #000 100%)' }}>
 
-    {/* Inject marquee keyframes */}
-    <style>{`
-      @keyframes mq-fwd { from { transform: translateX(0) } to { transform: translateX(-50%) } }
-      @keyframes mq-bwd { from { transform: translateX(-50%) } to { transform: translateX(0) } }
-      .mq-fwd { animation: mq-fwd 28s linear infinite; }
-      .mq-bwd { animation: mq-bwd 22s linear infinite; }
-      .mq-fwd:hover, .mq-bwd:hover { animation-play-state: paused; }
-    `}</style>
+
 
     {/* Background */}
     <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
@@ -215,30 +284,9 @@ const Skills = () => (
         </div>
       </Reveal>
 
-      {/* ── Marquee ticker ───────────────────────────────────────────────── */}
-      <Reveal from={{ opacity: 0, y: 20 }} className="mb-8 overflow-hidden">
-        {/* Row A — forward */}
-        <div className="relative overflow-hidden py-1 mb-1">
-          <div className="mq-fwd flex gap-6 w-max">
-            {[...MARQUEE_ROW_A, ...MARQUEE_ROW_A].map((item, i) => (
-              <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/[0.06] bg-white/[0.02] flex-shrink-0">
-                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: item.hex, boxShadow: `0 0 6px ${item.hex}` }} />
-                <span className="font-mono text-xs text-neutral-400 whitespace-nowrap">{item.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Row B — backward */}
-        <div className="relative overflow-hidden py-1">
-          <div className="mq-bwd flex gap-6 w-max">
-            {[...MARQUEE_ROW_B, ...MARQUEE_ROW_B].map((item, i) => (
-              <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/[0.06] bg-white/[0.02] flex-shrink-0">
-                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: item.hex, boxShadow: `0 0 6px ${item.hex}` }} />
-                <span className="font-mono text-xs text-neutral-400 whitespace-nowrap">{item.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* ── 3D Skill Ring ────────────────────────────────────────────────── */}
+      <Reveal from={{ opacity: 0, scale: 0.95, y: 30 }} className="mb-4 relative z-10">
+        <SkillRing />
       </Reveal>
 
       {/* ── Expertise Tags ───────────────────────────────────────────────── */}

@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
+import SpotlightCursor from './SpotlightCursor'
 
 const UIOverlays = () => {
   const barRef = useRef<HTMLDivElement>(null)
@@ -27,6 +28,7 @@ const UIOverlays = () => {
 
   return (
     <>
+      <SpotlightCursor />
       {/* Scroll progress bar */}
       <div
         ref={barRef}

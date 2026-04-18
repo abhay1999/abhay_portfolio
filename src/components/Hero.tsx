@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from '@/lib/gsap'
 import { Mail, Linkedin, Code, Trophy, GitMerge, Star, Users, ArrowRight, Cloud, Server, GitBranch } from 'lucide-react'
 import Image from 'next/image'
@@ -18,13 +18,6 @@ const SOCIALS = [
   { Icon: Linkedin,   href: 'https://linkedin.com/in/abhay-chaurasiya',            label: 'LinkedIn'   },
   { Icon: Code,       href: 'https://leetcode.com/u/imt_2018005/',                 label: 'LeetCode'   },
   { Icon: Trophy,     href: 'https://www.hackerrank.com/profile/abhaychaurasiya1', label: 'HackerRank' },
-]
-
-const ROLE_CHIPS = [
-  'DevOps Engineer',
-  'Platform Engineer',
-  'Go / Backend',
-  'SRE',
 ]
 
 const PROOF = [
@@ -45,6 +38,148 @@ const PARTICLES = [
   { x: '34%', y: '6%',  w: 4, h: 4, color: 'bg-purple-400',  delay: '0.7s' },
   { x: '78%', y: '62%', w: 4, h: 4, color: 'bg-amber-300',   delay: '1.9s' },
 ]
+
+// ─── Terminal typewriter data ──────────────────────────────────────────────────
+
+type TLine = { type: 'cmd' | 'output' | 'blank'; text: string; cls?: string }
+
+const TERMINAL_LINES: TLine[] = [
+  { type: 'cmd',    text: 'whoami' },
+  { type: 'output', text: 'abhay.chaurasiya — DevOps · Platform · Go', cls: 'text-emerald-400' },
+  { type: 'blank',  text: '' },
+  { type: 'cmd',    text: 'cat mission.txt' },
+  { type: 'output', text: 'Build cloud systems that ship fast', cls: 'text-neutral-200' },
+  { type: 'output', text: 'and heal themselves.', cls: 'text-neutral-200' },
+  { type: 'blank',  text: '' },
+  { type: 'cmd',    text: 'git log --oneline -3' },
+  { type: 'output', text: '[gopls] golang/tools · stringscut analyzer', cls: 'text-sky-400' },
+  { type: 'output', text: '[gopls] golang/tools · slicesbackward', cls: 'text-sky-400' },
+  { type: 'output', text: '[CNCF]  jaeger · Go SDK dashboard gen', cls: 'text-cyan-400' },
+  { type: 'blank',  text: '' },
+  { type: 'cmd',    text: 'systemctl status career' },
+  { type: 'output', text: '● Available · open to hire', cls: 'text-emerald-400' },
+  { type: 'output', text: '  Target: DevOps / Platform / Go roles', cls: 'text-neutral-500' },
+]
+
+// ─── Terminal Typewriter ───────────────────────────────────────────────────────
+
+function TerminalTypewriter() {
+  const [shown, setShown]         = useState<TLine[]>([])
+  const [typing, setTyping]       = useState<string | null>(null)
+  const [typingCls, setTypingCls] = useState('')
+  const [typingType, setTypingType] = useState<'cmd' | 'output'>('cmd')
+  const [finished, setFinished]   = useState(false)
+  const bodyRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    const timers: ReturnType<typeof setTimeout>[] = []
+
+    const runLine = (idx: number) => {
+      if (cancelled || idx >= TERMINAL_LINES.length) {
+        if (!cancelled) setFinished(true)
+        return
+      }
+      const line = TERMINAL_LINES[idx]
+
+      if (line.type === 'blank') {
+        const t = setTimeout(() => {
+          if (cancelled) return
+          setShown(s => [...s, line])
+          runLine(idx + 1)
+        }, 160)
+        timers.push(t)
+        return
+      }
+
+      const speed = line.type === 'cmd' ? 52 : 13
+      let charCount = 0
+
+      setTypingType(line.type as 'cmd' | 'output')
+      setTypingCls(line.cls ?? '')
+      setTyping('')
+
+      const typeChar = () => {
+        if (cancelled) return
+        charCount++
+        setTyping(line.text.slice(0, charCount))
+        if (charCount < line.text.length) {
+          const t = setTimeout(typeChar, speed)
+          timers.push(t)
+        } else {
+          const pause = line.type === 'cmd' ? 380 : 70
+          const t = setTimeout(() => {
+            if (cancelled) return
+            setShown(s => [...s, line])
+            setTyping(null)
+            runLine(idx + 1)
+          }, pause)
+          timers.push(t)
+        }
+      }
+
+      typeChar()
+    }
+
+    // Small initial delay so the terminal window animates in first
+    const init = setTimeout(() => runLine(0), 600)
+    timers.push(init)
+
+    return () => { cancelled = true; timers.forEach(clearTimeout) }
+  }, [])
+
+  // Auto-scroll terminal body
+  useEffect(() => {
+    if (bodyRef.current) {
+      bodyRef.current.scrollTop = bodyRef.current.scrollHeight
+    }
+  }, [shown, typing])
+
+  const renderLine = (line: TLine, i: number) => {
+    if (line.type === 'blank') return <div key={i} className="h-2" />
+    if (line.type === 'cmd') return (
+      <div key={i} className="flex items-center gap-2">
+        <span className="text-emerald-500 select-none">$</span>
+        <span className="text-white">{line.text}</span>
+      </div>
+    )
+    return <div key={i} className={`pl-4 ${line.cls ?? 'text-neutral-400'}`}>{line.text}</div>
+  }
+
+  return (
+    <div className="font-mono text-[13px] leading-6 h-[272px] overflow-hidden relative" ref={bodyRef}>
+      <div>
+        {shown.map(renderLine)}
+
+        {/* Currently typing line */}
+        {typing !== null && (
+          <div>
+            {typingType === 'cmd' ? (
+              <div className="flex items-center gap-2">
+                <span className="text-emerald-500 select-none">$</span>
+                <span className="text-white">{typing}</span>
+                <span className="cursor-blink w-[7px] h-[14px] bg-emerald-400/80 inline-block" />
+              </div>
+            ) : (
+              <div className={`pl-4 ${typingCls || 'text-neutral-400'}`}>
+                {typing}
+                <span className="cursor-blink w-[6px] h-[12px] bg-current/60 inline-block ml-0.5 align-middle" />
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Idle cursor after all lines done */}
+        {finished && typing === null && (
+          <div className="flex items-center gap-2 mt-1">
+            <span className="text-emerald-500 select-none">$</span>
+            <span className="cursor-blink w-[7px] h-[14px] bg-emerald-400/80 inline-block" />
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -76,36 +211,36 @@ const Hero = () => {
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: 'radial-gradient(ellipse at 65% 35%, #0e0830 0%, #050218 45%, #000008 100%)' }}
+      style={{ background: 'radial-gradient(ellipse at 55% 40%, #061a0a 0%, #020d04 45%, #000 100%)' }}
     >
       {/* ── Background ───────────────────────────────────────────────────── */}
 
-      {/* Micro circuit grid */}
+      {/* Micro grid */}
       <div aria-hidden="true" className="hidden sm:block absolute inset-0 pointer-events-none" style={{
-        backgroundImage: 'linear-gradient(rgba(6,182,212,1) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,1) 1px,transparent 1px)',
-        backgroundSize: '50px 50px', opacity: 0.032,
+        backgroundImage: 'linear-gradient(rgba(52,211,153,1) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,1) 1px,transparent 1px)',
+        backgroundSize: '48px 48px', opacity: 0.028,
       }} />
 
       {/* 3-D perspective tunnel grid */}
       <div aria-hidden="true" className="hidden sm:flex absolute inset-0 items-center justify-center pointer-events-none">
         <div style={{
           width: '130%', height: '130%',
-          backgroundImage: 'linear-gradient(to right,rgba(6,182,212,0.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(6,182,212,0.07) 1px,transparent 1px)',
+          backgroundImage: 'linear-gradient(to right,rgba(52,211,153,0.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(52,211,153,0.06) 1px,transparent 1px)',
           backgroundSize: '80px 80px',
           transform: 'perspective(700px) rotateX(28deg)', transformOrigin: 'center 55%',
           maskImage: 'radial-gradient(ellipse 75% 65% at 50% 50%,black 20%,transparent 80%)',
-          opacity: 0.45,
+          opacity: 0.5,
         }} />
       </div>
 
       {/* Animated circuit traces */}
       <div aria-hidden="true" className="hidden sm:block absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent" style={{ top: '22%' }} />
-        <div className="trace-x-fwd absolute h-px w-52 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
+        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/25 to-transparent" style={{ top: '22%' }} />
+        <div className="trace-x-fwd absolute h-px w-52 bg-gradient-to-r from-transparent via-emerald-400 to-transparent"
              style={{ top: '22%', opacity: 0.9, animationDuration: '5.5s' }} />
 
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" style={{ top: '76%' }} />
-        <div className="trace-x-bwd absolute h-px w-44 bg-gradient-to-r from-transparent via-purple-400 to-transparent"
+        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" style={{ top: '76%' }} />
+        <div className="trace-x-bwd absolute h-px w-44 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
              style={{ top: '76%', opacity: 0.75, animationDuration: '7s', animationDelay: '1.5s' }} />
 
         <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-emerald-500/[0.12] to-transparent" style={{ left: '20%' }} />
@@ -116,119 +251,98 @@ const Hero = () => {
         <div className="trace-y-bwd absolute w-px h-24 bg-gradient-to-b from-transparent via-amber-400 to-transparent"
              style={{ left: '80%', opacity: 0.55, animationDuration: '9.5s', animationDelay: '3.5s' }} />
 
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/[0.07] to-transparent"
-             style={{ top: '50%', transform: 'rotate(-5deg) scaleX(1.4)' }} />
-
         {/* Intersection glow nodes */}
-        <div className="absolute w-2 h-2 rounded-full bg-cyan-400    animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.9)]"    style={{ top: 'calc(22% - 4px)', left: 'calc(20% - 4px)' }} />
-        <div className="absolute w-1.5 h-1.5 rounded-full bg-purple-400  animate-pulse shadow-[0_0_10px_rgba(168,85,247,0.9)]"  style={{ top: 'calc(76% - 3px)', left: 'calc(80% - 3px)', animationDelay: '1s' }} />
-        <div className="absolute w-2 h-2 rounded-full bg-emerald-400  animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.9)]"   style={{ top: 'calc(22% - 4px)', left: 'calc(80% - 4px)', animationDelay: '0.5s' }} />
+        <div className="absolute w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_12px_rgba(52,211,153,0.9)]"  style={{ top: 'calc(22% - 4px)', left: 'calc(20% - 4px)' }} />
+        <div className="absolute w-1.5 h-1.5 rounded-full bg-cyan-400    animate-pulse shadow-[0_0_10px_rgba(6,182,212,0.9)]"   style={{ top: 'calc(76% - 3px)', left: 'calc(80% - 3px)', animationDelay: '1s' }} />
+        <div className="absolute w-2 h-2 rounded-full bg-emerald-300  animate-pulse shadow-[0_0_12px_rgba(52,211,153,0.7)]"   style={{ top: 'calc(22% - 4px)', left: 'calc(80% - 4px)', animationDelay: '0.5s' }} />
         <div className="absolute w-1.5 h-1.5 rounded-full bg-amber-400    animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.9)]"  style={{ top: 'calc(76% - 3px)', left: 'calc(20% - 3px)', animationDelay: '1.5s' }} />
 
         {/* Floating particles */}
         {PARTICLES.map((p, i) => (
-          <div
-            key={i}
-            className={`absolute rounded-full opacity-pulse ${p.color}`}
-            style={{ left: p.x, top: p.y, width: p.w, height: p.h, animationDelay: p.delay, animationDuration: `${2.5 + i * 0.35}s` }}
-          />
+          <div key={i} className={`absolute rounded-full opacity-pulse ${p.color}`}
+            style={{ left: p.x, top: p.y, width: p.w, height: p.h, animationDelay: p.delay, animationDuration: `${2.5 + i * 0.35}s` }} />
         ))}
       </div>
 
-      {/* Ambient colour orbs */}
-      <div aria-hidden="true" className="absolute top-0 left-1/4 w-[700px] h-[600px] bg-cyan-500/[0.02] rounded-full blur-[200px] pointer-events-none" />
-      <div aria-hidden="true" className="absolute bottom-0 right-1/4 w-[600px] h-[500px] bg-purple-500/[0.02] rounded-full blur-[180px] pointer-events-none" />
-      <div aria-hidden="true" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[350px] bg-emerald-500/[0.03] rounded-full blur-[220px] pointer-events-none" />
+      {/* Ambient orbs */}
+      <div aria-hidden="true" className="absolute top-0 left-1/4 w-[700px] h-[600px] bg-emerald-500/[0.025] rounded-full blur-[200px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute bottom-0 right-1/4 w-[600px] h-[500px] bg-cyan-500/[0.02] rounded-full blur-[180px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[350px] bg-emerald-500/[0.02] rounded-full blur-[220px] pointer-events-none" />
 
       {/* ── Content ──────────────────────────────────────────────────────── */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-24 pb-8">
 
-        {/* Zone 1 + 2: headline / profile */}
         <div className="grid lg:grid-cols-2 gap-14 lg:gap-10 items-center mb-10 lg:mb-14">
 
-          {/* ── LEFT: Headline + proof + CTA ─────────────────────────────── */}
+          {/* ── LEFT: Terminal window ─────────────────────────────────────── */}
           <div
             ref={leftRef}
-            className="space-y-7 text-center lg:text-left order-2 lg:order-1"
+            className="space-y-6 order-2 lg:order-1"
             style={{ opacity: 0 }}
           >
-            {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.09] backdrop-blur-md">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span className="text-[11px] text-neutral-400 tracking-wide">
-                Available · Platform / DevOps / Go roles
-              </span>
-            </div>
-
-            {/* Terminal prompt + name */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 justify-center lg:justify-start">
-                <span className="text-[11px] font-mono text-neutral-600 tracking-widest">root@portfolio:~$</span>
-                <span className="cursor-blink w-2 h-4 bg-cyan-400/70 inline-block" />
+            {/* Available eyebrow */}
+            <div className="flex justify-center lg:justify-start">
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.09] backdrop-blur-md">
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span className="text-[11px] text-neutral-400 tracking-wide">
+                  Available · Platform / DevOps / Go roles
+                </span>
               </div>
-              <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight leading-[1.05]">
-                <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/60">Abhay</span>
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500">Chaurasiya</span>
-              </h1>
             </div>
 
-            {/* Headline — the one bold statement */}
-            <p className="text-xl md:text-2xl font-semibold text-white/90 leading-snug max-w-[24ch] mx-auto lg:mx-0">
-              I build cloud systems that ship fast and heal themselves.
-            </p>
+            {/* Terminal window */}
+            <div className="rounded-2xl border border-emerald-500/20 bg-white/[0.03] backdrop-blur-xl overflow-hidden shadow-[0_0_80px_-20px_rgba(52,211,153,0.3)]">
+              {/* Title bar */}
+              <div className="flex items-center gap-3 px-4 py-3 border-b border-white/[0.06] bg-black/30">
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+                </div>
+                <span className="flex-1 text-center text-[10px] font-mono text-neutral-600 tracking-widest">
+                  abhay@portfolio:~
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[9px] font-mono text-emerald-500 tracking-widest">LIVE</span>
+                </div>
+              </div>
 
-            {/* Subtext — one sentence */}
-            <p className="text-neutral-400 max-w-[52ch] mx-auto lg:mx-0 leading-relaxed text-[15px]">
-              3 CLs merged into golang/tools (reviewed by Alan Donovan · ships in gopls) · 9+ PRs across Jaeger, Helm &amp; CNCF.
-            </p>
+              {/* Terminal body */}
+              <div className="px-5 py-4">
+                <TerminalTypewriter />
+              </div>
+            </div>
 
             {/* CTA row */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
               <a
                 href="#projects"
                 onClick={e => { e.preventDefault(); scrollTo('#projects') }}
-                className="group relative flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white text-black font-semibold rounded-xl overflow-hidden hover:bg-cyan-50 transition-colors"
+                className="group relative flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white text-black font-semibold rounded-xl overflow-hidden hover:bg-emerald-50 transition-colors"
               >
-                <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-cyan-400/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <span className="relative">View Projects</span>
                 <ArrowRight size={16} className="relative group-hover:translate-x-0.5 transition-transform" />
               </a>
               <a
                 href="#contact"
                 onClick={e => { e.preventDefault(); scrollTo('#contact') }}
-                className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white/[0.04] border border-white/[0.09] hover:border-cyan-500/40 hover:bg-white/[0.08] text-white font-semibold rounded-xl transition-all"
+                className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white/[0.04] border border-white/[0.09] hover:border-emerald-500/40 hover:bg-white/[0.08] text-white font-semibold rounded-xl transition-all"
               >
                 <Mail size={16} />
                 Get in Touch
               </a>
             </div>
 
-            {/* Role chips — compact, no label */}
-            <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
-              {ROLE_CHIPS.map(role => (
-                <span
-                  key={role}
-                  className="px-3 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] text-[11px] font-medium text-neutral-300 backdrop-blur-sm"
-                >
-                  {role}
-                </span>
-              ))}
-            </div>
-
-            {/* Social row — no divider */}
+            {/* Social row */}
             <div className="flex items-center gap-2 justify-center lg:justify-start">
               {SOCIALS.map(({ Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="group relative p-3 rounded-xl bg-white/[0.03] border border-white/[0.07] hover:border-cyan-500/40 hover:bg-white/[0.07] text-neutral-400 hover:text-white transition-all duration-300"
+                <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
+                  className="group relative p-3 rounded-xl bg-white/[0.03] border border-white/[0.07] hover:border-emerald-500/40 hover:bg-white/[0.07] text-neutral-400 hover:text-white transition-all duration-300"
                 >
                   <Icon size={18} />
                   <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 text-[10px] font-mono bg-black/90 border border-white/10 rounded-lg text-neutral-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
@@ -239,7 +353,7 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* ── RIGHT: Live Status Panel ──────────────────────────────────── */}
+          {/* ── RIGHT: Live Status Panel (unchanged) ─────────────────────── */}
           <div
             ref={rightRef}
             className="flex justify-center lg:justify-end order-1 lg:order-2"
@@ -249,9 +363,9 @@ const Hero = () => {
 
               {/* Floating tech chips */}
               <div className="float-a absolute -left-6 top-10 z-20" style={{ animationDuration: '4.2s' }}>
-                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-neutral-900/95 border border-cyan-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(6,182,212,0.15)]">
-                  <div className="w-7 h-7 rounded-lg bg-cyan-500/15 flex items-center justify-center shrink-0">
-                    <GitMerge size={14} className="text-cyan-400" />
+                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/80 border border-emerald-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(52,211,153,0.15)]">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-500/15 flex items-center justify-center shrink-0">
+                    <GitMerge size={14} className="text-emerald-400" />
                   </div>
                   <div>
                     <p className="text-[9px] text-neutral-600 tracking-wider">golang/tools</p>
@@ -261,9 +375,9 @@ const Hero = () => {
               </div>
 
               <div className="float-b absolute -right-4 top-8 z-20" style={{ animationDuration: '4.8s' }}>
-                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-neutral-900/95 border border-emerald-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(16,185,129,0.15)]">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-500/15 flex items-center justify-center shrink-0">
-                    <Cloud size={14} className="text-emerald-400" />
+                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/80 border border-cyan-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(6,182,212,0.15)]">
+                  <div className="w-7 h-7 rounded-lg bg-cyan-500/15 flex items-center justify-center shrink-0">
+                    <Cloud size={14} className="text-cyan-400" />
                   </div>
                   <div>
                     <p className="text-[9px] text-neutral-600 tracking-wider">cloud</p>
@@ -273,7 +387,7 @@ const Hero = () => {
               </div>
 
               <div className="float-c absolute -left-8 bottom-14 z-20" style={{ animationDuration: '5s' }}>
-                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-neutral-900/95 border border-purple-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(168,85,247,0.15)]">
+                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/80 border border-purple-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(168,85,247,0.15)]">
                   <div className="w-7 h-7 rounded-lg bg-purple-500/15 flex items-center justify-center shrink-0">
                     <GitBranch size={14} className="text-purple-400" />
                   </div>
@@ -285,7 +399,7 @@ const Hero = () => {
               </div>
 
               <div className="float-d absolute -right-2 bottom-16 z-20" style={{ animationDuration: '5.5s' }}>
-                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-neutral-900/95 border border-amber-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(245,158,11,0.15)]">
+                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/80 border border-amber-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(245,158,11,0.15)]">
                   <div className="w-7 h-7 rounded-lg bg-amber-500/15 flex items-center justify-center shrink-0">
                     <Server size={14} className="text-amber-400" />
                   </div>
@@ -297,12 +411,11 @@ const Hero = () => {
               </div>
 
               {/* Orbits */}
-              <div aria-hidden="true" className="spin-cw absolute inset-0 rounded-3xl border border-dashed border-cyan-500/12" style={{ animationDuration: '22s' }} />
-              <div aria-hidden="true" className="spin-ccw absolute inset-3 rounded-2xl border border-purple-500/[0.09]" style={{ animationDuration: '15s' }} />
+              <div aria-hidden="true" className="spin-cw absolute inset-0 rounded-3xl border border-dashed border-emerald-500/12" style={{ animationDuration: '22s' }} />
+              <div aria-hidden="true" className="spin-ccw absolute inset-3 rounded-2xl border border-cyan-500/[0.09]" style={{ animationDuration: '15s' }} />
 
               {/* Terminal window */}
-              <div className="absolute inset-6 rounded-2xl overflow-hidden border border-white/[0.09] bg-gradient-to-b from-neutral-900/97 to-black backdrop-blur-xl shadow-[0_0_100px_-25px_rgba(6,182,212,0.45)]">
-
+              <div className="absolute inset-6 rounded-2xl overflow-hidden border border-white/[0.09] bg-black/90 backdrop-blur-xl shadow-[0_0_100px_-25px_rgba(52,211,153,0.45)]">
                 {/* Title bar */}
                 <div className="flex items-center gap-2 px-4 py-2.5 bg-black/70 border-b border-white/[0.06]">
                   <div className="flex gap-1.5">
@@ -319,27 +432,24 @@ const Hero = () => {
 
                 {/* Profile */}
                 <div className="relative flex flex-col items-center justify-center h-[calc(100%-40px)] p-5">
-                  {/* Scan line */}
-                  <div aria-hidden="true" className="scan-line absolute inset-x-0 h-12 pointer-events-none z-20 bg-gradient-to-b from-transparent via-cyan-400/[0.055] to-transparent"
+                  <div aria-hidden="true" className="scan-line absolute inset-x-0 h-12 pointer-events-none z-20 bg-gradient-to-b from-transparent via-emerald-400/[0.055] to-transparent"
                        style={{ animationDuration: '4s' }} />
 
-                  {/* Avatar + orbiting rings */}
                   <div className="relative w-36 h-36 md:w-44 md:h-44 mb-4">
-                    <div aria-hidden="true" className="spin-cw absolute -inset-3 rounded-full border border-dashed border-cyan-500/25" style={{ animationDuration: '13s' }} />
-                    <div aria-hidden="true" className="spin-ccw absolute -inset-1.5 rounded-full border border-purple-500/18" style={{ animationDuration: '9s' }} />
-                    <div className="absolute inset-0 rounded-full overflow-hidden border border-white/10 bg-neutral-800 shadow-[0_0_40px_rgba(6,182,212,0.3)]">
+                    <div aria-hidden="true" className="spin-cw absolute -inset-3 rounded-full border border-dashed border-emerald-500/25" style={{ animationDuration: '13s' }} />
+                    <div aria-hidden="true" className="spin-ccw absolute -inset-1.5 rounded-full border border-cyan-500/18" style={{ animationDuration: '9s' }} />
+                    <div className="absolute inset-0 rounded-full overflow-hidden border border-white/10 bg-neutral-800 shadow-[0_0_40px_rgba(52,211,153,0.3)]">
                       <Image src="/profile-picture.svg" alt="Abhay Chaurasiya" fill className="object-cover" priority />
                     </div>
                     <div className="absolute bottom-1 right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-black shadow-[0_0_10px_rgba(16,185,129,0.9)] z-10" />
                     <div aria-hidden="true" className="spin-cw absolute -inset-3" style={{ animationDuration: '13s' }}>
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,1)]" />
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,1)]" />
                     </div>
                   </div>
 
                   <p className="text-white font-bold text-base tracking-tight mb-0.5">Abhay Chaurasiya</p>
-                  <p className="text-cyan-400 text-[10px] font-mono tracking-[0.18em] uppercase mb-4">DevOps · Go · golang/tools</p>
+                  <p className="text-emerald-400 text-[10px] font-mono tracking-[0.18em] uppercase mb-4">DevOps · Go · golang/tools</p>
 
-                  {/* Live status fields */}
                   <div className="w-full space-y-1.5">
                     {[
                       { prefix: '●', label: 'STATUS', val: 'Available · open to work',     valCls: 'text-emerald-400' },
@@ -357,9 +467,9 @@ const Hero = () => {
               </div>
 
               {/* Corner accent nodes */}
-              <div aria-hidden="true" className="absolute top-5 left-5   w-1.5 h-1.5 rounded-full bg-cyan-400    shadow-[0_0_8px_rgba(6,182,212,1)]"    />
-              <div aria-hidden="true" className="absolute top-5 right-5  w-1.5 h-1.5 rounded-full bg-purple-400  shadow-[0_0_8px_rgba(168,85,247,1)]"  />
-              <div aria-hidden="true" className="absolute bottom-5 left-5  w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,1)]" />
+              <div aria-hidden="true" className="absolute top-5 left-5   w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,1)]"  />
+              <div aria-hidden="true" className="absolute top-5 right-5  w-1.5 h-1.5 rounded-full bg-cyan-400   shadow-[0_0_8px_rgba(6,182,212,1)]"    />
+              <div aria-hidden="true" className="absolute bottom-5 left-5  w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,1)]" />
               <div aria-hidden="true" className="absolute bottom-5 right-5 w-1.5 h-1.5 rounded-full bg-amber-400   shadow-[0_0_8px_rgba(245,158,11,1)]" />
             </div>
           </div>
@@ -368,7 +478,7 @@ const Hero = () => {
         {/* ── Zone 3: Proof strip ───────────────────────────────────────── */}
         <div
           ref={proofRef}
-          className="grid grid-cols-3 divide-x divide-white/[0.07] rounded-2xl border border-white/[0.07] bg-white/[0.02] backdrop-blur-sm overflow-hidden"
+          className="grid grid-cols-3 divide-x divide-white/[0.07] rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden"
           style={{ opacity: 0 }}
         >
           {PROOF.map(({ Icon, value, detail, accent, bg, border }) => (
@@ -387,15 +497,11 @@ const Hero = () => {
       </div>
 
       {/* Scroll indicator */}
-      <div
-        ref={scrollRef}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        style={{ opacity: 0 }}
-      >
+      <div ref={scrollRef} className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ opacity: 0 }}>
         <span className="text-[10px] text-neutral-600 uppercase tracking-[0.3em] font-mono">scroll</span>
         <div className="relative w-px h-12">
           <div className="absolute inset-0 bg-gradient-to-b from-neutral-700/40 to-transparent" />
-          <div className="scroll-drip absolute top-0 left-0 w-full h-5 bg-gradient-to-b from-cyan-400/90 to-transparent" />
+          <div className="scroll-drip absolute top-0 left-0 w-full h-5 bg-gradient-to-b from-emerald-400/90 to-transparent" />
         </div>
       </div>
 
