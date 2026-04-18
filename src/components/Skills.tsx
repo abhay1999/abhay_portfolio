@@ -173,58 +173,151 @@ const EXPERTISE = [
 
 // ─── 3D Skill Ring ────────────────────────────────────────────────────────────
 
+const OUTER_RADIUS = 330
+const INNER_RADIUS = 185
+
 function SkillRing() {
-  const ringRef = useRef<HTMLDivElement>(null)
-  
+  const outerRef     = useRef<HTMLDivElement>(null)
+  const innerRef     = useRef<HTMLDivElement>(null)
+  const sceneRef     = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Rotation tweens
   useEffect(() => {
-    if (!ringRef.current) return
-    const tween = gsap.to(ringRef.current, {
-      rotationY: -360,
-      duration: 40,
-      repeat: -1,
-      ease: 'none'
-    })
-    return () => { tween.kill() }
+    const outer = outerRef.current
+    const inner = innerRef.current
+    if (!outer || !inner) return
+    const t1 = gsap.to(outer, { rotationY: -360, duration: 44, repeat: -1, ease: 'none' })
+    const t2 = gsap.to(inner, { rotationY:  360, duration: 26, repeat: -1, ease: 'none' })
+    return () => { t1.kill(); t2.kill() }
   }, [])
 
-  const items = [...MARQUEE_ROW_A, ...MARQUEE_ROW_B]
-  const radius = 340 // Pixels to push items outwards
+  // Mouse-tilt scene
+  useEffect(() => {
+    const container = containerRef.current
+    const scene     = sceneRef.current
+    if (!container || !scene) return
+
+    const onMove = (e: MouseEvent) => {
+      const r  = container.getBoundingClientRect()
+      const nx = (e.clientX - r.left) / r.width  - 0.5
+      const ny = (e.clientY - r.top)  / r.height - 0.5
+      gsap.to(scene, { rotationX: -10 + ny * -10, rotationY: nx * 8, duration: 0.9, ease: 'power2.out', overwrite: 'auto' })
+    }
+    const onLeave = () => {
+      gsap.to(scene, { rotationX: -10, rotationY: 0, duration: 1.4, ease: 'power3.out', overwrite: 'auto' })
+    }
+
+    container.addEventListener('mousemove', onMove)
+    container.addEventListener('mouseleave', onLeave)
+    return () => {
+      container.removeEventListener('mousemove', onMove)
+      container.removeEventListener('mouseleave', onLeave)
+    }
+  }, [])
 
   return (
-    <div className="relative w-full h-[160px] md:h-[200px] flex items-center justify-center overflow-hidden mb-12 rounded-[2rem] border border-white/[0.05] bg-black/20 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]" style={{ perspective: '1200px' }}>
-      
-      {/* 3D ambient glows inside the box */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[150px] bg-emerald-500/[0.06] rounded-full blur-[60px] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[80px] bg-cyan-500/[0.06] rounded-full blur-[50px] pointer-events-none" />
+    <div
+      ref={containerRef}
+      className="relative w-full flex items-center justify-center overflow-hidden mb-12 rounded-[2rem] border border-white/[0.06]"
+      style={{
+        height: 340,
+        perspective: '900px',
+        background: 'radial-gradient(ellipse at 50% 60%, #020e07 0%, #000 70%)',
+        boxShadow: 'inset 0 0 120px rgba(0,0,0,0.7)',
+      }}
+    >
+      {/* Ambient glows */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[180px] rounded-full bg-emerald-500/[0.09] blur-[90px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[100px] rounded-full bg-cyan-500/[0.06] blur-[70px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[80px] rounded-full bg-purple-500/[0.05] blur-[60px]" />
+      </div>
 
-      {/* Fade masks for depth masking the edges */}
-      <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#000b06] via-[#000b06]/60 to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#000b06] via-[#000b06]/60 to-transparent z-10 pointer-events-none" />
-
-      <div 
-        className="w-full h-full flex items-center justify-center" 
-        style={{ transformStyle: 'preserve-3d', transform: 'rotateX(-8deg)' }} 
+      {/* 3-D scene */}
+      <div
+        ref={sceneRef}
+        className="w-full h-full flex items-center justify-center will-change-transform"
+        style={{ transformStyle: 'preserve-3d', transform: 'rotateX(-10deg)' }}
       >
-        <div ref={ringRef} className="relative w-0 h-0 will-change-transform" style={{ transformStyle: 'preserve-3d' }}>
-          {items.map((item, i) => {
-            const angle = (i / items.length) * 360
+        {/* Orbital path ellipses */}
+        {[OUTER_RADIUS * 2, INNER_RADIUS * 2].map((d, i) => (
+          <div key={i} aria-hidden="true" className="absolute rounded-full pointer-events-none"
+            style={{
+              width: d, height: d * 0.26,
+              border: `1px solid rgba(255,255,255,${i === 0 ? 0.045 : 0.07})`,
+              transform: 'rotateX(90deg)',
+              boxShadow: i === 1 ? '0 0 20px rgba(52,211,153,0.06)' : undefined,
+            }}
+          />
+        ))}
+
+        {/* Center hub */}
+        <div aria-hidden="true" className="absolute z-20 w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center"
+          style={{
+            background: 'radial-gradient(circle, rgba(52,211,153,0.18) 0%, rgba(34,211,238,0.06) 55%, transparent 100%)',
+            border: '1px solid rgba(52,211,153,0.3)',
+            boxShadow: '0 0 40px rgba(52,211,153,0.25), 0 0 80px rgba(34,211,238,0.08), inset 0 0 24px rgba(52,211,153,0.08)',
+          }}>
+          <span className="font-mono text-[9px] font-bold text-emerald-400 tracking-widest uppercase leading-tight text-center">20+<br/>Skills</span>
+        </div>
+
+        {/* Outer ring — 11 items, slower, counter-clockwise */}
+        <div ref={outerRef} className="absolute w-0 h-0 will-change-transform" style={{ transformStyle: 'preserve-3d' }}>
+          {MARQUEE_ROW_A.map((item, i) => {
+            const angle = (i / MARQUEE_ROW_A.length) * 360
             return (
-              <div 
-                key={i}
-                className="absolute top-1/2 left-1/2 flex items-center gap-2.5 px-5 py-3 rounded-xl border border-white/[0.12] bg-neutral-900/80 backdrop-blur-md shadow-[0_0_30px_-5px_rgba(0,0,0,0.5)] transition-colors hover:bg-black hover:border-white/[0.2] group cursor-default"
+              <div key={i}
+                className="absolute flex items-center gap-2.5 px-4 py-2.5 rounded-xl cursor-default"
                 style={{
-                  transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${radius}px)`,
-                  backfaceVisibility: 'visible'
+                  top: '50%', left: '50%',
+                  transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${OUTER_RADIUS}px)`,
+                  backfaceVisibility: 'visible',
+                  background: 'rgba(8,8,8,0.85)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  backdropFilter: 'blur(8px)',
+                  boxShadow: `0 0 0 1px rgba(255,255,255,0.03), 0 4px 20px rgba(0,0,0,0.5)`,
                 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl" style={{ backgroundImage: `linear-gradient(to bottom right, ${item.hex}, transparent)` }} />
-                <span className="w-2 h-2 rounded-full relative z-10" style={{ background: item.hex, boxShadow: `0 0 12px ${item.hex}` }} />
-                <span className="font-mono text-[13px] text-neutral-300 font-bold whitespace-nowrap relative z-10 group-hover:text-white transition-colors">{item.text}</span>
+                <span className="w-2 h-2 rounded-full shrink-0 flex-none"
+                  style={{ background: item.hex, boxShadow: `0 0 10px ${item.hex}cc` }} />
+                <span className="font-mono text-[13px] font-bold text-neutral-200 whitespace-nowrap">{item.text}</span>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Inner ring — 10 items, faster, clockwise */}
+        <div ref={innerRef} className="absolute w-0 h-0 will-change-transform" style={{ transformStyle: 'preserve-3d' }}>
+          {MARQUEE_ROW_B.map((item, i) => {
+            const angle = (i / MARQUEE_ROW_B.length) * 360
+            return (
+              <div key={i}
+                className="absolute flex items-center gap-2 px-3.5 py-2 rounded-lg cursor-default"
+                style={{
+                  top: '50%', left: '50%',
+                  transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${INNER_RADIUS}px)`,
+                  backfaceVisibility: 'visible',
+                  background: 'rgba(6,6,6,0.8)',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                  backdropFilter: 'blur(6px)',
+                  boxShadow: `0 0 0 1px rgba(255,255,255,0.02), 0 2px 12px rgba(0,0,0,0.4)`,
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full shrink-0 flex-none"
+                  style={{ background: item.hex, boxShadow: `0 0 8px ${item.hex}bb` }} />
+                <span className="font-mono text-[11.5px] font-semibold text-neutral-400 whitespace-nowrap">{item.text}</span>
               </div>
             )
           })}
         </div>
       </div>
+
+      {/* Edge + top/bottom masks */}
+      <div aria-hidden="true" className="absolute inset-y-0 left-0  w-[26%] bg-gradient-to-r from-black  to-transparent z-10 pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-y-0 right-0 w-[26%] bg-gradient-to-l from-black  to-transparent z-10 pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-x-0 top-0    h-[28%] bg-gradient-to-b from-black/70 to-transparent z-10 pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[28%] bg-gradient-to-t from-black/70 to-transparent z-10 pointer-events-none" />
     </div>
   )
 }
