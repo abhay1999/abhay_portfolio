@@ -1,9 +1,77 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ExternalLink, ArrowUpRight, Star, GitFork, BookOpen } from 'lucide-react'
+import { gsap, ScrollTrigger } from '@/lib/gsap'
 import Reveal from '@/components/Reveal'
 import TiltCard from '@/components/TiltCard'
+
+// ─── Animated metric value (count-up for clean integers) ──────────────────────
+
+function AnimatedMetric({ value, className }: { value: string; className: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const obj = useRef({ val: 0 })
+  // Only animate values like "47+", "100%", "3", "5,000+" — skip "~11s", "<15s" etc.
+  const match = value.match(/^(\d[\d,]*)([+%]?)$/)
+
+  useEffect(() => {
+    if (!match) return
+    const el = ref.current
+    if (!el) return
+    const [, numStr, suffix] = match
+    const target = parseInt(numStr.replace(/,/g, ''), 10)
+    const tween = gsap.fromTo(obj.current, { val: 0 }, {
+      val: target,
+      duration: 1.4,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+      onUpdate: () => {
+        if (!el) return
+        const v = Math.round(obj.current.val)
+        el.textContent = (v >= 1000 ? v.toLocaleString() : String(v)) + suffix
+      },
+    })
+    return () => { tween.kill(); ScrollTrigger.getAll().filter(s => s.trigger === el).forEach(s => s.kill()) }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value])
+
+  return <span ref={ref} className={className}>{value}</span>
+}
+
+// ─── Staggered metric strip ───────────────────────────────────────────────────
+
+function MetricStrip({ metrics, metricClass }: {
+  metrics: Array<{ value: string; label: string }>
+  metricClass: string
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const cells = el.querySelectorAll<HTMLElement>('.m-cell')
+    gsap.set(cells, { opacity: 0, y: 10 })
+    const tween = gsap.to(cells, {
+      opacity: 1, y: 0,
+      duration: 0.45, stagger: 0.12, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+    })
+    return () => { tween.kill(); ScrollTrigger.getAll().filter(s => s.trigger === el).forEach(s => s.kill()) }
+  }, [])
+
+  return (
+    <div ref={ref} className="grid grid-cols-3 divide-x divide-white/[0.06] border-b border-white/[0.07]">
+      {metrics.map((m, i) => (
+        <div key={i} className="m-cell flex flex-col items-center py-3.5 px-2 bg-white/[0.015]">
+          <AnimatedMetric value={m.value} className={`font-black text-[22px] leading-none tabular-nums ${metricClass}`} />
+          <span className="font-mono text-[8.5px] text-neutral-600 uppercase tracking-widest mt-1 text-center leading-tight">
+            {m.label}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const GithubIcon = ({ size = 13 }: { size?: number }) => (
@@ -493,18 +561,7 @@ const Projects = () => {
                   </div>
 
                   {/* ── Metric strip ── */}
-                  <div className="grid grid-cols-3 divide-x divide-white/[0.06] border-b border-white/[0.07]">
-                    {project.metrics.map((m, i) => (
-                      <div key={i} className="flex flex-col items-center py-3.5 px-2 bg-white/[0.015]">
-                        <span className={`font-black text-[22px] leading-none tabular-nums ${project.metricClass}`}>
-                          {m.value}
-                        </span>
-                        <span className="font-mono text-[8.5px] text-neutral-600 uppercase tracking-widest mt-1 text-center leading-tight">
-                          {m.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                  <MetricStrip metrics={project.metrics} metricClass={project.metricClass} />
 
                   {/* ── Card content ── */}
                   <div className="flex flex-col flex-1 p-5" style={{ transform: 'translateZ(8px)' }}>

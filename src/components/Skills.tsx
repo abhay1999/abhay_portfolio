@@ -5,6 +5,28 @@ import { Cloud, Server, Globe, Activity } from 'lucide-react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import Reveal from '@/components/Reveal'
 
+// ─── Count-up number ─────────────────────────────────────────────────────────
+
+function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const obj = useRef({ val: 0 })
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const tween = gsap.fromTo(obj.current, { val: 0 }, {
+      val: to,
+      duration: 1.6,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+      onUpdate: () => { if (el) el.textContent = Math.round(obj.current.val) + suffix },
+    })
+    return () => { tween.kill(); ScrollTrigger.getAll().filter(s => s.trigger === el).forEach(s => s.kill()) }
+  }, [to, suffix])
+
+  return <span ref={ref}>0{suffix}</span>
+}
+
 // ─── Circular skill ring ──────────────────────────────────────────────────────
 
 function SkillRing({ level, hex, name }: { level: number; hex: string; name: string }) {
@@ -106,10 +128,10 @@ const CATEGORIES = [
 ]
 
 const STATS = [
-  { value: '20+', label: 'Skills',      color: '#22d3ee' },
-  { value: '4',   label: 'Domains',     color: '#c084fc' },
-  { value: '9+',  label: 'CNCF PRs',   color: '#34d399' },
-  { value: '5yr', label: 'Experience',  color: '#fb923c' },
+  { to: 20, suffix: '+',  label: 'Skills',      color: '#22d3ee' },
+  { to: 4,  suffix: '',   label: 'Domains',      color: '#c084fc' },
+  { to: 9,  suffix: '+',  label: 'CNCF PRs',    color: '#34d399' },
+  { to: 5,  suffix: 'yr', label: 'Experience',   color: '#fb923c' },
 ]
 
 // All skills flat, with category hex, for the marquee
@@ -198,7 +220,7 @@ const Skills = () => (
               {STATS.map(s => (
                 <div key={s.label} className="flex flex-col gap-1">
                   <span className="font-black text-3xl sm:text-4xl tabular-nums leading-none" style={{ color: s.color }}>
-                    {s.value}
+                    <CountUp to={s.to} suffix={s.suffix} />
                   </span>
                   <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-500">{s.label}</span>
                 </div>
