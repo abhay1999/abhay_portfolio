@@ -1,9 +1,22 @@
 "use client"
 
 import { useRef, useEffect } from 'react'
-import { Cloud, Server, Globe, Activity, Box, Layout } from 'lucide-react'
+import { Cloud, Server, Globe, Activity, Box } from 'lucide-react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import Reveal from '@/components/Reveal'
+
+// ─── React atom logo ─────────────────────────────────────────────────────────
+
+function ReactIcon({ size = 20, style }: { size?: number; style?: React.CSSProperties }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={style} aria-hidden="true">
+      <circle cx="50" cy="50" r="6" fill="currentColor" />
+      <ellipse cx="50" cy="50" rx="46" ry="16" stroke="currentColor" strokeWidth="4.5" />
+      <ellipse cx="50" cy="50" rx="46" ry="16" stroke="currentColor" strokeWidth="4.5" transform="rotate(60 50 50)" />
+      <ellipse cx="50" cy="50" rx="46" ry="16" stroke="currentColor" strokeWidth="4.5" transform="rotate(120 50 50)" />
+    </svg>
+  )
+}
 
 // ─── Count-up number ─────────────────────────────────────────────────────────
 
@@ -94,7 +107,7 @@ const CAPABILITIES = [
     hex: '#c084fc', tools: ['Go', 'APIs', 'gRPC', 'CLI Tooling']
   },
   {
-    id: 'frontend', title: 'Frontend Delivery', icon: Layout,
+    id: 'frontend', title: 'Frontend Delivery', icon: ReactIcon,
     description: 'Crafts responsive user interfaces and engaging product experiences utilizing React and Next.js.',
     hex: '#fb923c', tools: ['React', 'Next.js', 'Product Interfaces']
   },
@@ -112,8 +125,9 @@ const MARQUEE_ROW_A = [
   { text: 'Kubernetes', hex: '#34d399' }, { text: 'Helm', hex: '#34d399' },
   { text: 'Docker', hex: '#34d399' },     { text: 'ArgoCD', hex: '#34d399' },
   { text: 'GitOps', hex: '#34d399' },     { text: 'Go (Golang)', hex: '#c084fc' },
-  { text: 'Node.js', hex: '#c084fc' },    { text: 'gRPC', hex: '#c084fc' },
-  { text: 'TypeScript', hex: '#c084fc' }, { text: 'GraphQL', hex: '#c084fc' },
+  { text: 'React', hex: '#61dafb' },      { text: 'Node.js', hex: '#c084fc' },
+  { text: 'gRPC', hex: '#c084fc' },       { text: 'TypeScript', hex: '#c084fc' },
+  { text: 'GraphQL', hex: '#c084fc' },
 ]
 
 const MARQUEE_ROW_B = [
