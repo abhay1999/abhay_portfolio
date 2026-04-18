@@ -580,7 +580,7 @@ const DevOpsPlayground = () => {
   }
 
   return (
-    <section id="playground" className="relative py-24 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 30% 50%, #001a08 0%, #000f05 45%, #000 100%)' }}>
+    <section id="playground" className="relative py-32 md:py-48 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 30% 50%, #001a08 0%, #000f05 45%, #000 100%)' }}>
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
         <div className="hidden sm:block absolute inset-0 opacity-[0.02]" style={{
           backgroundImage: 'linear-gradient(rgba(52,211,153,0.9) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,0.9) 1px,transparent 1px)',
@@ -597,17 +597,7 @@ const DevOpsPlayground = () => {
 
         {/* Header */}
         <Reveal className="mb-10">
-          <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
-            <span className="text-emerald-400">$</span>
-            <span className="text-neutral-400">kubectl</span>
-            <span className="hidden sm:inline text-neutral-600">--context=demo</span>
-            <span className="text-white">›</span>
-            <span className="text-emerald-400">playground</span>
-            <span className="text-neutral-300">.start()</span>
-            <span className="cursor-blink w-1.5 h-3.5 bg-emerald-400 inline-block ml-0.5" />
-          </div>
           <div className="flex items-end gap-5">
-            <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">07.</span>
             <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">DevOps</span>{' '}
               <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Playground</span>

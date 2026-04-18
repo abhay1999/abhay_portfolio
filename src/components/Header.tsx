@@ -84,23 +84,28 @@ const Header = () => {
       style={{ opacity: 0 }}
     >
       <div
-        className={`pointer-events-auto flex items-center justify-between w-full max-w-5xl px-6 py-3 rounded-2xl transition-all duration-500
+        className={`pointer-events-auto flex items-center justify-between mx-auto transition-all duration-500 rounded-full origin-top
           ${scrolled
-            ? 'bg-neutral-900/40 backdrop-blur-xl border border-white/10 shadow-2xl'
-            : 'bg-transparent border border-transparent'
+            ? 'w-[90%] max-w-4xl px-4 py-2.5 bg-neutral-950/85 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8),0_0_15px_-5px_rgba(34,211,238,0.1)] scale-[0.98] -translate-y-0.5'
+            : 'w-full max-w-5xl px-6 py-3.5 bg-neutral-950/40 backdrop-blur-md border border-white/5 shadow-lg'
           }`}
       >
         {/* Logo */}
         <a
           href="#home"
           onClick={e => scrollToSection(e, '#home')}
-          className="text-xl font-bold tracking-tighter text-white"
+          className="flex items-center gap-3 group"
         >
-          Abhay.
+          <div className={`flex items-center justify-center rounded-full bg-gradient-to-br from-cyan-400/20 to-purple-400/20 border border-white/10 group-hover:border-cyan-400/50 transition-all duration-300 ${scrolled ? 'w-8 h-8' : 'w-9 h-9'}`}>
+            <span className={`font-mono font-bold text-white group-hover:text-cyan-400 transition-colors ${scrolled ? 'text-xs' : 'text-sm'}`}>A.</span>
+          </div>
+          <span className={`font-mono text-white tracking-widest uppercase transition-all duration-300 ${scrolled ? 'text-[10px] opacity-0 w-0 overflow-hidden' : 'text-xs opacity-100'}`}>
+            System
+          </span>
         </a>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-1.5 p-1 rounded-full bg-black/20 border border-white/5">
           {NAV_ITEMS.map(item => {
             const isActive = activeSection === item.id
             return (
@@ -108,40 +113,43 @@ const Header = () => {
                 key={item.name}
                 href={item.href}
                 onClick={e => scrollToSection(e, item.href)}
-                className={`relative text-sm font-medium transition-colors duration-300 pb-0.5 ${
-                  isActive ? 'text-white' : 'text-neutral-400 hover:text-white'
+                className={`relative px-4 py-1.5 text-[13px] font-normal tracking-wide transition-all duration-300 rounded-full ${
+                  isActive ? 'text-cyan-50' : 'text-neutral-400 hover:text-neutral-200 hover:bg-white/5'
                 }`}
               >
-                {item.name}
-                {/* Glowing active dot */}
-                <span
-                  className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-cyan-400 transition-all duration-400"
-                  style={{
-                    opacity: isActive ? 1 : 0,
-                    transform: `translateX(-50%) scale(${isActive ? 1 : 0})`,
-                    boxShadow: isActive ? '0 0 8px 2px rgba(34,211,238,0.8)' : 'none',
-                  }}
-                />
+                {isActive && (
+                  <span className="absolute inset-0 bg-white/10 rounded-full border border-cyan-500/30 shadow-[inset_0_0_12px_rgba(34,211,238,0.1)]" />
+                )}
+                <span className="relative z-10">{item.name}</span>
+                {/* Glowing active indicator */}
+                {isActive && (
+                  <span className="absolute -bottom-px left-1/2 -translate-x-1/2 w-4 h-px bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
+                )}
               </a>
             )
           })}
+        </nav>
+
+        {/* CTA */}
+        <div className="hidden md:block">
           <a
             href="#contact"
             onClick={e => scrollToSection(e, '#contact')}
-            className="px-4 py-2 text-sm font-medium text-black bg-white rounded-lg hover:bg-neutral-200 transition-colors"
+            className={`flex items-center gap-2 px-5 font-mono font-bold tracking-widest text-black bg-cyan-400 rounded-full hover:bg-cyan-300 transition-all hover:shadow-[0_0_20px_-5px_rgba(34,211,238,0.6)] hover:scale-105 active:scale-95 uppercase ${scrolled ? 'py-2 text-[10px]' : 'py-2.5 text-xs'}`}
           >
-            Hire Me
+            <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+            HIRE ME
           </a>
-        </nav>
+        </div>
 
         {/* Mobile toggle */}
         <button
           onClick={() => setIsMenuOpen(v => !v)}
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMenuOpen}
-          className="md:hidden p-3 -mr-2 text-neutral-400 hover:text-white transition-colors"
+          className="md:hidden p-2 text-neutral-400 hover:text-cyan-400 transition-colors"
         >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 

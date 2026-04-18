@@ -138,7 +138,7 @@ const TechRadar = () => {
   const quadLabelPos = QUAD_START.map(start => svgCoords(start + QUAD_SPAN / 2, 248))
 
   return (
-    <section id="tech-radar" className="relative py-24 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 35% 45%, #002020 0%, #001212 45%, #000 100%)' }}>
+    <section id="tech-radar" className="relative py-32 md:py-48 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 35% 45%, #002020 0%, #001212 45%, #000 100%)' }}>
 
       {/* ── Background ───────────────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
@@ -155,17 +155,7 @@ const TechRadar = () => {
 
         {/* ── Section Header ──────────────────────────────────────────────── */}
         <Reveal className="mb-12">
-          <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
-            <span className="text-violet-400">$</span>
-            <span className="text-neutral-400">radar</span>
-            <span className="text-neutral-600">~/tech</span>
-            <span className="text-white">›</span>
-            <span className="text-violet-400">blips</span>
-            <span className="text-neutral-300">.plot()</span>
-            <span className="cursor-blink w-1.5 h-3.5 bg-violet-400 inline-block ml-0.5" />
-          </div>
           <div className="flex items-end gap-5">
-            <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">08.</span>
             <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Tech</span>{' '}
               <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">Radar</span>

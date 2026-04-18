@@ -19,42 +19,57 @@ const Footer = () => {
     <footer className="relative bg-black border-t border-white/5 pt-16 pb-8 overflow-hidden z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
-          <div className="text-center md:text-left">
-            <a href="#home" className="text-3xl font-bold tracking-tighter text-white inline-block mb-4">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
+          <div className="max-w-xs">
+            <a href="#home" className="text-2xl font-bold tracking-tighter text-white inline-block mb-3">
               Abhay.
             </a>
-            <p className="text-neutral-500 max-w-sm">
-              Crafting premium digital experiences through scalable engineering and modern design.
+            <p className="text-neutral-500 text-sm leading-relaxed mb-6">
+              I architect reliable, scalable cloud-native systems and automation pipelines.
             </p>
+            {/* Social Links Minimum */}
+            <div className="flex gap-3">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={link.label}
+                  className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-neutral-400 bg-white/5 hover:bg-white hover:text-black hover:border-white transition-all duration-300"
+                >
+                  <link.icon size={16} />
+                </a>
+              ))}
+            </div>
           </div>
 
-          <div className="flex gap-4">
-            {socialLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={link.label}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-neutral-400 bg-white/5 hover:bg-white hover:text-black hover:border-white transition-all duration-300 shadow-lg"
-              >
-                <link.icon size={20} />
-              </a>
-            ))}
+          <div className="flex gap-12 md:gap-20 text-sm text-neutral-500">
+            <div>
+              <p className="font-semibold text-white mb-4">Focus</p>
+              <ul className="space-y-2">
+                <li>Cloud Infrastructure</li>
+                <li>Kubernetes & DevOps</li>
+                <li>Backend Engineering</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-sm text-neutral-600 gap-4">
-          <p>© {currentYear} Abhay Chaurasiya. All rights reserved.</p>
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-xs text-neutral-600 gap-4">
+          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+            <p>© {currentYear} Abhay Chaurasiya. All rights reserved.</p>
+            <p className="hidden md:block text-neutral-800">•</p>
+            <p>Built with Next.js & Tailwind. Deployed on Vercel.</p>
+          </div>
           
           <button 
             onClick={scrollToTop}
-            className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors uppercase tracking-widest font-medium text-xs group"
+            className="flex items-center gap-2 text-neutral-500 hover:text-white transition-colors uppercase tracking-widest font-mono text-[10px] group"
           >
             <span>Back to top</span>
-            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-colors">
-              <ChevronUp size={14} className="group-hover:-translate-y-1 transition-transform" />
+            <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-colors">
+              <ChevronUp size={12} className="group-hover:-translate-y-0.5 transition-transform" />
             </div>
           </button>
         </div>

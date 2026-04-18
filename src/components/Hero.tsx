@@ -136,8 +136,8 @@ const Hero = () => {
       </div>
 
       {/* Ambient colour orbs */}
-      <div aria-hidden="true" className="absolute top-0 left-1/4 w-[700px] h-[600px] bg-cyan-500/[0.07] rounded-full blur-[200px] pointer-events-none" />
-      <div aria-hidden="true" className="absolute bottom-0 right-1/4 w-[600px] h-[500px] bg-purple-500/[0.07] rounded-full blur-[180px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute top-0 left-1/4 w-[700px] h-[600px] bg-cyan-500/[0.02] rounded-full blur-[200px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute bottom-0 right-1/4 w-[600px] h-[500px] bg-purple-500/[0.02] rounded-full blur-[180px] pointer-events-none" />
       <div aria-hidden="true" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[350px] bg-emerald-500/[0.03] rounded-full blur-[220px] pointer-events-none" />
 
       {/* ── Content ──────────────────────────────────────────────────────── */}

@@ -146,7 +146,7 @@ const InfraFlow = () => {
   }
 
   return (
-    <section id="infraflow" className="relative py-20 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 40% 55%, #001520 0%, #000b12 45%, #000 100%)' }}>
+    <section id="infraflow" className="relative py-32 md:py-48 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 40% 55%, #001520 0%, #000b12 45%, #000 100%)' }}>
 
       {/* Background grid */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0">
@@ -160,15 +160,6 @@ const InfraFlow = () => {
 
         {/* ── Header ──────────────────────────────────────────────────────── */}
         <Reveal className="mb-10">
-          <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
-            <span className="text-emerald-400">$</span>
-            <span className="text-neutral-400">kubectl</span>
-            <span className="text-neutral-600">~/prod-cluster</span>
-            <span className="text-white">›</span>
-            <span className="text-emerald-400">watch</span>
-            <span className="text-neutral-300">--self-healing</span>
-            <span className="cursor-blink w-1.5 h-3.5 bg-emerald-400 inline-block ml-0.5" />
-          </div>
           <div className="flex items-end gap-5">
             <div>
               <span className="text-sm font-medium uppercase tracking-widest text-neutral-500">Live Demo</span>

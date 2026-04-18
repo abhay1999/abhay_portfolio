@@ -18,10 +18,10 @@ const SKILL_BARS = [
 ]
 
 const BASE_STATS = [
-  { key: 'exp',      value: '2+',   label: 'Years Exp',  Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.05]',    border: 'border-cyan-500/20'    },
-  { key: 'projects', value: '15+',  label: 'Projects',   Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.05]',  border: 'border-purple-500/20'  },
-  { key: 'leetcode', value: '600+', label: 'LeetCode',   Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.05]', border: 'border-emerald-500/20' },
-  { key: 'prs',      value: '8+',   label: 'Merged PRs', Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.05]',   border: 'border-amber-500/20'   },
+  { key: 'exp',      value: '2+',   label: 'Years Exp',  Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.02]',    border: 'border-cyan-500/20'    },
+  { key: 'projects', value: '15+',  label: 'Projects',   Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.02]',  border: 'border-purple-500/20'  },
+  { key: 'leetcode', value: '600+', label: 'LeetCode',   Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.02]', border: 'border-emerald-500/20' },
+  { key: 'prs',      value: '8+',   label: 'Merged PRs', Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.02]',   border: 'border-amber-500/20'   },
 ]
 
 const CODING = {
@@ -123,12 +123,12 @@ const About = () => {
   ]
 
   return (
-    <section id="about" className="relative py-20 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 30% 60%, #031a0f 0%, #011008 45%, #000 100%)' }}>
+    <section id="about" className="relative py-32 md:py-48 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 30% 60%, #031a0f 0%, #011008 45%, #000 100%)' }}>
 
       {/* Ambient orbs */}
       <div aria-hidden="true" className="absolute top-1/4 left-0 w-[520px] h-[520px] bg-cyan-500/[0.10] rounded-full blur-[160px] pointer-events-none" />
-      <div aria-hidden="true" className="absolute bottom-1/4 right-0 w-[420px] h-[420px] bg-emerald-500/[0.09] rounded-full blur-[140px] pointer-events-none" />
-      <div aria-hidden="true" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[250px] bg-emerald-500/[0.07] rounded-full blur-[180px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute bottom-1/4 right-0 w-[420px] h-[420px] bg-emerald-500/[0.02] rounded-full blur-[140px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[250px] bg-emerald-500/[0.02] rounded-full blur-[180px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 

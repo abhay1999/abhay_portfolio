@@ -165,7 +165,7 @@ const SystemsExperiments = () => {
   const fmtDuration = (ms: number) => ms >= 60000 ? `${Math.floor(ms / 60000)}m ${Math.floor((ms % 60000) / 1000)}s` : `${(ms / 1000).toFixed(1)}s`
 
   return (
-    <section id="systems" className="relative py-20 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 50% 60%, #080628 0%, #040316 45%, #000 100%)' }}>
+    <section id="systems" className="relative py-32 md:py-48 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 50% 60%, #080628 0%, #040316 45%, #000 100%)' }}>
 
       {/* Background */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0">
@@ -179,15 +179,6 @@ const SystemsExperiments = () => {
 
         {/* ── Header ──────────────────────────────────────────────────────── */}
         <Reveal className="mb-10">
-          <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
-            <span className="text-blue-400">$</span>
-            <span className="text-neutral-400">experiments</span>
-            <span className="text-neutral-600">~/systems</span>
-            <span className="text-white">›</span>
-            <span className="text-blue-400">pipeline</span>
-            <span className="text-neutral-300">.trigger()</span>
-            <span className="cursor-blink w-1.5 h-3.5 bg-blue-400 inline-block ml-0.5" />
-          </div>
           <div className="flex items-end gap-5">
             <div>
               <span className="text-sm font-medium uppercase tracking-widest text-neutral-500">Systems</span>

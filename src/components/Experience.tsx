@@ -44,7 +44,7 @@ const EDU = {
 }
 
 const Experience = () => (
-  <section id="experience" className="relative py-28 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 75% 50%, #12082a 0%, #07041c 45%, #000 100%)' }}>
+  <section id="experience" className="relative py-32 md:py-48 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 75% 50%, #12082a 0%, #07041c 45%, #000 100%)' }}>
 
     {/* Background */}
     <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
@@ -56,17 +56,7 @@ const Experience = () => (
 
       {/* Section Header */}
       <Reveal className="mb-14">
-        <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
-          <span className="text-purple-400">$</span>
-          <span className="text-neutral-400">resume</span>
-          <span className="hidden sm:inline text-neutral-600">~/career</span>
-          <span className="text-white">›</span>
-          <span className="text-cyan-400">timeline</span>
-          <span className="text-neutral-300">.render()</span>
-          <span className="cursor-blink w-1.5 h-3.5 bg-purple-400 inline-block ml-0.5" />
-        </div>
         <div className="flex items-end gap-5">
-          <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">03.</span>
           <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
             <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Experience</span>{' '}
             <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">&amp; Education</span>

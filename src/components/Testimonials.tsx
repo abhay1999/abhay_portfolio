@@ -61,7 +61,7 @@ const TESTIMONIALS = [
 
 const Testimonials = () => {
   return (
-    <section id="testimonials" className="relative py-32 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 55% 40%, #100828 0%, #060416 45%, #000 100%)' }}>
+    <section id="testimonials" className="relative py-32 md:py-48 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 55% 40%, #100828 0%, #060416 45%, #000 100%)' }}>
 
       {/* ── Background System ───────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
@@ -118,15 +118,6 @@ const Testimonials = () => {
         {/* ── Section Header ───────────────────────────────────────────────── */}
         <Reveal className="mb-14">
           {/* Terminal prompt */}
-          <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
-            <span className="text-purple-400">$</span>
-            <span className="text-neutral-400">social</span>
-            <span className="hidden sm:inline text-neutral-600">~/proof</span>
-            <span className="text-white">›</span>
-            <span className="text-cyan-400">endorsements</span>
-            <span className="text-neutral-300">.fetch()</span>
-            <span className="cursor-blink w-1.5 h-3.5 bg-cyan-400 inline-block ml-0.5" />
-          </div>
 
           <div className="flex items-end gap-5">
             <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">

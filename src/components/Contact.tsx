@@ -103,7 +103,7 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact" className="relative py-32 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 50% 70%, #050a28 0%, #020516 45%, #000 100%)' }}>
+    <section id="contact" className="relative py-32 md:py-48 overflow-hidden" style={{ background: 'radial-gradient(ellipse at 50% 70%, #050a28 0%, #020516 45%, #000 100%)' }}>
 
       {/* ── Background System ───────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 select-none">
@@ -167,18 +167,8 @@ const Contact = () => {
         {/* ── Section Header ───────────────────────────────────────────────── */}
         <Reveal className="mb-14">
           {/* Terminal prompt */}
-          <div className="flex items-center gap-2 mb-5 font-mono text-xs text-neutral-500">
-            <span className="text-purple-400">$</span>
-            <span className="text-neutral-400">comm</span>
-            <span className="text-neutral-600">~/channel</span>
-            <span className="text-white">›</span>
-            <span className="text-cyan-400">msg_transmit</span>
-            <span className="text-neutral-300">.open()</span>
-            <span className="cursor-blink w-1.5 h-3.5 bg-cyan-400 inline-block ml-0.5" />
-          </div>
 
           <div className="flex items-end gap-5">
-            <span className="text-sm font-medium uppercase tracking-widest text-neutral-500 mb-1.5">09.</span>
             <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Get In</span>{' '}
               <span className="font-light italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Touch</span>
