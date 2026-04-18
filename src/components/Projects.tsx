@@ -337,40 +337,45 @@ const Projects = () => {
     })
   }, [])
 
-  // ── GSAP horizontal scroll (desktop only) ──────────────────────────────────
+  // ── Drag-to-scroll + progress dots sync ────────────────────────────────────
   useEffect(() => {
-    const section = sectionRef.current
-    const track   = trackRef.current
-    if (!section || !track) return
+    const track = trackRef.current
+    if (!track) return
 
-    const mm = gsap.matchMedia()
+    // Sync progress dots to native scroll position
+    const onScroll = () => {
+      const max = track.scrollWidth - track.clientWidth
+      if (max <= 0) return
+      const idx = Math.round((track.scrollLeft / max) * (FEATURED.length - 1))
+      setActiveIdx(idx)
+    }
+    track.addEventListener('scroll', onScroll, { passive: true })
 
-    mm.add('(min-width: 768px)', () => {
-      const getScrollDist = () => track.scrollWidth - window.innerWidth
+    // Mouse drag support
+    let isDown = false, startX = 0, startScrollLeft = 0
+    const onMouseDown = (e: MouseEvent) => {
+      isDown = true
+      track.style.cursor = 'grabbing'
+      startX = e.pageX
+      startScrollLeft = track.scrollLeft
+    }
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDown) return
+      e.preventDefault()
+      track.scrollLeft = startScrollLeft - (e.pageX - startX)
+    }
+    const onMouseUp = () => { isDown = false; track.style.cursor = 'grab' }
 
-      const tween = gsap.to(track, {
-        x: () => -getScrollDist(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: () => `+=${getScrollDist()}`,
-          scrub: 0.6,
-          pin: true,
-          pinType: 'transform',
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: self => {
-            const idx = Math.round(self.progress * (FEATURED.length - 1))
-            setActiveIdx(idx)
-          },
-        },
-      })
+    track.addEventListener('mousedown', onMouseDown)
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
 
-      return () => { tween.kill() }
-    })
-
-    return () => mm.revert()
+    return () => {
+      track.removeEventListener('scroll', onScroll)
+      track.removeEventListener('mousedown', onMouseDown)
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
+    }
   }, [])
 
   return (
@@ -387,10 +392,10 @@ const Projects = () => {
       </div>
 
       {/* ── Desktop: horizontal carousel ────────────────────────────────── */}
-      <div className="hidden md:flex flex-col h-screen relative z-10">
+      <div className="hidden md:block relative z-10 py-24">
 
         {/* Header */}
-        <div className="shrink-0 pt-24 pb-6 px-[max(2rem,calc((100vw-80rem)/2))]">
+        <div className="px-[max(2rem,calc((100vw-80rem)/2))] mb-6">
           <Reveal className="mb-1">
             <div className="flex items-center gap-2 mb-3 font-mono text-xs text-neutral-500">
               <span className="text-cyan-400">$</span>
@@ -424,19 +429,21 @@ const Projects = () => {
               </div>
             ))}
             <span className="ml-2 text-[10px] font-mono text-neutral-600">
-              {activeIdx + 1} / {FEATURED.length} · scroll →
+              {activeIdx + 1} / {FEATURED.length} · drag →
             </span>
             <ChevronRight size={12} className="text-neutral-700 animate-pulse" />
           </div>
         </div>
 
-        {/* Scrolling track */}
-        <div className="flex-1 flex items-center overflow-visible">
-          <div
-            ref={trackRef}
-            className="flex gap-5 pl-[max(2rem,calc((100vw-80rem)/2))] pr-24 will-change-transform"
-            style={{ paddingTop: '0.5rem', paddingBottom: '0.5rem' }}
-          >
+        {/* Scrollable track — native horizontal scroll, no page pin */}
+        <div
+          ref={trackRef}
+          className="flex gap-5 overflow-x-auto scroll-smooth cursor-grab select-none
+                     pl-[max(2rem,calc((100vw-80rem)/2))] pr-16
+                     [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+                     scroll-snap-type-x-mandatory"
+          style={{ paddingTop: '0.5rem', paddingBottom: '1.5rem', scrollSnapType: 'x mandatory' }}
+        >
             {FEATURED.map((project, idx) => {
               const repoStats = project.repo ? stats[project.repo] : undefined
               const { Diagram } = project
@@ -444,7 +451,7 @@ const Projects = () => {
                 <div
                   key={project.id}
                   className="group w-[420px] xl:w-[460px] flex-shrink-0 [perspective:900px]"
-                  style={{ height: 'calc(100vh - 220px)', maxHeight: 560 }}
+                  style={{ height: 540, scrollSnapAlign: 'start' }}
                 >
                   <TiltCard
                     className={`relative flex flex-col h-full rounded-3xl overflow-hidden border transition-all duration-500 bg-white/[0.04] backdrop-blur-xl ${project.borderClass}`}
@@ -542,7 +549,6 @@ const Projects = () => {
             </div>
           </div>
         </div>
-      </div>
 
       {/* ── Mobile: vertical stack ───────────────────────────────────────── */}
       <div className="md:hidden py-24 px-4 sm:px-6 relative z-10">
