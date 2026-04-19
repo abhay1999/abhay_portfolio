@@ -2,7 +2,17 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from '@/lib/gsap'
-import { Mail, Linkedin, Code, Trophy, GitMerge, Star, Users, ArrowRight, Cloud, Server, GitBranch } from 'lucide-react'
+import {
+  Activity,
+  ArrowRight,
+  Code,
+  Download,
+  GitMerge,
+  Linkedin,
+  Mail,
+  ShieldCheck,
+  Trophy,
+} from 'lucide-react'
 import Image from 'next/image'
 
 const GithubIcon = ({ size = 20 }: { size?: number }) => (
@@ -11,64 +21,45 @@ const GithubIcon = ({ size = 20 }: { size?: number }) => (
   </svg>
 )
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
 const SOCIALS = [
-  { Icon: GithubIcon, href: 'https://github.com/abhay1999',                        label: 'GitHub'     },
-  { Icon: Linkedin,   href: 'https://linkedin.com/in/abhay-chaurasiya',            label: 'LinkedIn'   },
-  { Icon: Code,       href: 'https://leetcode.com/u/imt_2018005/',                 label: 'LeetCode'   },
-  { Icon: Trophy,     href: 'https://www.hackerrank.com/profile/abhaychaurasiya1', label: 'HackerRank' },
+  { Icon: GithubIcon, href: 'https://github.com/abhay1999', label: 'GitHub' },
+  { Icon: Linkedin, href: 'https://linkedin.com/in/abhay-chaurasiya', label: 'LinkedIn' },
+  { Icon: Code, href: 'https://leetcode.com/u/imt_2018005/', label: 'LeetCode' },
+  { Icon: Trophy, href: 'https://www.hackerrank.com/profile/abhaychaurasiya1', label: 'HackerRank' },
 ]
-
-const PROOF = [
-  { Icon: GitMerge, value: '3 CLs',  detail: 'golang/tools · ships in gopls',  accent: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
-  { Icon: Star,     value: '9+ PRs', detail: 'merged · CNCF ecosystem',         accent: 'text-cyan-400',    bg: 'bg-cyan-500/10',    border: 'border-cyan-500/20'   },
-  { Icon: Users,    value: '5k+',    detail: 'concurrent users served',          accent: 'text-purple-400',  bg: 'bg-purple-500/10',  border: 'border-purple-500/20' },
-]
-
-const PARTICLES = [
-  { x: '12%', y: '18%', w: 8, h: 8, color: 'bg-cyan-400',    delay: '0s'   },
-  { x: '88%', y: '14%', w: 6, h: 6, color: 'bg-purple-400',  delay: '0.6s' },
-  { x: '68%', y: '82%', w: 8, h: 8, color: 'bg-emerald-400', delay: '1.1s' },
-  { x: '22%', y: '72%', w: 6, h: 6, color: 'bg-amber-400',   delay: '1.7s' },
-  { x: '50%', y: '8%',  w: 5, h: 5, color: 'bg-cyan-300',    delay: '0.3s' },
-  { x: '92%', y: '52%', w: 5, h: 5, color: 'bg-purple-300',  delay: '0.9s' },
-  { x: '8%',  y: '44%', w: 6, h: 6, color: 'bg-cyan-400',    delay: '2.2s' },
-  { x: '58%', y: '92%', w: 5, h: 5, color: 'bg-emerald-300', delay: '1.4s' },
-  { x: '34%', y: '6%',  w: 4, h: 4, color: 'bg-purple-400',  delay: '0.7s' },
-  { x: '78%', y: '62%', w: 4, h: 4, color: 'bg-amber-300',   delay: '1.9s' },
-]
-
-// ─── Terminal typewriter data ──────────────────────────────────────────────────
 
 type TLine = { type: 'cmd' | 'output' | 'blank'; text: string; cls?: string }
 
 const TERMINAL_LINES: TLine[] = [
-  { type: 'cmd',    text: 'whoami' },
-  { type: 'output', text: 'abhay.chaurasiya — DevOps · Platform · Go', cls: 'text-emerald-400' },
-  { type: 'blank',  text: '' },
-  { type: 'cmd',    text: 'cat mission.txt' },
-  { type: 'output', text: 'Build cloud systems that ship fast', cls: 'text-neutral-200' },
-  { type: 'output', text: 'and heal themselves.', cls: 'text-neutral-200' },
-  { type: 'blank',  text: '' },
-  { type: 'cmd',    text: 'git log --oneline -3' },
-  { type: 'output', text: '[gopls] golang/tools · stringscut analyzer', cls: 'text-sky-400' },
-  { type: 'output', text: '[gopls] golang/tools · slicesbackward', cls: 'text-sky-400' },
-  { type: 'output', text: '[CNCF]  jaeger · Go SDK dashboard gen', cls: 'text-cyan-400' },
-  { type: 'blank',  text: '' },
-  { type: 'cmd',    text: 'systemctl status career' },
-  { type: 'output', text: '● Available · open to hire', cls: 'text-emerald-400' },
-  { type: 'output', text: '  Target: DevOps / Platform / Go roles', cls: 'text-neutral-500' },
+  { type: 'cmd', text: 'boot mission-control' },
+  { type: 'output', text: 'Mission Control online', cls: 'text-emerald-400' },
+  { type: 'blank', text: '' },
+  { type: 'cmd', text: 'identify operator' },
+  { type: 'output', text: 'Abhay Chaurasiya — DevOps · Platform · Go', cls: 'text-cyan-300' },
+  { type: 'blank', text: '' },
+  { type: 'cmd', text: 'cat mission.txt' },
+  { type: 'output', text: 'Build cloud systems that ship fast', cls: 'text-neutral-100' },
+  { type: 'output', text: 'and heal themselves.', cls: 'text-neutral-100' },
+  { type: 'blank', text: '' },
+  { type: 'cmd', text: 'tail -n 3 live-proof.log' },
+  { type: 'output', text: '[MERGED] golang/tools · 3 CLs', cls: 'text-emerald-400' },
+  { type: 'output', text: '[MERGED] CNCF ecosystem · 9+ PRs', cls: 'text-cyan-300' },
+  { type: 'output', text: '[STATUS] Available · open to hire', cls: 'text-amber-300' },
 ]
 
-// ─── Terminal Typewriter ───────────────────────────────────────────────────────
+const LIVE_FEED = [
+  'sync: gopls analyzers deployed',
+  'signal: Jaeger dashboard generator merged',
+  'health: platform services nominal',
+  'status: accepting DevOps / Platform / Go interviews',
+]
 
 function TerminalTypewriter() {
-  const [shown, setShown]         = useState<TLine[]>([])
-  const [typing, setTyping]       = useState<string | null>(null)
+  const [shown, setShown] = useState<TLine[]>([])
+  const [typing, setTyping] = useState<string | null>(null)
   const [typingCls, setTypingCls] = useState('')
   const [typingType, setTypingType] = useState<'cmd' | 'output'>('cmd')
-  const [finished, setFinished]   = useState(false)
+  const [finished, setFinished] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -80,55 +71,58 @@ function TerminalTypewriter() {
         if (!cancelled) setFinished(true)
         return
       }
+
       const line = TERMINAL_LINES[idx]
 
       if (line.type === 'blank') {
-        const t = setTimeout(() => {
+        const timer = setTimeout(() => {
           if (cancelled) return
-          setShown(s => [...s, line])
+          setShown((prev) => [...prev, line])
           runLine(idx + 1)
-        }, 160)
-        timers.push(t)
+        }, 150)
+        timers.push(timer)
         return
       }
 
-      const speed = line.type === 'cmd' ? 52 : 13
       let charCount = 0
+      const speed = line.type === 'cmd' ? 32 : 11
 
-      setTypingType(line.type as 'cmd' | 'output')
+      setTypingType(line.type)
       setTypingCls(line.cls ?? '')
       setTyping('')
 
       const typeChar = () => {
         if (cancelled) return
-        charCount++
+        charCount += 1
         setTyping(line.text.slice(0, charCount))
+
         if (charCount < line.text.length) {
-          const t = setTimeout(typeChar, speed)
-          timers.push(t)
-        } else {
-          const pause = line.type === 'cmd' ? 380 : 70
-          const t = setTimeout(() => {
-            if (cancelled) return
-            setShown(s => [...s, line])
-            setTyping(null)
-            runLine(idx + 1)
-          }, pause)
-          timers.push(t)
+          const timer = setTimeout(typeChar, speed)
+          timers.push(timer)
+          return
         }
+
+        const timer = setTimeout(() => {
+          if (cancelled) return
+          setShown((prev) => [...prev, line])
+          setTyping(null)
+          runLine(idx + 1)
+        }, line.type === 'cmd' ? 260 : 70)
+        timers.push(timer)
       }
 
       typeChar()
     }
 
-    // Small initial delay so the terminal window animates in first
-    const init = setTimeout(() => runLine(0), 600)
+    const init = setTimeout(() => runLine(0), 450)
     timers.push(init)
 
-    return () => { cancelled = true; timers.forEach(clearTimeout) }
+    return () => {
+      cancelled = true
+      timers.forEach(clearTimeout)
+    }
   }, [])
 
-  // Auto-scroll terminal body
   useEffect(() => {
     if (bodyRef.current) {
       bodyRef.current.scrollTop = bodyRef.current.scrollHeight
@@ -137,215 +131,217 @@ function TerminalTypewriter() {
 
   const renderLine = (line: TLine, i: number) => {
     if (line.type === 'blank') return <div key={i} className="h-2" />
-    if (line.type === 'cmd') return (
-      <div key={i} className="flex items-center gap-2">
-        <span className="text-emerald-500 select-none">$</span>
-        <span className="text-white">{line.text}</span>
+
+    if (line.type === 'cmd') {
+      return (
+        <div key={i} className="flex items-center gap-2">
+          <span className="text-emerald-500">$</span>
+          <span className="text-neutral-100">{line.text}</span>
+        </div>
+      )
+    }
+
+    return (
+      <div key={i} className={`pl-4 ${line.cls ?? 'text-neutral-400'}`}>
+        {line.text}
       </div>
     )
-    return <div key={i} className={`pl-4 ${line.cls ?? 'text-neutral-400'}`}>{line.text}</div>
   }
 
   return (
-    <div className="font-mono text-[13px] leading-6 h-[272px] overflow-hidden relative" ref={bodyRef}>
-      <div>
-        {shown.map(renderLine)}
+    <div ref={bodyRef} className="h-[238px] overflow-hidden font-mono text-[12px] leading-6 md:text-[13px]">
+      {shown.map(renderLine)}
 
-        {/* Currently typing line */}
-        {typing !== null && (
-          <div>
-            {typingType === 'cmd' ? (
-              <div className="flex items-center gap-2">
-                <span className="text-emerald-500 select-none">$</span>
-                <span className="text-white">{typing}</span>
-                <span className="cursor-blink w-[7px] h-[14px] bg-emerald-400/80 inline-block" />
-              </div>
-            ) : (
-              <div className={`pl-4 ${typingCls || 'text-neutral-400'}`}>
-                {typing}
-                <span className="cursor-blink w-[6px] h-[12px] bg-current/60 inline-block ml-0.5 align-middle" />
-              </div>
-            )}
-          </div>
-        )}
+      {typing !== null && (
+        <div>
+          {typingType === 'cmd' ? (
+            <div className="flex items-center gap-2">
+              <span className="text-emerald-500">$</span>
+              <span className="text-neutral-100">{typing}</span>
+              <span className="cursor-blink inline-block h-[14px] w-[7px] bg-emerald-400/80" />
+            </div>
+          ) : (
+            <div className={`pl-4 ${typingCls || 'text-neutral-400'}`}>
+              {typing}
+              <span className="cursor-blink ml-0.5 inline-block h-[12px] w-[6px] bg-current/60 align-middle" />
+            </div>
+          )}
+        </div>
+      )}
 
-        {/* Idle cursor after all lines done */}
-        {finished && typing === null && (
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-emerald-500 select-none">$</span>
-            <span className="cursor-blink w-[7px] h-[14px] bg-emerald-400/80 inline-block" />
-          </div>
-        )}
-      </div>
+      {finished && typing === null && (
+        <div className="mt-1 flex items-center gap-2">
+          <span className="text-emerald-500">$</span>
+          <span className="cursor-blink inline-block h-[14px] w-[7px] bg-emerald-400/80" />
+        </div>
+      )}
     </div>
   )
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 const Hero = () => {
-  const leftRef   = useRef<HTMLDivElement>(null)
-  const rightRef  = useRef<HTMLDivElement>(null)
-  const proofRef  = useRef<HTMLDivElement>(null)
+  const leftRef = useRef<HTMLDivElement>(null)
+  const rightRef = useRef<HTMLDivElement>(null)
+  const proofRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(leftRef.current,   { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.95, ease: 'power3.out' })
-      gsap.fromTo(rightRef.current,  { opacity: 0, x:  50 }, { opacity: 1, x: 0, duration: 0.95, delay: 0.1, ease: 'power3.out' })
-      gsap.fromTo(proofRef.current,  { opacity: 0, y:  20 }, { opacity: 1, y: 0, duration: 0.8,  delay: 0.55, ease: 'power2.out' })
-      gsap.fromTo(scrollRef.current, { opacity: 0 },          { opacity: 1, duration: 1, delay: 1.6 })
+      gsap.fromTo(leftRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' })
+      gsap.fromTo(rightRef.current, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 1.1, delay: 0.12, ease: 'power3.out' })
+      gsap.fromTo(proofRef.current, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.45, ease: 'power2.out' })
+      gsap.fromTo(scrollRef.current, { opacity: 0 }, { opacity: 1, duration: 1, delay: 1.25 })
     })
+
     return () => ctx.revert()
   }, [])
 
   const scrollTo = (href: string) => {
     const el = document.querySelector(href)
-    if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY
-      window.scrollTo({ top: top - 80, behavior: 'smooth' })
-    }
+    if (!el) return
+
+    const top = el.getBoundingClientRect().top + window.scrollY
+    window.scrollTo({ top: top - 80, behavior: 'smooth' })
   }
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: 'radial-gradient(ellipse at 55% 40%, #061a0a 0%, #020d04 45%, #000 100%)' }}
+      className="relative flex min-h-[calc(100svh-5rem)] items-center overflow-hidden"
+      style={{
+        background:
+          'radial-gradient(circle at 18% 20%, rgba(24,107,105,0.26) 0%, transparent 34%), radial-gradient(circle at 82% 24%, rgba(45,95,160,0.22) 0%, transparent 30%), radial-gradient(ellipse at 50% 42%, #0d1f26 0%, #081319 48%, #030608 100%)',
+      }}
     >
-      {/* ── Background ───────────────────────────────────────────────────── */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 opacity-[0.028]"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(103,232,249,0.85) 1px,transparent 1px),linear-gradient(90deg,rgba(103,232,249,0.85) 1px,transparent 1px)',
+          backgroundSize: '46px 46px',
+        }}
+      />
 
-      {/* Micro grid */}
-      <div aria-hidden="true" className="hidden sm:block absolute inset-0 pointer-events-none" style={{
-        backgroundImage: 'linear-gradient(rgba(52,211,153,1) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,1) 1px,transparent 1px)',
-        backgroundSize: '48px 48px', opacity: 0.028,
-      }} />
+      <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-x-0 top-[22%] h-px bg-gradient-to-r from-transparent via-cyan-400/18 to-transparent" />
+        <div className="trace-x-fwd absolute top-[22%] h-px w-64 bg-gradient-to-r from-transparent via-cyan-300 to-transparent" style={{ animationDuration: '7.5s' }} />
 
-      {/* 3-D perspective tunnel grid */}
-      <div aria-hidden="true" className="hidden sm:flex absolute inset-0 items-center justify-center pointer-events-none">
-        <div style={{
-          width: '130%', height: '130%',
-          backgroundImage: 'linear-gradient(to right,rgba(52,211,153,0.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(52,211,153,0.06) 1px,transparent 1px)',
-          backgroundSize: '80px 80px',
-          transform: 'perspective(700px) rotateX(28deg)', transformOrigin: 'center 55%',
-          maskImage: 'radial-gradient(ellipse 75% 65% at 50% 50%,black 20%,transparent 80%)',
-          opacity: 0.5,
+        <div className="absolute inset-x-0 top-[68%] h-px bg-gradient-to-r from-transparent via-sky-400/18 to-transparent" />
+        <div className="trace-x-bwd absolute top-[68%] h-px w-56 bg-gradient-to-r from-transparent via-sky-300 to-transparent" style={{ animationDuration: '8.2s' }} />
+
+        <div className="absolute bottom-0 left-1/2 h-[42%] w-full -translate-x-1/2 opacity-[0.08]" style={{
+          backgroundImage:
+            'linear-gradient(to right, rgba(103,232,249,0.72) 1px, transparent 1px), linear-gradient(to bottom, rgba(103,232,249,0.72) 1px, transparent 1px)',
+          backgroundSize: '72px 72px',
+          transform: 'perspective(760px) rotateX(65deg) translateY(28%)',
+          maskImage: 'radial-gradient(ellipse at 50% 0%, black 16%, transparent 76%)',
         }} />
+
+        <div className="radar-sweep absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full" />
+        <div className="absolute left-[22%] top-[20%] h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]" />
+        <div className="absolute right-[18%] top-[30%] h-2 w-2 rounded-full bg-sky-300 shadow-[0_0_12px_rgba(125,211,252,0.9)]" />
+        <div className="absolute bottom-[22%] left-[28%] h-1.5 w-1.5 rounded-full bg-teal-200 shadow-[0_0_10px_rgba(153,246,228,0.9)]" />
+        <div className="absolute bottom-[18%] right-[24%] h-1.5 w-1.5 rounded-full bg-blue-300 shadow-[0_0_10px_rgba(147,197,253,0.9)]" />
       </div>
 
-      {/* Animated circuit traces */}
-      <div aria-hidden="true" className="hidden sm:block absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/25 to-transparent" style={{ top: '22%' }} />
-        <div className="trace-x-fwd absolute h-px w-52 bg-gradient-to-r from-transparent via-emerald-400 to-transparent"
-             style={{ top: '22%', opacity: 0.9, animationDuration: '5.5s' }} />
-
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" style={{ top: '76%' }} />
-        <div className="trace-x-bwd absolute h-px w-44 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
-             style={{ top: '76%', opacity: 0.75, animationDuration: '7s', animationDelay: '1.5s' }} />
-
-        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-emerald-500/[0.12] to-transparent" style={{ left: '20%' }} />
-        <div className="trace-y-fwd absolute w-px h-36 bg-gradient-to-b from-transparent via-emerald-400 to-transparent"
-             style={{ left: '20%', opacity: 0.65, animationDuration: '8s', animationDelay: '1s' }} />
-
-        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-amber-500/[0.10] to-transparent" style={{ left: '80%' }} />
-        <div className="trace-y-bwd absolute w-px h-24 bg-gradient-to-b from-transparent via-amber-400 to-transparent"
-             style={{ left: '80%', opacity: 0.55, animationDuration: '9.5s', animationDelay: '3.5s' }} />
-
-        {/* Intersection glow nodes */}
-        <div className="absolute w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_12px_rgba(52,211,153,0.9)]"  style={{ top: 'calc(22% - 4px)', left: 'calc(20% - 4px)' }} />
-        <div className="absolute w-1.5 h-1.5 rounded-full bg-cyan-400    animate-pulse shadow-[0_0_10px_rgba(6,182,212,0.9)]"   style={{ top: 'calc(76% - 3px)', left: 'calc(80% - 3px)', animationDelay: '1s' }} />
-        <div className="absolute w-2 h-2 rounded-full bg-emerald-300  animate-pulse shadow-[0_0_12px_rgba(52,211,153,0.7)]"   style={{ top: 'calc(22% - 4px)', left: 'calc(80% - 4px)', animationDelay: '0.5s' }} />
-        <div className="absolute w-1.5 h-1.5 rounded-full bg-amber-400    animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.9)]"  style={{ top: 'calc(76% - 3px)', left: 'calc(20% - 3px)', animationDelay: '1.5s' }} />
-
-        {/* Floating particles */}
-        {PARTICLES.map((p, i) => (
-          <div key={i} className={`absolute rounded-full opacity-pulse ${p.color}`}
-            style={{ left: p.x, top: p.y, width: p.w, height: p.h, animationDelay: p.delay, animationDuration: `${2.5 + i * 0.35}s` }} />
-        ))}
-      </div>
-
-      {/* Ambient orbs */}
-      <div aria-hidden="true" className="absolute top-0 left-1/4 w-[700px] h-[600px] bg-emerald-500/[0.025] rounded-full blur-[200px] pointer-events-none" />
-      <div aria-hidden="true" className="absolute bottom-0 right-1/4 w-[600px] h-[500px] bg-cyan-500/[0.02] rounded-full blur-[180px] pointer-events-none" />
-      <div aria-hidden="true" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[350px] bg-emerald-500/[0.02] rounded-full blur-[220px] pointer-events-none" />
-
-      {/* ── Content ──────────────────────────────────────────────────────── */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-24 pb-8">
-
-        <div className="grid lg:grid-cols-2 gap-14 lg:gap-10 items-center mb-10 lg:mb-14">
-
-          {/* ── LEFT: Terminal window ─────────────────────────────────────── */}
-          <div
-            ref={leftRef}
-            className="space-y-6 order-2 lg:order-1"
-            style={{ opacity: 0 }}
-          >
-            {/* Available eyebrow */}
-            <div className="flex justify-center lg:justify-start">
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.09] backdrop-blur-md">
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
-                <span className="text-[11px] text-neutral-400 tracking-wide">
-                  Available · Platform / DevOps / Go roles
-                </span>
-              </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-14 pt-20 sm:px-6 lg:px-10">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] xl:gap-16">
+          <div ref={leftRef} className="space-y-7" style={{ opacity: 0 }}>
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              </span>
+              <span className="text-[11px] font-mono tracking-[0.18em] text-emerald-200 uppercase">
+                Mission Control Online
+              </span>
             </div>
 
-            {/* Terminal window */}
-            <div className="rounded-2xl border border-emerald-500/20 bg-white/[0.03] backdrop-blur-xl overflow-hidden shadow-[0_0_80px_-20px_rgba(52,211,153,0.3)]">
-              {/* Title bar */}
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-white/[0.06] bg-black/30">
+            <div className="space-y-4">
+              <p className="font-mono text-[11px] uppercase tracking-[0.32em] text-neutral-500">
+                DevOps · Platform · Go
+              </p>
+              <h1 className="max-w-4xl text-5xl font-semibold leading-[0.95] tracking-[-0.05em] text-white sm:text-6xl lg:text-[6.25rem]">
+                Abhay Chaurasiya
+              </h1>
+              <p className="max-w-3xl text-2xl font-medium leading-tight tracking-[-0.03em] text-transparent bg-gradient-to-r from-emerald-300 via-cyan-300 to-emerald-100 bg-clip-text sm:text-3xl lg:text-[2.35rem]">
+                <span className="bg-gradient-to-r from-emerald-300 via-cyan-300 to-emerald-100 bg-clip-text text-transparent">
+                  DevOps Engineer · Platform Builder · Go
+                </span>
+              </p>
+              <p className="max-w-xl text-base leading-relaxed text-neutral-300 sm:text-lg">
+                I build cloud systems that ship fast, stay observable, and heal themselves under pressure.
+              </p>
+            </div>
+
+            <div className="max-w-2xl rounded-[28px] border border-white/10 bg-black/45 shadow-[0_0_80px_-28px_rgba(52,211,153,0.35)] backdrop-blur-xl">
+              <div className="flex items-center gap-3 border-b border-white/8 px-4 py-3">
                 <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/80" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-emerald-500/80" />
                 </div>
-                <span className="flex-1 text-center text-[10px] font-mono text-neutral-600 tracking-widest">
-                  abhay@portfolio:~
+                <span className="flex-1 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-600">
+                  mission.log
                 </span>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[9px] font-mono text-emerald-500 tracking-widest">LIVE</span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-pulse" />
+                  <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-emerald-400">
+                    live
+                  </span>
                 </div>
               </div>
-
-              {/* Terminal body */}
               <div className="px-5 py-4">
                 <TerminalTypewriter />
               </div>
             </div>
 
-            {/* CTA row */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a
+                href="/resume.pdf"
+                download="Abhay_Chaurasiya_Resume.pdf"
+                className="group inline-flex items-center justify-center gap-2.5 rounded-xl border border-cyan-400/25 bg-cyan-400/10 px-6 py-3.5 font-semibold text-cyan-50 transition-all hover:border-cyan-300/45 hover:bg-cyan-400/16 hover:shadow-[0_0_28px_-10px_rgba(34,211,238,0.65)]"
+              >
+                <Download size={16} className="transition-transform group-hover:-translate-y-0.5" />
+                Download Resume
+              </a>
               <a
                 href="#projects"
-                onClick={e => { e.preventDefault(); scrollTo('#projects') }}
-                className="group relative flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white text-black font-semibold rounded-xl overflow-hidden hover:bg-emerald-50 transition-colors"
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollTo('#projects')
+                }}
+                className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-emerald-400 px-6 py-3.5 font-semibold text-black transition-all hover:bg-emerald-300 hover:shadow-[0_0_30px_-10px_rgba(52,211,153,0.7)]"
               >
-                <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-cyan-400/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="relative">View Projects</span>
-                <ArrowRight size={16} className="relative group-hover:translate-x-0.5 transition-transform" />
+                Open Mission Log
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
               </a>
               <a
                 href="#contact"
-                onClick={e => { e.preventDefault(); scrollTo('#contact') }}
-                className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white/[0.04] border border-white/[0.09] hover:border-emerald-500/40 hover:bg-white/[0.08] text-white font-semibold rounded-xl transition-all"
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollTo('#contact')
+                }}
+                className="inline-flex items-center justify-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] px-6 py-3.5 font-semibold text-white transition-all hover:border-cyan-400/35 hover:bg-white/[0.08]"
               >
                 <Mail size={16} />
-                Get in Touch
+                Request Interview
               </a>
             </div>
 
-            {/* Social row */}
-            <div className="flex items-center gap-2 justify-center lg:justify-start">
+            <div className="flex items-center gap-2.5">
               {SOCIALS.map(({ Icon, href, label }) => (
-                <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-                  className="group relative p-3 rounded-xl bg-white/[0.03] border border-white/[0.07] hover:border-emerald-500/40 hover:bg-white/[0.07] text-neutral-400 hover:text-white transition-all duration-300"
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  className="group relative rounded-xl border border-white/8 bg-white/[0.03] p-3 text-neutral-400 transition-all duration-300 hover:border-emerald-500/35 hover:bg-white/[0.07] hover:text-white"
                 >
                   <Icon size={18} />
-                  <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 text-[10px] font-mono bg-black/90 border border-white/10 rounded-lg text-neutral-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                  <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg border border-white/10 bg-black/90 px-2 py-1 text-[10px] font-mono text-neutral-300 opacity-0 transition-opacity group-hover:opacity-100">
                     {label}
                   </span>
                 </a>
@@ -353,158 +349,123 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* ── RIGHT: Live Status Panel (unchanged) ─────────────────────── */}
-          <div
-            ref={rightRef}
-            className="flex justify-center lg:justify-end order-1 lg:order-2"
-            style={{ opacity: 0 }}
-          >
-            <div className="relative w-[300px] h-[400px] md:w-[360px] md:h-[470px]">
+          <div ref={rightRef} className="relative mx-auto w-full max-w-[720px]" style={{ opacity: 0 }}>
+            <div className="relative h-[520px] sm:h-[600px] lg:h-[640px]">
+              <div className="absolute inset-0 rounded-[44px] bg-[radial-gradient(circle_at_50%_45%,rgba(52,211,153,0.16),rgba(34,211,238,0.07)_26%,transparent_60%)]" />
+              <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/8 blur-[130px]" />
+              <div className="absolute left-[54%] top-[44%] h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/8 blur-[110px]" />
 
-              {/* Floating tech chips */}
-              <div className="float-a absolute -left-6 top-10 z-20" style={{ animationDuration: '4.2s' }}>
-                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/80 border border-emerald-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(52,211,153,0.15)]">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-500/15 flex items-center justify-center shrink-0">
-                    <GitMerge size={14} className="text-emerald-400" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] text-neutral-600 tracking-wider">golang/tools</p>
-                    <p className="text-xs text-white font-bold">3 CLs merged</p>
-                  </div>
+              <div className="absolute left-1/2 top-[50%] h-[78%] w-px -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent via-emerald-300/70 to-transparent" />
+              <div className="scan-line absolute left-1/2 top-[11%] h-20 w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent via-cyan-300/40 to-transparent" style={{ animationDuration: '4.8s' }} />
+
+              <div className="absolute left-1/2 top-[44%] h-[430px] w-[430px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-500/14" />
+              <div className="spin-cw absolute left-1/2 top-[44%] h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-cyan-400/16" style={{ animationDuration: '18s' }} />
+              <div className="spin-ccw absolute left-1/2 top-[44%] h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-300/12" style={{ animationDuration: '12s' }} />
+              <div className="absolute left-1/2 top-[44%] h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/8 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03),rgba(255,255,255,0.01)_55%,transparent_80%)] backdrop-blur-[2px]" />
+
+              <div className="absolute left-1/2 top-[44%] h-[168px] w-[168px] -translate-x-1/2 -translate-y-1/2 sm:h-[190px] sm:w-[190px]">
+                <div className="signal-pulse absolute -inset-10 rounded-full border border-emerald-400/15" />
+                <div className="signal-pulse absolute -inset-16 rounded-full border border-cyan-400/10" style={{ animationDelay: '1.1s' }} />
+                <div className="absolute inset-0 overflow-hidden rounded-full border border-white/10 bg-black shadow-[0_0_70px_rgba(52,211,153,0.28)]">
+                  <Image src="/profile-picture.svg" alt="Abhay Chaurasiya" fill className="object-cover" priority />
                 </div>
               </div>
 
-              <div className="float-b absolute -right-4 top-8 z-20" style={{ animationDuration: '4.8s' }}>
-                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/80 border border-cyan-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(6,182,212,0.15)]">
-                  <div className="w-7 h-7 rounded-lg bg-cyan-500/15 flex items-center justify-center shrink-0">
-                    <Cloud size={14} className="text-cyan-400" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] text-neutral-600 tracking-wider">cloud</p>
-                    <p className="text-xs text-white font-bold">AWS · Kubernetes</p>
-                  </div>
+              <div className="absolute left-1/2 top-[44%] z-10 h-3 w-3 -translate-x-1/2 -translate-y-[165px] rounded-full bg-emerald-400 shadow-[0_0_15px_rgba(52,211,153,1)]" />
+              <div className="absolute left-1/2 top-[44%] z-10 h-3 w-3 translate-x-[150px] -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,1)]" />
+              <div className="absolute left-1/2 top-[44%] z-10 h-2.5 w-2.5 -translate-x-[155px] translate-y-[95px] rounded-full bg-amber-400 shadow-[0_0_14px_rgba(245,158,11,1)]" />
+
+              <div className="float-a absolute left-[2%] top-[10%] w-[220px] rounded-[24px] border border-emerald-500/18 bg-black/35 px-4 py-4 backdrop-blur-md" style={{ animationDuration: '6s' }}>
+                <div className="mb-2 flex items-center gap-2">
+                  <GitMerge size={14} className="text-emerald-400" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-emerald-300">Contribution Signal</span>
                 </div>
+                <p className="text-2xl font-semibold tracking-tight text-white">9+ merged PRs</p>
+                <p className="mt-1 text-sm leading-relaxed text-neutral-400">CNCF ecosystem and golang/tools, with production-facing fixes and platform work.</p>
+                <div className="absolute right-[-34px] top-[56%] h-px w-10 bg-gradient-to-r from-emerald-400/70 to-transparent" />
               </div>
 
-              <div className="float-c absolute -left-8 bottom-14 z-20" style={{ animationDuration: '5s' }}>
-                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/80 border border-purple-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(168,85,247,0.15)]">
-                  <div className="w-7 h-7 rounded-lg bg-purple-500/15 flex items-center justify-center shrink-0">
-                    <GitBranch size={14} className="text-purple-400" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] text-neutral-600 tracking-wider">open source</p>
-                    <p className="text-xs text-white font-bold">CNCF · 9+ PRs</p>
-                  </div>
+              <div className="float-b absolute right-[0%] top-[14%] w-[210px] rounded-[24px] border border-cyan-500/18 bg-black/35 px-4 py-4 backdrop-blur-md" style={{ animationDuration: '6.8s' }}>
+                <div className="mb-2 flex items-center gap-2">
+                  <Activity size={14} className="text-cyan-400" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-cyan-300">Live Focus</span>
                 </div>
+                <p className="text-xl font-semibold tracking-tight text-white">Platform reliability</p>
+                <p className="mt-1 text-sm leading-relaxed text-neutral-400">AWS, Kubernetes, observability, delivery velocity, and systems that recover under load.</p>
+                <div className="absolute left-[-34px] top-[48%] h-px w-10 bg-gradient-to-r from-transparent to-cyan-400/70" />
               </div>
 
-              <div className="float-d absolute -right-2 bottom-16 z-20" style={{ animationDuration: '5.5s' }}>
-                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/80 border border-amber-500/25 backdrop-blur-xl shadow-[0_8px_32px_rgba(245,158,11,0.15)]">
-                  <div className="w-7 h-7 rounded-lg bg-amber-500/15 flex items-center justify-center shrink-0">
-                    <Server size={14} className="text-amber-400" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] text-neutral-600 tracking-wider">language</p>
-                    <p className="text-xs text-white font-bold">Go · gopls</p>
-                  </div>
+              <div className="float-c absolute bottom-[15%] left-[8%] w-[220px] rounded-[24px] border border-amber-500/18 bg-black/35 px-4 py-4 backdrop-blur-md" style={{ animationDuration: '7.2s' }}>
+                <div className="mb-2 flex items-center gap-2">
+                  <ShieldCheck size={14} className="text-amber-400" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-amber-300">Operator Status</span>
                 </div>
+                <p className="text-xl font-semibold tracking-tight text-white">Open to hire</p>
+                <p className="mt-1 text-sm leading-relaxed text-neutral-400">Best fit for DevOps, Platform, Cloud, and Go backend roles.</p>
+                <div className="absolute right-[-34px] top-[34%] h-px w-10 bg-gradient-to-r from-amber-400/70 to-transparent" />
               </div>
 
-              {/* Orbits */}
-              <div aria-hidden="true" className="spin-cw absolute inset-0 rounded-3xl border border-dashed border-emerald-500/12" style={{ animationDuration: '22s' }} />
-              <div aria-hidden="true" className="spin-ccw absolute inset-3 rounded-2xl border border-cyan-500/[0.09]" style={{ animationDuration: '15s' }} />
-
-              {/* Terminal window */}
-              <div className="absolute inset-6 rounded-2xl overflow-hidden border border-white/[0.09] bg-black/90 backdrop-blur-xl shadow-[0_0_100px_-25px_rgba(52,211,153,0.45)]">
-                {/* Title bar */}
-                <div className="flex items-center gap-2 px-4 py-2.5 bg-black/70 border-b border-white/[0.06]">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-                  </div>
-                  <span className="text-[10px] font-mono text-neutral-600 ml-2 tracking-widest">status.live</span>
-                  <div className="ml-auto flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[9px] font-mono text-emerald-400 tracking-widest">ONLINE</span>
+              <div className="float-d absolute bottom-[8%] right-[2%] w-[245px] rounded-[24px] border border-white/10 bg-white/[0.04] px-4 py-4 backdrop-blur-md" style={{ animationDuration: '7.8s' }}>
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-neutral-600">Mission Stream</span>
+                  <div className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-pulse" />
+                    <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-emerald-300">Live</span>
                   </div>
                 </div>
-
-                {/* Profile */}
-                <div className="relative flex flex-col items-center justify-center h-[calc(100%-40px)] p-5">
-                  <div aria-hidden="true" className="scan-line absolute inset-x-0 h-12 pointer-events-none z-20 bg-gradient-to-b from-transparent via-emerald-400/[0.055] to-transparent"
-                       style={{ animationDuration: '4s' }} />
-
-                  <div className="relative w-36 h-36 md:w-44 md:h-44 mb-4">
-                    <div aria-hidden="true" className="spin-cw absolute -inset-3 rounded-full border border-dashed border-emerald-500/25" style={{ animationDuration: '13s' }} />
-                    <div aria-hidden="true" className="spin-ccw absolute -inset-1.5 rounded-full border border-cyan-500/18" style={{ animationDuration: '9s' }} />
-                    <div className="absolute inset-0 rounded-full overflow-hidden border border-white/10 bg-neutral-800 shadow-[0_0_40px_rgba(52,211,153,0.3)]">
-                      <Image src="/profile-picture.svg" alt="Abhay Chaurasiya" fill className="object-cover" priority />
+                <div className="space-y-2">
+                  {LIVE_FEED.slice(0, 3).map((item) => (
+                    <div key={item} className="flex items-start gap-2 text-[11px] leading-relaxed text-neutral-300">
+                      <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
+                      <span className="font-mono">{item}</span>
                     </div>
-                    <div className="absolute bottom-1 right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-black shadow-[0_0_10px_rgba(16,185,129,0.9)] z-10" />
-                    <div aria-hidden="true" className="spin-cw absolute -inset-3" style={{ animationDuration: '13s' }}>
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,1)]" />
-                    </div>
-                  </div>
-
-                  <p className="text-white font-bold text-base tracking-tight mb-0.5">Abhay Chaurasiya</p>
-                  <p className="text-emerald-400 text-[10px] font-mono tracking-[0.18em] uppercase mb-4">DevOps · Go · golang/tools</p>
-
-                  <div className="w-full space-y-1.5">
-                    {[
-                      { prefix: '●', label: 'STATUS', val: 'Available · open to work',     valCls: 'text-emerald-400' },
-                      { prefix: '↑', label: 'LATEST',  val: 'golang/tools PR #629 merged', valCls: 'text-cyan-300'    },
-                      { prefix: '◎', label: 'FOCUS',   val: 'CNCF · K8s platforms in Go', valCls: 'text-neutral-300' },
-                    ].map(({ prefix, label, val, valCls }) => (
-                      <div key={label} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.05]">
-                        <span className="text-neutral-600 font-mono text-[10px] w-3 shrink-0">{prefix}</span>
-                        <span className="text-neutral-600 font-mono text-[9px] uppercase tracking-wider w-10 shrink-0">{label}</span>
-                        <span className={`font-mono text-[9px] ${valCls} truncate`}>{val}</span>
-                      </div>
-                    ))}
-                  </div>
+                  ))}
                 </div>
+                <div className="absolute left-[-34px] top-[38%] h-px w-10 bg-gradient-to-r from-transparent to-white/60" />
               </div>
 
-              {/* Corner accent nodes */}
-              <div aria-hidden="true" className="absolute top-5 left-5   w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,1)]"  />
-              <div aria-hidden="true" className="absolute top-5 right-5  w-1.5 h-1.5 rounded-full bg-cyan-400   shadow-[0_0_8px_rgba(6,182,212,1)]"    />
-              <div aria-hidden="true" className="absolute bottom-5 left-5  w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,1)]" />
-              <div aria-hidden="true" className="absolute bottom-5 right-5 w-1.5 h-1.5 rounded-full bg-amber-400   shadow-[0_0_8px_rgba(245,158,11,1)]" />
+            </div>
+
+            <div className="mx-auto mt-6 max-w-[360px] text-center">
+              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-neutral-600">Operator Identity</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">Abhay Chaurasiya</h2>
+              <p className="mt-2 text-sm leading-relaxed text-emerald-200/85">
+                Platform reliability, cloud delivery, open-source velocity, and Go systems design.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* ── Zone 3: Proof strip ───────────────────────────────────────── */}
         <div
           ref={proofRef}
-          className="grid grid-cols-3 divide-x divide-white/[0.07] rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden"
+          className="mt-10 overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03] px-5 py-5 shadow-[0_0_100px_-50px_rgba(52,211,153,0.45)] backdrop-blur-xl md:px-8 md:py-6"
           style={{ opacity: 0 }}
         >
-          {PROOF.map(({ Icon, value, detail, accent, bg, border }) => (
-            <div key={value} className="flex items-center gap-3 px-5 py-4 sm:px-6 sm:py-5">
-              <div className={`w-8 h-8 rounded-lg ${bg} border ${border} flex items-center justify-center shrink-0`}>
-                <Icon size={15} className={accent} />
-              </div>
-              <div className="min-w-0">
-                <p className={`text-base font-bold ${accent} leading-none`}>{value}</p>
-                <p className="text-[11px] text-neutral-500 mt-0.5 leading-tight truncate">{detail}</p>
-              </div>
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-4xl space-y-2">
+              <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-neutral-600">
+                Verified operator proof
+              </p>
+              <p className="text-2xl font-semibold leading-tight tracking-[-0.03em] text-white md:text-[2.5rem]">
+                9+ merged PRs across CNCF and golang/tools, plus systems shipped for 5k+ concurrent users.
+              </p>
             </div>
-          ))}
+            <div className="shrink-0">
+              <p className="max-w-sm text-sm leading-relaxed text-neutral-400">
+                Built to be scanned by recruiters, trusted by engineers, and remembered after one pass.
+              </p>
+            </div>
+          </div>
         </div>
-
       </div>
 
-      {/* Scroll indicator */}
       <div ref={scrollRef} className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ opacity: 0 }}>
-        <span className="text-[10px] text-neutral-600 uppercase tracking-[0.3em] font-mono">scroll</span>
-        <div className="relative w-px h-12">
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-600">scroll</span>
+        <div className="relative h-12 w-px">
           <div className="absolute inset-0 bg-gradient-to-b from-neutral-700/40 to-transparent" />
-          <div className="scroll-drip absolute top-0 left-0 w-full h-5 bg-gradient-to-b from-emerald-400/90 to-transparent" />
+          <div className="scroll-drip absolute left-0 top-0 h-5 w-full bg-gradient-to-b from-emerald-400/90 to-transparent" />
         </div>
       </div>
-
     </section>
   )
 }

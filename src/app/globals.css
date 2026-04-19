@@ -108,6 +108,32 @@
   will-change: transform, opacity;
 }
 
+/* ─── Mission Control sweep + signal pulse ───────────────────────────────── */
+@keyframes radar-sweep {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.radar-sweep {
+  background:
+    conic-gradient(from 0deg, rgba(52,211,153,0.18), rgba(52,211,153,0.03) 18%, transparent 30%, transparent 100%);
+  filter: blur(2px);
+  animation: radar-sweep 14s linear infinite;
+  will-change: transform;
+  mask-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.22) 42%, transparent 72%);
+}
+
+@keyframes signal-pulse {
+  0%   { transform: scale(0.92); opacity: 0.45; }
+  70%  { transform: scale(1.06); opacity: 0.12; }
+  100% { transform: scale(1.14); opacity: 0; }
+}
+
+.signal-pulse {
+  animation: signal-pulse 3.5s ease-out infinite;
+  will-change: transform, opacity;
+}
+
 /* ─── Float (generic vertical bob, legacy) ───────────────────────────────── */
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 .animate-float { animation: float 6s ease-in-out infinite; }

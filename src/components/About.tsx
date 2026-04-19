@@ -18,10 +18,10 @@ const SKILL_BARS = [
 ]
 
 const BASE_STATS = [
-  { key: 'exp',      value: '2+',   label: 'Years Exp',  Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.02]',    border: 'border-cyan-500/20', span: 'col-span-1 md:col-span-1', isWide: false },
-  { key: 'projects', value: '15+',  label: 'Projects',   Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.02]',  border: 'border-purple-500/20', span: 'col-span-2 md:col-span-2', isWide: true  },
-  { key: 'leetcode', value: '600+', label: 'LeetCode',   Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.02]', border: 'border-emerald-500/20', span: 'col-span-2 md:col-span-2', isWide: true  },
-  { key: 'prs',      value: '8+',   label: 'Merged PRs', Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.02]',   border: 'border-amber-500/20', span: 'col-span-1 md:col-span-1', isWide: false },
+  { key: 'exp',      value: '2+',   label: 'Years Exp',  Icon: Activity, iconCls: 'text-cyan-400',    numCls: 'text-cyan-400',    bg: 'bg-cyan-500/[0.02]',    border: 'border-cyan-500/20' },
+  { key: 'projects', value: '15+',  label: 'Projects',   Icon: Zap,      iconCls: 'text-purple-400',  numCls: 'text-purple-400',  bg: 'bg-purple-500/[0.02]',  border: 'border-purple-500/20' },
+  { key: 'leetcode', value: '600+', label: 'LeetCode',   Icon: Terminal, iconCls: 'text-emerald-400', numCls: 'text-emerald-400', bg: 'bg-emerald-500/[0.02]', border: 'border-emerald-500/20' },
+  { key: 'prs',      value: '8+',   label: 'Merged PRs', Icon: GitMerge, iconCls: 'text-amber-400',   numCls: 'text-amber-400',   bg: 'bg-amber-500/[0.02]',   border: 'border-amber-500/20' },
 ]
 
 const CODING = {
@@ -147,9 +147,9 @@ const About = () => {
           {/* LEFT: Holographic Identity Card */}
           <Reveal from={{ opacity: 0, x: -40, rotateY: 12 }} className="lg:col-span-4">
             <TiltCard className="group relative will-change-transform">
-              <div className="rounded-3xl border border-cyan-500/25 bg-gradient-to-b from-neutral-900/90 to-black overflow-hidden shadow-[0_0_80px_-20px_rgba(6,182,212,0.35)]" style={{ transformStyle: 'preserve-3d' }}>
+              <div className="rounded-3xl border border-cyan-300/16 bg-[linear-gradient(180deg,rgba(8,16,24,0.88),rgba(4,8,14,0.72))] overflow-hidden shadow-[0_24px_80px_-30px_rgba(34,211,238,0.38)] backdrop-blur-2xl ring-1 ring-white/8" style={{ transformStyle: 'preserve-3d' }}>
 
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06] bg-black/50">
+                <div className="flex items-center gap-2 border-b border-white/10 bg-black/38 px-4 py-3 backdrop-blur-xl">
                   <div className="flex gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
                     <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
@@ -185,7 +185,7 @@ const About = () => {
 
                     <div className="w-full mt-5 space-y-1.5">
                       {ID_FIELDS.map(({ prefix, key, val, valCls }) => (
-                        <div key={key} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.04] hover:border-white/10 transition-colors">
+                        <div key={key} className="flex items-center gap-2 rounded-lg border border-white/10 bg-[linear-gradient(180deg,rgba(10,16,24,0.82),rgba(7,11,18,0.62))] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl transition-colors hover:border-white/20">
                           <span className="text-neutral-600 font-mono text-[11px] w-3 shrink-0">{prefix}</span>
                           <span className="text-neutral-500 font-mono text-[11px]">{key}</span>
                           <span className={`ml-auto font-mono text-[11px] ${valCls}`}>{val}</span>
@@ -215,8 +215,8 @@ const About = () => {
           <Reveal from={{ opacity: 0, x: 40 }} delay={0.15} className="lg:col-span-8 space-y-6">
 
             {/* Bio terminal */}
-            <div className="rounded-3xl border border-white/[0.12] bg-neutral-900/70 overflow-hidden backdrop-blur-md">
-              <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.06] bg-black/30">
+            <div className="overflow-hidden rounded-3xl border border-white/12 bg-[linear-gradient(180deg,rgba(8,14,22,0.88),rgba(5,8,14,0.72))] shadow-[0_24px_80px_-34px_rgba(34,211,238,0.28)] backdrop-blur-2xl ring-1 ring-white/6">
+              <div className="flex items-center gap-2 border-b border-white/10 bg-black/38 px-5 py-3 backdrop-blur-xl">
                 <Terminal size={12} className="text-cyan-400" />
                 <span className="text-[11px] text-neutral-500 font-mono tracking-wider"><span className="hidden sm:inline">~/about/</span>bio.md</span>
                 <div className="ml-auto flex items-center gap-2">
@@ -247,19 +247,20 @@ const About = () => {
               </div>
             </div>
 
-            {/* Stats asymmetric bento grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 xl:gap-5 grid-flow-dense">
-              {STATS.map(({ value, label, Icon, iconCls, numCls, bg, border, span, isWide }) => (
-                <TiltCard key={label} className={`group will-change-transform ${span}`}>
-                  <div className={`relative h-full rounded-[1.25rem] border ${border} ${bg} p-5 lg:p-7 flex flex-col justify-center overflow-hidden`}>
-                    <div aria-hidden="true" className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${bg} rounded-[1.25rem]`} />
+            {/* Stats horizontal strip */}
+            <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4 xl:gap-4">
+              {STATS.map(({ value, label, Icon, iconCls, numCls, bg, border }) => (
+                <TiltCard key={label} className="group will-change-transform">
+                  <div className={`relative flex h-full flex-col justify-center overflow-hidden rounded-[1.125rem] border ${border} bg-[linear-gradient(180deg,rgba(8,14,22,0.86),rgba(5,8,14,0.68))] p-4 shadow-[0_18px_50px_-28px_rgba(10,18,28,0.55)] backdrop-blur-2xl ring-1 ring-white/6 lg:p-5`}>
+                    <div aria-hidden="true" className={`absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100 ${bg} rounded-[1.125rem]`} />
+                    <div aria-hidden="true" className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
                     
-                    <div className={`flex relative z-10 transition-transform duration-500 group-hover:scale-[1.02] ${isWide ? 'flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-left origin-left' : 'flex-col items-center text-center gap-3 origin-center'}`}>
-                      <div className={`flex items-center justify-center rounded-xl bg-black/40 border border-white/[0.08] ${isWide ? 'w-14 h-14 shrink-0' : 'w-12 h-12 mx-auto'}`}>
-                        <Icon size={isWide ? 24 : 20} className={iconCls} />
+                    <div className="relative z-10 flex items-center gap-3 text-left transition-transform duration-500 group-hover:scale-[1.02]">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/12 bg-[linear-gradient(180deg,rgba(12,18,28,0.92),rgba(8,12,20,0.72))] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl lg:h-11 lg:w-11">
+                        <Icon size={18} className={iconCls} />
                       </div>
-                      <div className={isWide ? 'pt-1' : ''}>
-                        <div className={`text-3xl md:text-4xl lg:text-5xl font-black ${numCls} tracking-tighter leading-none mb-1.5`}>{value}</div>
+                      <div className="min-w-0">
+                        <div className={`text-[1.65rem] md:text-[1.85rem] lg:text-[2rem] font-black ${numCls} tracking-tighter leading-none mb-1`}>{value}</div>
                         <div className="text-[10px] md:text-[11px] font-mono uppercase tracking-[0.2em] text-neutral-500">{label}</div>
                       </div>
                     </div>
@@ -269,8 +270,8 @@ const About = () => {
             </div>
 
             {/* Current focus */}
-            <div className="rounded-3xl border border-white/[0.12] bg-neutral-900/70 overflow-hidden backdrop-blur-md">
-              <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.06] bg-black/30">
+            <div className="overflow-hidden rounded-3xl border border-white/12 bg-[linear-gradient(180deg,rgba(8,14,22,0.88),rgba(5,8,14,0.72))] shadow-[0_24px_80px_-34px_rgba(34,211,238,0.24)] backdrop-blur-2xl ring-1 ring-white/6">
+              <div className="flex items-center gap-2 border-b border-white/10 bg-black/38 px-5 py-3 backdrop-blur-xl">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500" />
@@ -281,15 +282,15 @@ const About = () => {
                   <span className={`text-[10px] font-mono tracking-widest ${sourceBadge.textClass}`}>{sourceBadge.label}</span>
                 </span>
               </div>
-              <div className="p-5 space-y-3">
+              <div className="p-4 space-y-2.5">
                 {[
                   { Icon: Cpu,      color: 'text-cyan-400',    border: 'border-cyan-500/10 hover:border-cyan-500/25',     label: 'CONTRIBUTING', labelCls: 'text-cyan-300',    text: `golang/tools (Go toolchain · gopls), Jaeger, Helm, GoReleaser, Argo CD — ${mergedCount} PRs merged.` },
                   { Icon: Zap,      color: 'text-emerald-400', border: 'border-emerald-500/10 hover:border-emerald-500/25', label: 'BUILDING',     labelCls: 'text-emerald-300', text: 'Self-healing Kubernetes operators in Go, dev environment platform CLI, and exploring eBPF.' },
                   { Icon: Activity, color: 'text-purple-400',  border: 'border-purple-500/10 hover:border-purple-500/25',  label: 'GOAL',         labelCls: 'text-purple-300',  text: 'Become a CNCF project maintainer. If it runs on Kubernetes and is written in Go — I want to be inside it.' },
                 ].map(({ Icon, color, border, label, labelCls, text }) => (
-                  <div key={label} className={`flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border ${border} transition-colors`}>
-                    <Icon size={15} className={`${color} shrink-0 mt-0.5`} />
-                    <p className="text-[13px] text-neutral-400 leading-relaxed">
+                  <div key={label} className={`flex items-start gap-3 rounded-[1rem] border ${border} bg-[linear-gradient(180deg,rgba(10,16,24,0.82),rgba(7,11,18,0.62))] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl transition-colors`}>
+                    <Icon size={14} className={`${color} shrink-0 mt-0.5`} />
+                    <p className="text-[12px] text-neutral-400 leading-relaxed">
                       <span className={`${labelCls} font-semibold`}>{label}</span>{' '}{text}
                     </p>
                   </div>
@@ -298,14 +299,14 @@ const About = () => {
             </div>
 
             {/* Capability cards */}
-            <div className="grid sm:grid-cols-3 gap-4">
+            <div className="grid sm:grid-cols-3 gap-3.5">
               {CAPS.map(({ Icon, title, desc, iconBg, iconCls, border, hoverGlow }) => (
                 <TiltCard key={title} className="group will-change-transform">
-                  <div className={`rounded-2xl border ${border} ${hoverGlow} bg-neutral-900/35 p-5 transition-all duration-300 h-full`}>
-                    <div className={`w-10 h-10 rounded-xl ${iconBg} ${iconCls} flex items-center justify-center mb-4`} style={{ transform: 'translateZ(20px)' }}>
-                      <Icon size={20} />
+                  <div className={`h-full rounded-[1rem] border ${border} ${hoverGlow} bg-[linear-gradient(180deg,rgba(8,14,22,0.86),rgba(5,8,14,0.68))] p-4 shadow-[0_18px_50px_-30px_rgba(10,18,28,0.55)] backdrop-blur-2xl ring-1 ring-white/6 transition-all duration-300`}>
+                    <div className={`mb-3 flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 ${iconBg} ${iconCls} shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]`} style={{ transform: 'translateZ(20px)' }}>
+                      <Icon size={18} />
                     </div>
-                    <h4 className="text-white font-semibold text-sm mb-1.5" style={{ transform: 'translateZ(15px)' }}>{title}</h4>
+                    <h4 className="text-white font-semibold text-[13px] mb-1" style={{ transform: 'translateZ(15px)' }}>{title}</h4>
                     <p className="text-xs text-neutral-500 leading-relaxed">{desc}</p>
                   </div>
                 </TiltCard>
@@ -313,8 +314,8 @@ const About = () => {
             </div>
 
             {/* Competitive Coding Panel */}
-            <div className="rounded-3xl border border-white/[0.12] bg-neutral-900/70 overflow-hidden backdrop-blur-md">
-              <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.06] bg-black/30">
+            <div className="overflow-hidden rounded-3xl border border-white/12 bg-[linear-gradient(180deg,rgba(8,14,22,0.88),rgba(5,8,14,0.72))] shadow-[0_24px_80px_-34px_rgba(52,211,153,0.18)] backdrop-blur-2xl ring-1 ring-white/6">
+              <div className="flex items-center gap-2 border-b border-white/10 bg-black/38 px-5 py-3 backdrop-blur-xl">
                 <Zap size={11} className="text-amber-400" />
                 <span className="text-[11px] text-neutral-500 font-mono tracking-wider">competitive_coding.log</span>
                 <div className="ml-auto flex items-center gap-2">
@@ -323,39 +324,39 @@ const About = () => {
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.05] p-5 gap-5 sm:gap-0">
-                <div className="sm:pr-5">
-                  <div className="flex items-center justify-between mb-4">
+              <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.05] p-4 gap-4 sm:gap-0">
+                <div className="sm:pr-4">
+                  <div className="flex items-center justify-between mb-3">
                     <div>
                       <p className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest mb-1">LeetCode</p>
-                      <p className="text-2xl font-black text-amber-400">{CODING.leetcode.total}</p>
+                      <p className="text-xl font-black text-amber-400">{CODING.leetcode.total}</p>
                       <p className="font-mono text-[10px] text-neutral-500">problems solved</p>
                     </div>
                     <a href={CODING.leetcode.href} target="_blank" rel="noreferrer" className="px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 hover:border-amber-400/40 transition-colors">
                       <span className="font-mono text-[10px] text-amber-400">View →</span>
                     </a>
                   </div>
-                  <div className="space-y-2.5">
+                  <div className="space-y-2">
                     {CODING.leetcode.breakdown.map((d, i) => (
                       <SkillBar key={d.label} name={d.label} pct={d.pct} bar={d.barClass} track={d.trackClass} />
                     ))}
                   </div>
                 </div>
 
-                <div className="sm:pl-5 pt-5 sm:pt-0">
-                  <div className="flex items-center justify-between mb-4">
+                <div className="sm:pl-4 pt-4 sm:pt-0">
+                  <div className="flex items-center justify-between mb-3">
                     <div>
                       <p className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest mb-1">HackerRank</p>
-                      <p className="text-2xl font-black text-emerald-400">5★</p>
+                      <p className="text-xl font-black text-emerald-400">5★</p>
                       <p className="font-mono text-[10px] text-neutral-500">top domains</p>
                     </div>
                     <a href={CODING.hackerrank.href} target="_blank" rel="noreferrer" className="px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 hover:border-emerald-400/40 transition-colors">
                       <span className="font-mono text-[10px] text-emerald-400">View →</span>
                     </a>
                   </div>
-                  <div className="space-y-2.5">
+                  <div className="space-y-2">
                     {CODING.hackerrank.domains.map(d => (
-                      <div key={d.label} className="flex items-center justify-between gap-3 p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                      <div key={d.label} className="flex items-center justify-between gap-3 rounded-md border border-white/10 bg-[linear-gradient(180deg,rgba(10,16,24,0.82),rgba(7,11,18,0.62))] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl">
                         <span className="font-mono text-[11px] text-neutral-400">{d.label}</span>
                         <div className="flex gap-0.5">
                           {Array.from({ length: 5 }).map((_, i) => (
