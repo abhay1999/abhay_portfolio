@@ -1,6 +1,6 @@
 # Abhay Chaurasiya — Developer Portfolio
 
-A DevOps-focused portfolio built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and **Framer Motion** — featuring a live CI/CD health dashboard, interactive DevOps terminal playground, GitHub contribution heatmap, and a ThoughtWorks-style Tech Radar.
+A DevOps-focused portfolio built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and **GSAP + CSS motion** — featuring a recruiter-friendly hero, live CI/CD health dashboard, interactive DevOps terminal playground, GitHub contribution heatmap, and a ThoughtWorks-style Tech Radar.
 
 **Live:** [abhay-portfolio.vercel.app](https://abhay-portfolio.vercel.app) &nbsp;·&nbsp; **Resume:** [Download PDF](https://abhay-portfolio.vercel.app/resume.pdf)
 
@@ -53,16 +53,16 @@ A DevOps-focused portfolio built with **Next.js 14**, **TypeScript**, **Tailwind
 
 | # | Section | Highlights |
 |---|---------|-----------|
-| — | **Hero** | Animated circuit background, 3D terminal card, rotating roles, resume PDF download |
+| — | **Hero** | Recruiter-focused terminal hero, hiring status panel, open-source proof strip, project CTA |
 | 01 | **About** | Live merged PR count via GitHub API, skill bars, DevOps identity card |
-| 02 | **Skills** | 3D TiltCard, DotMatrix visualization, radar orb, animated badge cloud |
 | 03 | **Experience** | Work timeline with impact metrics |
-| 04 | **Open Source** | Live CNCF PR feed — merged/open badges fetched from GitHub Search API |
-| 05 | **Projects** | 5 TiltCards (K8s, DevEnv, Portfolio, Netflix EKS, AvlokanIAS) with terminal strips |
-| 06 | **DevOps Live** | Real-time CI/CD status (GitHub Actions API) + 52-week contribution heatmap |
-| 07 | **DevOps Playground** | Interactive terminal — K8s tab (kubectl/helm/docker) + DevEnv CLI tab (spin up/list/teardown) |
-| 08 | **Tech Radar** | ThoughtWorks-style SVG radar — 30 blips, 4 rings, 4 quadrants, hover details |
-| 09 | **Contact** | EmailJS-powered contact form |
+| 04 | **Projects** | Recruiter-first project cards with impact framing and live proof |
+| 05 | **Open Source** | Live CNCF and golang/tools contribution feed with cached fallbacks |
+| 06 | **Skills** | Technical capability map, radar orb, and systems/tooling overview |
+| 07 | **DevOps Live** | Real-time CI/CD status (GitHub Actions API) + 52-week contribution heatmap |
+| 08 | **DevOps Playground** | Interactive terminal — K8s tab (kubectl/helm/docker) + DevEnv CLI tab (spin up/list/teardown) |
+| 09 | **Tech Radar** | ThoughtWorks-style SVG radar — 30 blips, 4 rings, 4 quadrants, hover details |
+| 10 | **Contact** | EmailJS-powered contact form |
 
 ---
 
@@ -73,7 +73,7 @@ A DevOps-focused portfolio built with **Next.js 14**, **TypeScript**, **Tailwind
 | Framework | Next.js 14 (App Router, static export) |
 | Language | TypeScript 5 (strict) |
 | Styling | Tailwind CSS 3 |
-| Animation | Framer Motion 11 |
+| Animation | GSAP + CSS motion primitives |
 | Icons | Lucide React |
 | Contact | EmailJS |
 | PDF | Puppeteer-core + system Chrome |
@@ -98,13 +98,13 @@ abhay_portfolio/
     │   ├── page.tsx             # Section order + imports
     │   └── globals.css
     └── components/
-        ├── Hero.tsx             # Hero + PDF download button
-        ├── About.tsx            # Live merged PR count via GitHub API
-        ├── Skills.tsx           # 3D TiltCard + DotMatrix + radar orb
+        ├── Hero.tsx             # Recruiter-first terminal hero + proof strip
+        ├── About.tsx            # Live merged PR count via GitHub API + cached fallback
         ├── Experience.tsx       # Work experience timeline
-        ├── OpenSource.tsx       # Live GitHub PR feed with badges
-        ├── Projects.tsx         # 5 TiltCard project cards
-        ├── DevOpsLive.tsx       # CI/CD monitor + contribution heatmap
+        ├── Projects.tsx         # Recruiter-friendly project case studies
+        ├── OpenSource.tsx       # Live GitHub PR feed with cached/static fallback
+        ├── Skills.tsx           # Capability map + systems tooling
+        ├── DevOpsLive.tsx       # CI/CD monitor + contribution heatmap with cache
         ├── DevOpsPlayground.tsx # Interactive kubectl + devenv terminal
         ├── TechRadar.tsx        # Pure SVG Tech Radar (no D3)
         └── Contact.tsx          # EmailJS contact form
@@ -145,6 +145,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # optional
 npm run dev          # Development server
 npm run build        # Production build
 npm run type-check   # TypeScript check
+npm run smoke        # Build + smoke test exported homepage
 npm run resume:pdf   # Regenerate public/resume.pdf from resume.html
 ```
 

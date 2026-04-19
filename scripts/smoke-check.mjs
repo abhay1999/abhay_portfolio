@@ -18,8 +18,9 @@ test('homepage static export exists', async () => {
 test('hero content is present in SSR output', async () => {
   const html = await readHomepage()
   assert.match(html, /id="home"/)
-  assert.match(html, /Abhay/)
-  assert.match(html, /CNCF Open Source Contributor/)
+  assert.match(html, /Abhay Chaurasiya/)
+  assert.match(html, /Available · Platform \/ DevOps \/ Go roles/)
+  assert.match(html, /View Projects/)
 })
 
 test('critical sections render into the exported page', async () => {

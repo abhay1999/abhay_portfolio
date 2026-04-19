@@ -47,7 +47,7 @@ export const metadata: Metadata = {
       'Full-Stack & DevOps Engineer — React, Next.js, Node.js, Python, AWS, Kubernetes, Helm. CNCF open-source contributor.',
     images: [
       {
-        url: '/og-image.png',
+        url: '/og-image.svg',
         width: 1200,
         height: 630,
         alt: 'Abhay Chaurasiya — Full-Stack & DevOps Engineer',
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: 'Abhay Chaurasiya | Full-Stack & DevOps Engineer',
     description:
       'Full-Stack & DevOps Engineer — React, Next.js, Node.js, Python, AWS, Kubernetes, Helm. CNCF open-source contributor.',
-    images: ['/og-image.png'],
+    images: ['/og-image.svg'],
   },
 }
 
