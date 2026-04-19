@@ -55,14 +55,24 @@ function MetricStrip({ metrics, metricClass }: {
     return () => { tween.kill(); ScrollTrigger.getAll().filter(s => s.trigger === el).forEach(s => s.kill()) }
   }, [])
 
+  const lead = metrics[0]
+  const support = metrics.slice(1)
+
   return (
-    <div ref={ref} className="grid grid-cols-3 divide-x divide-white/[0.06] border-b border-white/[0.07]">
-      {metrics.map((m, i) => (
-        <div key={i} className="m-cell flex flex-col items-center py-3.5 px-2 bg-white/[0.015]">
-          <AnimatedMetric value={m.value} className={`font-black text-[22px] leading-none tabular-nums ${metricClass}`} />
-          <span className="font-mono text-[8.5px] text-neutral-600 uppercase tracking-widest mt-1 text-center leading-tight">{m.label}</span>
-        </div>
-      ))}
+    <div ref={ref} className="grid grid-cols-[minmax(0,1.35fr)_minmax(0,0.9fr)] border-b border-white/[0.07] bg-white/[0.02]">
+      <div className="m-cell flex min-h-[80px] flex-col justify-center border-r border-white/[0.06] px-4 py-3">
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-neutral-600">Lead impact</span>
+        <AnimatedMetric value={lead.value} className={`mt-1.5 font-black text-[1.75rem] leading-none tabular-nums ${metricClass}`} />
+        <span className="mt-1 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-500">{lead.label}</span>
+      </div>
+      <div className="grid grid-rows-2">
+        {support.map((m, i) => (
+          <div key={i} className={`m-cell flex flex-col justify-center px-4 py-2.5 ${i === 0 ? 'border-b border-white/[0.06]' : ''}`}>
+            <AnimatedMetric value={m.value} className={`font-black text-[0.95rem] leading-none tabular-nums ${metricClass}`} />
+            <span className="mt-1 font-mono text-[8px] uppercase tracking-[0.2em] text-neutral-600">{m.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -315,6 +325,138 @@ const FEATURED = [
 
 type RepoStats = Record<string, { stars: number; forks: number }>
 
+type FeaturedProject = typeof FEATURED[number]
+
+function ProjectCard({
+  project,
+  repoStats,
+  compact = false,
+}: {
+  project: FeaturedProject
+  repoStats?: { stars: number; forks: number }
+  compact?: boolean
+}) {
+  const { Diagram } = project
+  const visibleTech = project.techStack.slice(0, 3)
+  const hiddenTechCount = Math.max(0, project.techStack.length - visibleTech.length)
+  const hasPrimaryLive = Boolean(project.liveDemo)
+  const primaryHref = project.liveDemo || project.github
+  const primaryLabel = project.liveDemo ? 'Live Demo' : 'View Project'
+  const primaryIcon = project.liveDemo ? <ExternalLink size={11} /> : <ArrowUpRight size={11} />
+
+  return (
+    <TiltCard
+      className={`relative flex flex-col overflow-hidden rounded-[2rem] border bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] backdrop-blur-xl transition-all duration-500 ${project.borderClass}`}
+      style={{ boxShadow: project.boxShadow }}
+    >
+      <div className="absolute inset-0 rounded-[2rem] opacity-0 transition-opacity duration-500 pointer-events-none z-20 group-hover:opacity-100"
+        style={{ boxShadow: `inset 0 0 0 1px ${project.accentHex}55, ${project.hoverShadow}` }} />
+
+      <div className="absolute left-6 right-6 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-70" />
+
+      <div className={`relative overflow-hidden border-b ${project.diagBorderClass} ${project.diagBgClass} ${compact ? 'h-[128px] sm:h-[146px]' : 'h-[150px]'}`}>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.07),transparent_58%)]" />
+        <div aria-hidden="true" className="scan-line absolute left-0 right-0 h-px pointer-events-none z-10 opacity-60"
+          style={{ background: `linear-gradient(to right, transparent, ${project.accentHex}cc, transparent)` }} />
+        <div className="absolute inset-0 flex items-center justify-center px-4 py-4">
+          <Diagram c={project.accentHex} />
+        </div>
+        <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-3">
+          <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.22em] backdrop-blur-xl ${project.pillClass}`}>
+            <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
+            {project.category}
+          </span>
+          <div className="flex items-center gap-2">
+            {repoStats && (
+              <div className="flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-2.5 py-1 backdrop-blur-xl">
+                {repoStats.stars > 0 && <div className="flex items-center gap-1"><Star size={9} className="fill-yellow-400 text-yellow-400" /><span className="text-[9px] font-mono text-neutral-400">{repoStats.stars}</span></div>}
+                {repoStats.forks > 0 && <div className="flex items-center gap-1"><GitFork size={9} className="text-neutral-500" /><span className="text-[9px] font-mono text-neutral-400">{repoStats.forks}</span></div>}
+              </div>
+            )}
+            {!project.repo && <span className="rounded-full border border-white/10 bg-black/30 px-2.5 py-1 text-[9px] font-mono text-neutral-500 backdrop-blur-xl">Private repo</span>}
+          </div>
+        </div>
+      </div>
+
+      <MetricStrip metrics={project.metrics} metricClass={project.metricClass} />
+
+      <div className={`flex flex-1 flex-col ${compact ? 'p-4.5' : 'p-5'}`} style={{ transform: 'translateZ(8px)' }}>
+        <div className="mb-3.5">
+          <div className="mb-2.5 flex items-start justify-between gap-3">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-neutral-600">Project {project.id}</p>
+              <h3 className={`mt-2 text-[1.3rem] font-bold leading-tight text-white transition-colors duration-300 ${project.titleHoverClass}`}>
+                {project.title}
+              </h3>
+            </div>
+            <ArrowUpRight size={16} className={`${project.accentText} mt-1 shrink-0 opacity-60 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100`} />
+          </div>
+
+          <div className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] font-mono font-semibold tracking-[0.12em] ${project.highlightClass}`}>
+            <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
+            {project.highlight}
+          </div>
+        </div>
+
+        <p className="mb-4 max-w-[34ch] text-[13px] leading-relaxed text-neutral-300">
+          {project.solution}
+        </p>
+
+        <div className="mb-4 flex flex-wrap gap-2">
+          {visibleTech.map((tech) => (
+            <span key={tech} className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-mono text-neutral-300">
+              {tech}
+            </span>
+          ))}
+          {hiddenTechCount > 0 && (
+            <span className="rounded-full border border-white/10 bg-white/[0.025] px-2.5 py-1 text-[10px] font-mono text-neutral-500">
+              +{hiddenTechCount} more
+            </span>
+          )}
+        </div>
+
+        <div className="mt-auto flex items-center gap-2.5 border-t border-white/[0.07] pt-3.5">
+          {primaryHref && (
+            <a
+              href={primaryHref}
+              target="_blank"
+              rel="noreferrer"
+              className={`inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-[11px] font-mono font-semibold transition-all duration-200 ${project.ctaClass}`}
+            >
+              {primaryIcon}
+              {primaryLabel}
+            </a>
+          )}
+
+          {project.github && hasPrimaryLive && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-white/12 px-3.5 py-2 text-[11px] font-mono text-neutral-300 transition-colors hover:border-white/25 hover:text-white"
+            >
+              <GithubIcon size={11} />
+              GitHub
+            </a>
+          )}
+
+          {project.github && (
+            <a
+              href={`${project.github}#readme`}
+              target="_blank"
+              rel="noreferrer"
+              className="ml-auto inline-flex items-center gap-1 text-[10px] font-mono text-neutral-500 transition-colors hover:text-neutral-300"
+            >
+              <BookOpen size={10} />
+              Architecture
+            </a>
+          )}
+        </div>
+      </div>
+    </TiltCard>
+  )
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const Projects = () => {
@@ -442,90 +584,17 @@ const Projects = () => {
                      pl-[max(2rem,calc((100vw-80rem)/2))] pr-16
                      [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
                      scroll-snap-type-x-mandatory"
-          style={{ paddingTop: '0.5rem', paddingBottom: '1.5rem', scrollSnapType: 'x mandatory' }}
+          style={{ paddingTop: '0.5rem', paddingBottom: '2rem', scrollSnapType: 'x mandatory' }}
         >
             {FEATURED.map((project, idx) => {
               const repoStats = project.repo ? stats[project.repo] : undefined
-              const { Diagram } = project
               return (
                 <div
                   key={project.id}
                   className="group w-[420px] xl:w-[460px] flex-shrink-0 [perspective:900px]"
-                  style={{ height: 540, scrollSnapAlign: 'start' }}
+                  style={{ height: 572, scrollSnapAlign: 'start' }}
                 >
-                  <TiltCard
-                    className={`relative flex flex-col h-full rounded-3xl overflow-hidden border transition-all duration-500 bg-white/[0.04] backdrop-blur-xl ${project.borderClass}`}
-                    style={{ boxShadow: project.boxShadow }}
-                  >
-                    {/* Progress line */}
-                    <div className="absolute top-0 left-0 right-0 h-[2px] overflow-hidden z-30 pointer-events-none">
-                      <div className="h-full w-0 group-hover:w-full transition-[width] duration-700 ease-out"
-                        style={{ background: `linear-gradient(to right, transparent, ${project.accentHex}dd, transparent)` }} />
-                    </div>
-
-                    {/* Hover glow border */}
-                    <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20"
-                      style={{ boxShadow: `inset 0 0 0 1px ${project.accentHex}55` }} />
-
-                    {/* Diagram strip */}
-                    <div className={`relative overflow-hidden border-b ${project.diagBorderClass} ${project.diagBgClass} h-[110px]`}>
-                      <div aria-hidden="true" className="scan-line absolute left-0 right-0 h-px pointer-events-none z-10 opacity-50"
-                        style={{ background: `linear-gradient(to right, transparent, ${project.accentHex}99, transparent)` }} />
-                      <div className="absolute inset-0 flex items-center justify-center p-3">
-                        <Diagram c={project.accentHex} />
-                      </div>
-                      <div className="absolute bottom-0 left-0 right-0 px-3 py-2 flex items-center justify-between bg-gradient-to-t from-black/60 to-transparent">
-                        <span className={`px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase rounded-full border ${project.pillClass}`}>{project.category}</span>
-                        {repoStats && (
-                          <div className="flex items-center gap-3">
-                            {repoStats.stars > 0 && <div className="flex items-center gap-1"><Star size={9} className="text-yellow-400 fill-yellow-400" /><span className="text-[10px] font-mono text-neutral-500">{repoStats.stars}</span></div>}
-                            {repoStats.forks > 0 && <div className="flex items-center gap-1"><GitFork size={9} className="text-neutral-600" /><span className="text-[10px] font-mono text-neutral-500">{repoStats.forks}</span></div>}
-                          </div>
-                        )}
-                        {!project.repo && <span className="text-[9px] font-mono text-neutral-700">Private repo</span>}
-                      </div>
-                    </div>
-
-                    <MetricStrip metrics={project.metrics} metricClass={project.metricClass} />
-
-                    <div className="flex flex-col flex-1 p-5 overflow-hidden" style={{ transform: 'translateZ(8px)' }}>
-                      <div className="flex items-start justify-between gap-2 mb-2.5">
-                        <h3 className={`text-[17px] font-bold text-white ${project.titleHoverClass} transition-colors duration-300 leading-snug`}>{project.title}</h3>
-                        <ArrowUpRight size={15} className={`${project.accentText} opacity-0 group-hover:opacity-100 shrink-0 mt-0.5 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} />
-                      </div>
-                      <div className="mb-3">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg border text-[10px] font-mono font-semibold tracking-wide ${project.highlightClass}`}>
-                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />{project.highlight}
-                        </span>
-                      </div>
-                      <p className="text-[12px] text-neutral-400 leading-relaxed line-clamp-3 mb-4">{project.solution}</p>
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {project.techStack.map(tech => (
-                          <span key={tech} className={`text-[10px] font-mono px-2 py-0.5 rounded-md border ${project.pillClass}`}>{tech}</span>
-                        ))}
-                      </div>
-                      <div className="flex items-center gap-2 pt-3.5 border-t border-white/[0.07] mt-auto">
-                        {project.github && (
-                          <a href={project.github} target="_blank" rel="noreferrer"
-                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}>
-                            <GithubIcon size={11} />Repo
-                          </a>
-                        )}
-                        {project.liveDemo && (
-                          <a href={project.liveDemo} target="_blank" rel="noreferrer"
-                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}>
-                            <ExternalLink size={10} />Live ↗
-                          </a>
-                        )}
-                        {project.github && !project.liveDemo && !project.caseStudy && (
-                          <a href={`${project.github}#readme`} target="_blank" rel="noreferrer"
-                            className="ml-auto inline-flex items-center gap-1 text-[10px] font-mono text-neutral-700 hover:text-neutral-400 transition-colors">
-                            README →
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </TiltCard>
+                  <ProjectCard project={project} repoStats={repoStats} />
                 </div>
               )
             })}
@@ -568,75 +637,9 @@ const Projects = () => {
         <div className="flex flex-col gap-5 mb-10">
           {FEATURED.map((project, idx) => {
             const repoStats = project.repo ? stats[project.repo] : undefined
-            const { Diagram } = project
             return (
               <Reveal key={project.id} from={{ opacity: 0, y: 40 }} delay={idx * 0.09} className="group [perspective:900px]">
-                <TiltCard
-                  className={`relative flex flex-col rounded-3xl overflow-hidden border transition-all duration-500 bg-white/[0.04] backdrop-blur-xl ${project.borderClass}`}
-                  style={{ boxShadow: project.boxShadow }}
-                >
-                  <div className="absolute top-0 left-0 right-0 h-[2px] overflow-hidden z-30 pointer-events-none">
-                    <div className="h-full w-0 group-hover:w-full transition-[width] duration-700 ease-out"
-                      style={{ background: `linear-gradient(to right, transparent, ${project.accentHex}dd, transparent)` }} />
-                  </div>
-                  <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20"
-                    style={{ boxShadow: `inset 0 0 0 1px ${project.accentHex}55` }} />
-                  <div className={`relative overflow-hidden border-b ${project.diagBorderClass} ${project.diagBgClass} h-[110px] sm:h-[140px]`}>
-                    <div aria-hidden="true" className="scan-line absolute left-0 right-0 h-px pointer-events-none z-10 opacity-50"
-                      style={{ background: `linear-gradient(to right, transparent, ${project.accentHex}99, transparent)` }} />
-                    <div className="absolute inset-0 flex items-center justify-center p-3">
-                      <Diagram c={project.accentHex} />
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 px-3 py-2 flex items-center justify-between bg-gradient-to-t from-black/60 to-transparent">
-                      <span className={`px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase rounded-full border ${project.pillClass}`}>{project.category}</span>
-                      {repoStats && (
-                        <div className="flex items-center gap-3">
-                          {repoStats.stars > 0 && <div className="flex items-center gap-1"><Star size={9} className="text-yellow-400 fill-yellow-400" /><span className="text-[10px] font-mono text-neutral-500">{repoStats.stars}</span></div>}
-                          {repoStats.forks > 0 && <div className="flex items-center gap-1"><GitFork size={9} className="text-neutral-600" /><span className="text-[10px] font-mono text-neutral-500">{repoStats.forks}</span></div>}
-                        </div>
-                      )}
-                      {!project.repo && <span className="text-[9px] font-mono text-neutral-700">Private repo</span>}
-                    </div>
-                  </div>
-                  <MetricStrip metrics={project.metrics} metricClass={project.metricClass} />
-                  <div className="flex flex-col flex-1 p-5" style={{ transform: 'translateZ(8px)' }}>
-                    <div className="flex items-start justify-between gap-2 mb-2.5">
-                      <h3 className={`text-[17px] font-bold text-white ${project.titleHoverClass} transition-colors duration-300 leading-snug`}>{project.title}</h3>
-                      <ArrowUpRight size={15} className={`${project.accentText} opacity-0 group-hover:opacity-100 shrink-0 mt-0.5 transition-all`} />
-                    </div>
-                    <div className="mb-3">
-                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg border text-[10px] font-mono font-semibold tracking-wide ${project.highlightClass}`}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />{project.highlight}
-                      </span>
-                    </div>
-                    <p className="text-[12px] text-neutral-400 leading-relaxed line-clamp-3 mb-4">{project.solution}</p>
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {project.techStack.map(tech => (
-                        <span key={tech} className={`text-[10px] font-mono px-2 py-0.5 rounded-md border ${project.pillClass}`}>{tech}</span>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-2 pt-3.5 border-t border-white/[0.07] mt-auto">
-                      {project.github && (
-                        <a href={project.github} target="_blank" rel="noreferrer"
-                          className={`inline-flex items-center gap-1.5 px-3 py-2.5 sm:py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}>
-                          <GithubIcon size={11} />Repo
-                        </a>
-                      )}
-                      {project.liveDemo && (
-                        <a href={project.liveDemo} target="_blank" rel="noreferrer"
-                          className={`inline-flex items-center gap-1.5 px-3 py-2.5 sm:py-1.5 rounded-lg border text-[11px] font-mono font-medium transition-all duration-200 ${project.ctaClass}`}>
-                          <ExternalLink size={10} />Live ↗
-                        </a>
-                      )}
-                      {project.github && !project.liveDemo && !project.caseStudy && (
-                        <a href={`${project.github}#readme`} target="_blank" rel="noreferrer"
-                          className="ml-auto inline-flex items-center gap-1 text-[10px] font-mono text-neutral-700 hover:text-neutral-400 transition-colors">
-                          README →
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </TiltCard>
+                <ProjectCard project={project} repoStats={repoStats} compact />
               </Reveal>
             )
           })}
