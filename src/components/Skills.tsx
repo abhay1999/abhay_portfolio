@@ -134,7 +134,7 @@ const CAPABILITIES = [
 const STATS = [
   { to: 20, suffix: '+',  label: 'Skills',      color: '#22d3ee' },
   { to: 4,  suffix: '',   label: 'Domains',      color: '#c084fc' },
-  { to: 9,  suffix: '+',  label: 'CNCF PRs',    color: '#34d399' },
+  { to: 10, suffix: '+',  label: 'CNCF PRs',    color: '#34d399' },
   { to: 2,  suffix: 'yr', label: 'Experience',   color: '#fb923c' },
 ]
 
