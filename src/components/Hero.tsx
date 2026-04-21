@@ -380,7 +380,7 @@ const Hero = () => {
                   <GitMerge size={14} className="text-emerald-400" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-emerald-300">Contribution Signal</span>
                 </div>
-                <p className="text-2xl font-semibold tracking-tight text-white">9+ merged PRs</p>
+                <p className="text-2xl font-semibold tracking-tight text-white">10+ merged PRs</p>
                 <p className="mt-1 text-sm leading-relaxed text-neutral-400">CNCF ecosystem and golang/tools, with production-facing fixes and platform work.</p>
                 <div className="absolute right-[-34px] top-[56%] h-px w-10 bg-gradient-to-r from-emerald-400/70 to-transparent" />
               </div>
@@ -447,7 +447,7 @@ const Hero = () => {
                 Verified operator proof
               </p>
               <p className="text-2xl font-semibold leading-tight tracking-[-0.03em] text-white md:text-[2.5rem]">
-                9+ merged PRs across CNCF and golang/tools, plus systems shipped for 5k+ concurrent users.
+                10+ merged PRs across CNCF and golang/tools, plus systems shipped for 5k+ concurrent users.
               </p>
             </div>
             <div className="shrink-0">
