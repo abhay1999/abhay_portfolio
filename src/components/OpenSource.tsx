@@ -72,6 +72,7 @@ const ORG_LOGOS: Record<string, string> = {
   'goreleaser/goreleaser':    'goreleaser',
   'argoproj/argo-cd':         'argoproj',
   'meshery/meshery':          'layer5io',
+  'layer5io/layer5':          'layer5io',
   'docker/cli':               'docker',
   'grafana/grafana':          'grafana',
   'jenkinsci/jenkins':        'jenkinsci',
@@ -343,6 +344,7 @@ const STATIC_MERGED: MergedPR[] = [
   { number: 6462,  repo: 'goreleaser/goreleaser', orgInitial: 'G', title: 'fix: filterOut returns excluded tag when multiple ignore_tags set',   description: 'Resolved release pipeline bug where multiple ignore_tags caused incorrect tag exclusion logic.',                           tags: ['Go','CI/CD','Release'],             mergedAt: 'Mar 17, 2026', repoStars: '14k+', url: 'https://github.com/goreleaser/goreleaser/pull/6462',  ...MERGED_THEMES[1] },
   { number: 8215,  repo: 'jaegertracing/jaeger',  orgInitial: 'J', title: 'feat(monitor): restore Grafana to SPM docker-compose example',       description: 'Restored Grafana to the SPM docker-compose as part of ADR-007 observability stack migration.',                           tags: ['Go','Grafana','Docker','CNCF'],     mergedAt: 'Mar 21, 2026', repoStars: '20k+', url: 'https://github.com/jaegertracing/jaeger/pull/8215',   ...MERGED_THEMES[2] },
   { number: 8216,  repo: 'jaegertracing/jaeger',  orgInitial: 'J', title: 'feat(monitor): Go SDK dashboard generator — ADR-007 Step 2a',        description: 'Implemented a Go SDK-based Grafana dashboard generator enabling programmatic dashboard provisioning for Jaeger SPM.',    tags: ['Go','Grafana','CNCF','Observability'], mergedAt: 'Mar 24, 2026', repoStars: '20k+', url: 'https://github.com/jaegertracing/jaeger/pull/8216', ...MERGED_THEMES[3] },
+  { number: 7582,  repo: 'layer5io/layer5',       orgInitial: 'L', title: '[Sistent] Add Card component to the sistent components page',         description: 'Added the Sistent Card component to the Layer5 ecosystem.',                                                          tags: ['React','CNCF'],                        mergedAt: 'Apr 21, 2026', repoStars: '1k+',  url: 'https://github.com/layer5io/layer5/pull/7582',   ...MERGED_THEMES[0] },
 ]
 
 const STATIC_OPEN: OpenPR[] = [
@@ -633,6 +635,7 @@ const OpenSource = () => {
               { name: 'helm/helm',               display: 'helm',           sub: 'CNCF Graduated',       stars: '29k+', accent: '#818cf8', badge: 'CNCF Graduated',   badgeBg: 'rgba(129,140,248,0.12)', badgeBorder: 'rgba(129,140,248,0.3)' },
               { name: 'goreleaser/goreleaser',   display: 'goreleaser',     sub: 'Go CI/CD tooling',     stars: '14k+', accent: '#c084fc', badge: null,               badgeBg: '',                     badgeBorder: '' },
               { name: 'golang/website',          display: 'golang/website', sub: 'go.dev · Official Docs', stars: '',   accent: '#38bdf8', badge: 'go.dev',           badgeBg: 'rgba(56,189,248,0.12)', badgeBorder: 'rgba(56,189,248,0.3)' },
+              { name: 'layer5io/layer5',         display: 'layer5',         sub: 'CNCF Ecosystem',       stars: '1k+',  accent: '#34d399', badge: 'CNCF',             badgeBg: 'rgba(52,211,153,0.12)',  badgeBorder: 'rgba(52,211,153,0.3)' },
             ] as const).map(r => (
               <div key={r.name}
                 className="flex flex-col gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-white/[0.14] hover:bg-white/[0.05] transition-all duration-200 group/eco">

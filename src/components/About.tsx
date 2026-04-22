@@ -93,7 +93,7 @@ const SkillBar = ({ name, pct, bar, track }: typeof SKILL_BARS[0]) => {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const About = () => {
-  const [mergedCount, setMergedCount] = useState('10+')
+  const [mergedCount, setMergedCount] = useState('11+')
   const [sourceState, setSourceState] = useState<DataSourceState>('static')
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const About = () => {
       { headers: { Accept: 'application/vnd.github.v3+json' } }, 4500,
     ).then(data => {
       if (typeof data.total_count !== 'number') return
-      const actualTotal = Math.max(10, data.total_count + 3)
+      const actualTotal = Math.max(11, data.total_count + 3)
       setMergedCount(String(actualTotal)); setSourceState('live')
       writeCachedValue(ABOUT_CACHE_KEY, { totalCount: actualTotal })
     }).catch(() => {})
@@ -235,7 +235,7 @@ const About = () => {
                 <div className="flex items-start gap-3">
                   <span className="text-purple-400 font-mono text-sm mt-0.5 shrink-0">›</span>
                   <p className="text-[15px] text-neutral-300 leading-relaxed max-w-[62ch]">
-                    <strong className="text-white">3 CLs merged into the official Go toolchain</strong> (<span className="text-cyan-400 font-medium">golang/tools</span>): <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">slicesbackward</code> analyzer, <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">stringscut</code> analyzer, and a gopls completion fix — reviewed by Alan Donovan and shipping in <span className="text-cyan-400 font-medium">gopls</span>. Also 7 merged PRs across <span className="text-cyan-400 font-medium">Jaeger</span>, <span className="text-cyan-400 font-medium">Helm</span> &amp; <span className="text-cyan-400 font-medium">GoReleaser</span> — <strong className="text-white">10 total</strong>.
+                    <strong className="text-white">3 CLs merged into the official Go toolchain</strong> (<span className="text-cyan-400 font-medium">golang/tools</span>): <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">slicesbackward</code> analyzer, <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">stringscut</code> analyzer, and a gopls completion fix — reviewed by Alan Donovan and shipping in <span className="text-cyan-400 font-medium">gopls</span>. Also 8 merged PRs across <span className="text-cyan-400 font-medium">Layer5</span>, <span className="text-cyan-400 font-medium">Jaeger</span>, <span className="text-cyan-400 font-medium">Helm</span> &amp; <span className="text-cyan-400 font-medium">GoReleaser</span> — <strong className="text-white">11 total</strong>.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
