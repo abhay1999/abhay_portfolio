@@ -238,7 +238,7 @@ const Hero = () => {
           maskImage: 'radial-gradient(ellipse at 50% 0%, black 16%, transparent 76%)',
         }} />
 
-        <div className="radar-sweep absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full" />
+        <div className="radar-sweep absolute left-1/2 top-1/2 h-[400px] w-[400px] sm:h-[720px] sm:w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full" />
         <div className="absolute left-[22%] top-[20%] h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]" />
         <div className="absolute right-[18%] top-[30%] h-2 w-2 rounded-full bg-sky-300 shadow-[0_0_12px_rgba(125,211,252,0.9)]" />
         <div className="absolute bottom-[22%] left-[28%] h-1.5 w-1.5 rounded-full bg-teal-200 shadow-[0_0_10px_rgba(153,246,228,0.9)]" />
@@ -352,18 +352,18 @@ const Hero = () => {
           <div ref={rightRef} className="relative mx-auto w-full max-w-[720px]" style={{ opacity: 0 }}>
             <div className="relative h-[520px] sm:h-[600px] lg:h-[640px]">
               <div className="absolute inset-0 rounded-[44px] bg-[radial-gradient(circle_at_50%_45%,rgba(52,211,153,0.16),rgba(34,211,238,0.07)_26%,transparent_60%)]" />
-              <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/8 blur-[130px]" />
-              <div className="absolute left-[54%] top-[44%] h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/8 blur-[110px]" />
+              <div className="absolute left-1/2 top-1/2 h-[300px] w-[300px] sm:h-[500px] sm:w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/8 blur-[130px]" />
+              <div className="absolute left-[54%] top-[44%] h-[200px] w-[200px] sm:h-[320px] sm:w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/8 blur-[110px]" />
 
               <div className="absolute left-1/2 top-[50%] h-[78%] w-px -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent via-emerald-300/70 to-transparent" />
               <div className="scan-line absolute left-1/2 top-[11%] h-20 w-[2px] -translate-x-1/2 bg-gradient-to-b from-transparent via-cyan-300/40 to-transparent" style={{ animationDuration: '4.8s' }} />
 
-              <div className="absolute left-1/2 top-[44%] h-[430px] w-[430px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-500/14" />
-              <div className="spin-cw absolute left-1/2 top-[44%] h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-cyan-400/16" style={{ animationDuration: '18s' }} />
-              <div className="spin-ccw absolute left-1/2 top-[44%] h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-300/12" style={{ animationDuration: '12s' }} />
-              <div className="absolute left-1/2 top-[44%] h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/8 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03),rgba(255,255,255,0.01)_55%,transparent_80%)] backdrop-blur-[2px]" />
+              <div className="absolute left-1/2 top-[44%] h-[280px] w-[280px] sm:h-[430px] sm:w-[430px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-500/14" />
+              <div className="spin-cw absolute left-1/2 top-[44%] h-[240px] w-[240px] sm:h-[360px] sm:w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-cyan-400/16" style={{ animationDuration: '18s' }} />
+              <div className="spin-ccw absolute left-1/2 top-[44%] h-[200px] w-[200px] sm:h-[300px] sm:w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-300/12" style={{ animationDuration: '12s' }} />
+              <div className="absolute left-1/2 top-[44%] h-[160px] w-[160px] sm:h-[250px] sm:w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/8 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03),rgba(255,255,255,0.01)_55%,transparent_80%)] backdrop-blur-[2px]" />
 
-              <div className="absolute left-1/2 top-[44%] h-[168px] w-[168px] -translate-x-1/2 -translate-y-1/2 sm:h-[190px] sm:w-[190px]">
+              <div className="absolute left-1/2 top-[44%] h-[120px] w-[120px] -translate-x-1/2 -translate-y-1/2 sm:h-[168px] sm:w-[168px] lg:h-[190px] lg:w-[190px]">
                 <div className="signal-pulse absolute -inset-10 rounded-full border border-emerald-400/15" />
                 <div className="signal-pulse absolute -inset-16 rounded-full border border-cyan-400/10" style={{ animationDelay: '1.1s' }} />
                 <div className="absolute inset-0 overflow-hidden rounded-full border border-white/10 bg-black shadow-[0_0_70px_rgba(52,211,153,0.28)]">
@@ -375,7 +375,7 @@ const Hero = () => {
               <div className="absolute left-1/2 top-[44%] z-10 h-3 w-3 translate-x-[150px] -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,1)]" />
               <div className="absolute left-1/2 top-[44%] z-10 h-2.5 w-2.5 -translate-x-[155px] translate-y-[95px] rounded-full bg-amber-400 shadow-[0_0_14px_rgba(245,158,11,1)]" />
 
-              <div className="float-a absolute left-[2%] top-[10%] w-[220px] rounded-[24px] border border-emerald-500/18 bg-black/35 px-4 py-4 backdrop-blur-md" style={{ animationDuration: '6s' }}>
+              <div className="float-a hidden lg:block absolute left-[2%] top-[10%] w-[220px] rounded-[24px] border border-emerald-500/18 bg-black/35 px-4 py-4 backdrop-blur-md" style={{ animationDuration: '6s' }}>
                 <div className="mb-2 flex items-center gap-2">
                   <GitMerge size={14} className="text-emerald-400" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-emerald-300">Contribution Signal</span>
@@ -385,7 +385,7 @@ const Hero = () => {
                 <div className="absolute right-[-34px] top-[56%] h-px w-10 bg-gradient-to-r from-emerald-400/70 to-transparent" />
               </div>
 
-              <div className="float-b absolute right-[0%] top-[14%] w-[210px] rounded-[24px] border border-cyan-500/18 bg-black/35 px-4 py-4 backdrop-blur-md" style={{ animationDuration: '6.8s' }}>
+              <div className="float-b hidden lg:block absolute right-[0%] top-[14%] w-[210px] rounded-[24px] border border-cyan-500/18 bg-black/35 px-4 py-4 backdrop-blur-md" style={{ animationDuration: '6.8s' }}>
                 <div className="mb-2 flex items-center gap-2">
                   <Activity size={14} className="text-cyan-400" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-cyan-300">Live Focus</span>
@@ -395,7 +395,7 @@ const Hero = () => {
                 <div className="absolute left-[-34px] top-[48%] h-px w-10 bg-gradient-to-r from-transparent to-cyan-400/70" />
               </div>
 
-              <div className="float-c absolute bottom-[15%] left-[8%] w-[220px] rounded-[24px] border border-amber-500/18 bg-black/35 px-4 py-4 backdrop-blur-md" style={{ animationDuration: '7.2s' }}>
+              <div className="float-c hidden lg:block absolute bottom-[15%] left-[8%] w-[220px] rounded-[24px] border border-amber-500/18 bg-black/35 px-4 py-4 backdrop-blur-md" style={{ animationDuration: '7.2s' }}>
                 <div className="mb-2 flex items-center gap-2">
                   <ShieldCheck size={14} className="text-amber-400" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-amber-300">Operator Status</span>
@@ -405,7 +405,7 @@ const Hero = () => {
                 <div className="absolute right-[-34px] top-[34%] h-px w-10 bg-gradient-to-r from-amber-400/70 to-transparent" />
               </div>
 
-              <div className="float-d absolute bottom-[8%] right-[2%] w-[245px] rounded-[24px] border border-white/10 bg-white/[0.04] px-4 py-4 backdrop-blur-md" style={{ animationDuration: '7.8s' }}>
+              <div className="float-d hidden lg:block absolute bottom-[8%] right-[2%] w-[245px] rounded-[24px] border border-white/10 bg-white/[0.04] px-4 py-4 backdrop-blur-md" style={{ animationDuration: '7.8s' }}>
                 <div className="mb-3 flex items-center justify-between">
                   <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-neutral-600">Mission Stream</span>
                   <div className="flex items-center gap-2">

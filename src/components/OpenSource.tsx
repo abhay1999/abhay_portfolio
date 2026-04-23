@@ -968,7 +968,7 @@ const OpenSource = () => {
               <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
               <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
             </div>
-            <span className="flex-1 text-center text-[11px] font-mono text-neutral-600">gh pr list --author abhay1999 --state open</span>
+            <span className="flex-1 text-center text-[10px] sm:text-[11px] font-mono text-neutral-600 truncate">gh pr list --author abhay1999 --state open</span>
             <div className="flex items-center gap-1.5">
               <div className={`w-1.5 h-1.5 rounded-full ${sourceMeta.dotClass} ${dataSource === 'live' ? 'opacity-pulse' : ''}`} />
               <span className={`text-[9px] font-mono ${sourceMeta.textClass}`}>{sourceMeta.badgeLabel}</span>
